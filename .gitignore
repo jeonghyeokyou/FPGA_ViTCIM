@@ -1,0 +1,37 @@
+# ===== Vivado generated project directories (regenerate via *.tcl scripts) =====
+**/vivado_proj/
+verif/l2/vivado/
+*.xpr
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.runs/
+
+# ===== Simulation run artifacts (xvlog / xelab / xsim) =====
+**/work/
+**/work_integ/
+**/xsim.dir/
+*.wdb
+*.jou
+*.log
+*.pb
+*.str
+
+# ===== Vivado journal / lock / temp files =====
+.Xil/
+**/.Xil/
+vivado*.jou
+vivado*.log
+vivado_pid*.str
+*.backup.jou
+*.backup.log
+webtalk*.jou
+webtalk*.log
+
+# ===== Synthesis checkpoints (huge, regenerate via build_synth.tcl) =====
+*.dcp
+
+# ===== OS =====
+Thumbs.db
+.DS_Store
