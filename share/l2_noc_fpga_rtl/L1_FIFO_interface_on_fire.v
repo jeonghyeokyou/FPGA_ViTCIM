@@ -132,7 +132,12 @@ assign w_output_ready_addr = (r_read_signal) ? (!w_input_almost_ready_data) : ((
 
 // Mux Logic - Data FIFO
 assign w_input_valid_data = (i_control_mode == 1'b0) ? (i_read_ready_L1 || i_write_valid) : 1'b0;
-assign w_input_data_data = (r_read_signal) ? i_read_data_L1 : ((i_write_valid) ? i_write_data : {(DATA_WIDTH){1'b0}});
+// FIX (see ../../../RTL_FIFO_첫_데이터_오류_설명과_수정.md 7.2): same class of
+// bug as noc_FIFO_interface_on_fire.v - stale r_read_signal was prioritized
+// over a live write request, so the first write beat after a read->write
+// transition wrongly latched i_read_data_L1 instead of i_write_data. Current
+// write request must win over leftover read state.
+assign w_input_data_data = (i_write_valid) ? i_write_data : ((r_read_signal) ? i_read_data_L1 : {(DATA_WIDTH){1'b0}});
 assign w_output_ready_data = (r_read_signal) ? i_data_fifo_ready : ((r_write_signal) ? (w_output_valid_addr && w_output_valid_data) : 1'b0);
 
 // Mux Logic - Memory Intf

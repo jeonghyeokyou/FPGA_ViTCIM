@@ -129,7 +129,12 @@ assign w_output_ready_addr = (r_read_signal) ? i_FIFO_read_ready_S : ((r_write_s
 
 // Mux Logic - Data FIFO
 assign w_input_valid_data = (i_control_mode == 1'b0) ? (i_read_ready_S || i_write_valid_M) : 1'b0;
-assign w_input_data_data = (r_read_signal) ? i_read_data_S : ((i_write_valid_M) ? i_write_data_M : {(DATA_WIDTH){1'b0}});
+// FIX (see ../../../RTL_FIFO_첫_데이터_오류_설명과_수정.md 7.1): the original
+// prioritized the stale r_read_signal over a live write request, so the first
+// write beat after a read->write transition wrongly latched i_read_data_S
+// into the data FIFO instead of i_write_data_M. Current write request must
+// win over leftover read state.
+assign w_input_data_data = (i_write_valid_M) ? i_write_data_M : ((r_read_signal) ? i_read_data_S : {(DATA_WIDTH){1'b0}});
 assign w_output_ready_data = (r_read_signal) ? i_data_fifo_ready_M : ((r_write_signal) ? (w_output_valid_addr && w_output_valid_data && i_FIFO_write_ready_S) : 1'b0);
 
 // Mux Logic - FIFO Slave Intf
