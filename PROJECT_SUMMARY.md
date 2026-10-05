@@ -29,6 +29,8 @@
 3. 사용자는 RTL 검증과 Vivado를 처음 배우는 중이다. 결과만 주지 말고 **왜 그렇게 되는지 단계별로
    설명**하는 것을 원한다. 대화는 한국어로 한다.
 4. git 커밋은 작업 단위로 하고 GitHub에 push한다.
+5. 이 저장소는 공동작업자(GitHub 아이디 `JUN4216`)와 함께 쓴다. `LHJ/` 폴더는 공동작업자의 작업 공간이다.
+   push하기 전에 항상 `git pull --rebase`로 상대 작업을 먼저 받는다. 강제 push는 하지 않는다.
 
 ---
 
@@ -72,6 +74,7 @@ L2_verification/
 ├─ share/
 │   ├─ l2_noc_fpga_rtl/    공동작업자 공유용: RTL 48개 + files.f + README (단독으로 컴파일 확인됨)
 │   └─ l2_noc_fpga_rtl.zip
+├─ LHJ/                    공동작업자(JUN4216)가 9/29에 올린 PS↔L2 연결 작업 (6.5절)
 ├─ RTL_FIFO_첫_데이터_오류_설명과_수정.md   버그 #6 원인 분석 (공동작업자가 작성)
 └─ PROJECT_SUMMARY.md      (이 문서)
 ```
@@ -238,6 +241,35 @@ pop 타이밍 문제)은 틀렸다.
   - 리셋: AM13
   - 클럭: AL8 / AL7
 
+### 6.5 공동작업자 작업: PS ↔ L2 ch0 (`LHJ/`, 2026-09-29)
+
+공동작업자가 PS(ARM)에서 AXI4로 L2 내부 SRAM을 직접 읽고 쓰는 경로를 구현했다. 7절에서 말하는 "방법 B"를
+**NOC 없이 L2만 대상으로** 구현한 것이다. 이 경로는 NOC FIFO를 지나지 않으므로 버그 #6과는 관계없다.
+
+```
+PS (HPM0) 또는 AXI CDMA ──AXI4──▶ axi4_l2_ch0_bridge ──▶ TOP_L2_cache의 ch0
+```
+
+| 파일 | 역할 |
+|---|---|
+| `l2_ps_pl_top.sv` | 최상위. 브리지와 `TOP_L2_cache`를 묶는다. 기본값 8/16/256으로 256 KiB, ch0 주소 폭 15비트 |
+| `axi4_l2_ch0_bridge.sv` | 완전한 AXI4 슬레이브 신호를 L2 ch0의 간소화된 신호로 바꾼다. 3.1절에서 말한 "ch0은 완전한 AXI4가 아니다" 문제를 해결하는 변환 회로(shim)다 |
+| `l2_ps_pl_bd_wrapper.v` | Vivado Block Design에 모듈로 넣기 위한 Verilog-2001 래퍼. 배선만 하고 AXI 인터페이스 정보를 붙인다 |
+| `ram_mimic_fpga_bram.sv` | 극성 수정본(버그 #1)과 같고, `ram_style`만 `"block"`으로 바꿨다. UltraRAM이 없는 ZU9EG에 맞춘 것 |
+| `l2_fpga_test` | 내용이 "ABC"뿐인 테스트용 파일. 의미 없음 |
+
+`axi4_l2_ch0_bridge.sv`가 지원하는 범위 (파일 헤더 주석 기준):
+- 데이터 폭 64비트 또는 128비트
+- 워드 단위로 정렬된 INCR 버스트(1~256 beat), FIXED는 1 beat만
+- 쓰기 시 `WSTRB`가 모두 1이어야 한다. 바이트 단위 부분 쓰기(read-modify-write)는 지원하지 않는다
+- 잘못된 요청에는 `SLVERR`로 응답하고, 리셋할 때까지 오류 상태를 유지한다
+- 대기열은 2칸, 동시에 처리 중인 요청은 1개
+- 상위 주소 해석은 SmartConnect가 맡는다. Vivado Address Editor의 range를 L2 메모리 크기(256 KiB)와 같게 잡아야 한다
+
+`LHJ/`의 L2 RTL 33개는 `rtl/L2_260901/`과 **완전히 같다** (2026-10-05에 diff로 확인).
+
+**이 프로젝트 쪽에서는 아직 이 코드를 시뮬레이션하거나 합성하지 않았다.**
+
 ---
 
 ## 7. 앞으로 할 일
@@ -249,11 +281,14 @@ pop 타이밍 문제)은 틀렸다.
 3. **NOC 설계자(윤현준)에게 버그 #6 전달**
 4. **공동작업자에게 공유본 다시 전달**: 9/18에 보낸 zip에는 버그 #6이 남아 있다. 현재 `share/`는 최신 상태다.
 5. **실보드 올리기**: Clocking Wizard IP 생성 → top을 `zcu102_wrapper`로 변경 → bitstream 생성 → JTAG로 프로그래밍
-6. **PS(ARM) 연결 — 방향만 논의함**
-   - 방법 A: BIST 자리에 AXI4-Lite 레지스터 모듈(`axi_lite_l2_ctrl`)을 넣어 PS가 명령을 보내게 한다.
-     레지스터 예: CMD_LO/CMD_HI, CTRL(valid 펄스), STATUS(ready, busy), MISMATCH
-   - 방법 B: A에 더해 ch0을 열어서 PS가 L2 SRAM에 데이터를 직접 쓰고 읽게 한다. ch0이 완전한 AXI4가 아니므로 변환 회로(shim)가 필요하다.
-   - 추천은 A를 먼저 하는 것이다. PS가 STORE와 LOAD 사이 간격을 조절할 수 있게 되므로 타이밍 실험도 할 수 있다.
+6. **PS(ARM) 연결**
+   - 방법 B의 L2 부분(PS가 ch0으로 L2 SRAM에 데이터를 직접 읽고 쓰기)은 **공동작업자가 구현했다** (6.5절).
+     남은 일은 이 코드를 시뮬레이션하고 실보드에서 확인하는 것이다.
+   - 방법 A는 아직 안 했다. BIST 자리에 AXI4-Lite 레지스터 모듈(`axi_lite_l2_ctrl`)을 넣어 PS가 명령을
+     보내게 하는 것이다. 레지스터 예: CMD_LO/CMD_HI, CTRL(valid 펄스), STATUS(ready, busy), MISMATCH.
+     A를 하면 PS가 STORE와 LOAD 사이 간격을 조절할 수 있어서 타이밍 실험도 할 수 있다.
+   - 최종적으로는 공동작업자의 ch0 경로(데이터 입력)와 방법 A(명령 입력), 그리고 NOC를 하나의 top으로 합쳐야
+     "PS가 데이터를 넣고 → 명령으로 NOC와 주고받고 → 다시 읽어 확인"하는 전체 시험이 가능하다.
 7. **아직 검증 안 한 범위**
    - handshake 모드 (`control_mode` = 01, 11)
    - resize 명령
