@@ -1,0 +1,6 @@
+# Blackbox sim / synth run directories (regenerate with scripts/*.bat, build_synth_bb.tcl)
+scripts/work_*/
+scripts/build_bb/console.txt
+scripts/build_bb/*.dcp
+scripts/.Xil/
+scripts/clockInfo.txt

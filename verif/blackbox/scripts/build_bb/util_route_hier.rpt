@@ -1,0 +1,43 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date         : Tue Oct  6 13:50:21 2026
+| Host         : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -hierarchical_depth 3 -file C:/RTL_YJH/L2_verification/verif/blackbox/scripts/build_bb/util_route_hier.rpt
+| Design       : l2_noc_bb_bd_wrapper
+| Device       : xczu9eg-ffvb1156-2-e
+| Speed File   : -2
+| Design State : Routed
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++--------------------------------------+------------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|               Instance               |            Module            | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++--------------------------------------+------------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| l2_noc_bb_bd_wrapper                 |                        (top) |      88006 |      82302 |    5704 |    0 | 63415 |    298 |      6 |    0 |          0 |
+|   (l2_noc_bb_bd_wrapper)             |                        (top) |          0 |          0 |       0 |    0 |     0 |      0 |      0 |    0 |          0 |
+|   u_top                              |                l2_noc_bb_top |      88006 |      82302 |    5704 |    0 | 63415 |    298 |      6 |    0 |          0 |
+|     u_bb                             |                  blackbox_pe |        889 |        889 |       0 |    0 |   305 |     14 |      2 |    0 |          0 |
+|     u_bridge                         |           axi4_l2_ch0_bridge |        184 |        144 |      40 |    0 |    70 |      0 |      0 |    0 |          0 |
+|     u_ctrl                           |                axi_lite_ctrl |        468 |        468 |       0 |    0 |   775 |      0 |      0 |    0 |          0 |
+|     u_l2                             |                 TOP_L2_cache |      81690 |      76634 |    5056 |    0 | 59033 |    256 |      0 |    0 |          0 |
+|       u_CMD_dispatcher               |               CMD_dispatcher |       1133 |       1133 |       0 |    0 |  3380 |      0 |      0 |    0 |          0 |
+|       u_cmd_decoder_SRAM_group_merge | cmd_decoder_SRAM_group_merge |      80176 |      75120 |    5056 |    0 | 54572 |    256 |      0 |    0 |          0 |
+|       u_sramctrl_channel_0           |           sramctrl_channel_0 |        382 |        382 |       0 |    0 |  1081 |      0 |      0 |    0 |          0 |
+|     u_noc                            |                 FIFO_intf_bb |       4778 |       4170 |     608 |    0 |  3232 |     28 |      4 |    0 |          0 |
+|       (u_noc)                        |                 FIFO_intf_bb |          1 |          1 |       0 |    0 |     0 |      0 |      0 |    0 |          0 |
+|       UFIFO_interface                |           noc_FIFO_interface |       2158 |       1854 |     304 |    0 |  1079 |      0 |      0 |    0 |          0 |
+|       UL1_FIFO_intf                  |             noc_L1_FIFO_intf |       2447 |       2143 |     304 |    0 |  2153 |      0 |      0 |    0 |          0 |
+|       u_l1_sram                      |                      l1_sram |        173 |        173 |       0 |    0 |     0 |     28 |      4 |    0 |          0 |
++--------------------------------------+------------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

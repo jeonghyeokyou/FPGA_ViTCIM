@@ -1,0 +1,47 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date         : Tue Oct  6 13:51:23 2026
+| Host         : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command      : report_drc -file C:/RTL_YJH/L2_verification/verif/blackbox/scripts/build_bb/drc.rpt
+| Design       : l2_noc_bb_bd_wrapper
+| Device       : xczu9eg-ffvb1156-2-e
+| Speed File   : -2
+| Design State : Fully Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: l2_noc_bb_bd_wrapper
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 1
++-----------+----------+-------------------+--------+
+| Rule      | Severity | Description       | Checks |
++-----------+----------+-------------------+--------+
+| RTSTAT-10 | Warning  | No routable loads | 1      |
++-----------+----------+-------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+RTSTAT-10#1 Warning
+No routable loads  
+122 net(s) have no routable loads. The problem bus(es) and/or net(s) are u_top/u_bridge/s_axi_arready, u_top/u_bridge/s_axi_awready,
+u_top/u_bridge/s_axi_bid[15:0], u_top/u_bridge/s_axi_bresp[0],
+u_top/u_bridge/s_axi_bvalid, u_top/u_bridge/s_axi_rdata[63:0],
+u_top/u_bridge/s_axi_rresp[0], u_top/u_bridge/s_axi_rvalid,
+u_top/u_bridge/s_axi_wready, u_top/u_ctrl/s_axil_arready,
+u_top/u_ctrl/s_axil_awready, u_top/u_ctrl/s_axil_rdata[31:0]
+u_top/u_ctrl/s_axil_wready.
+Related violations: <none>
+
+
