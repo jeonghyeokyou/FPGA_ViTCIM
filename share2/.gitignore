@@ -1,0 +1,5 @@
+scripts/work_*/
+scripts/build_bb/*.dcp
+scripts/build_bb/console.txt
+scripts/.Xil/
+scripts/clockInfo.txt

@@ -1,0 +1,355 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="1130" viewBox="0 0 1720 1130" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpmMDJkMjg1NS04MjhiLTRhY2EtOTQzZi05NjA2ZjhmODQyNTkAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaJGpse7Chy+TRmIMLTvwnCcAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo0ZTBiZGRlZC0wMDhmLTRlOGEtYjc5My02NGQwMzc4NDk1YTZscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNo+IKTV7wn3OJQ0nL6J+hISAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggdVzzeru4cUFHB95G/jGOkiOyUq/ODDZxanX7w8n2DB6kZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaMzeIpz1h/remsBxKPe4H/YAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCC/mp7krluq/QnLUgsI9t0ALWDBsD8cMxMkbFAfuJwKY2RuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiaZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmYwMmQyODU1LTgyOGItNGFjYS05NDNmLTk2MDZmOGY4NDI1OS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjMxOGZhZWE1LTg5YjItNDgzYi1hNDMyLWEyMTk3YTEzMDQ1MHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCB1XPN6u7hxQUcH3kb+MY6SI7JSr84MNnFqdfvDyfYMHqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggU2QfFTucIkCvOj8btDpzao8iieUlntcXoXzUxmPJzNCiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggXrDhAtC9/gZL30hf/ijJz/IZpEjU4UruXkBkOCwyYOt0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQEAH5N6dqRrlDkYPoA3uyvw0mAg8cExuOxtth/+48oaDHr9AFwKi5LWeos9WwEDwVaLjPs7SbgPJJABDMs1JDT8=</c2pa:manifest></metadata>
+<defs><marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#333"/></marker><marker id="ahs" markerWidth="9" markerHeight="9" refX="1" refY="4.5" orient="auto"><path d="M9,0 L0,4.5 L9,9 z" fill="#333"/></marker></defs>
+<rect width="1720" height="1130" fill="#ffffff"/>
+<text x="20" y="32" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="20" font-weight="bold" fill="#222" text-anchor="start">PS ↔ L2 ch0 연결 구조 (LHJ/, 2026-10-05 pull 기준)</text>
+<text x="20" y="54" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="13" font-weight="normal" fill="#444" text-anchor="start">기본 파라미터: DATA_WIDTH=64, ADDR_WIDTH=40, ID_WIDTH=16, GROUPS=8, BLOCKS=16, ADDRESS_ROW=256 → L2 256 KiB</text>
+<rect x="1080" y="14" width="26" height="14" rx="2" fill="#eef2f7" stroke="#667" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="1112" y="26" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="start">Block Design (저장소에 없음, 추정)</text>
+<rect x="1330" y="14" width="26" height="14" rx="2" fill="#fff4e5" stroke="#d9822b" stroke-width="1.2"/>
+<text x="1362" y="26" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="start">LHJ 신규 RTL</text>
+<rect x="1460" y="14" width="26" height="14" rx="2" fill="#e8f1fb" stroke="#2f6db3" stroke-width="1.2"/>
+<text x="1492" y="26" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="start">L2 원본 RTL</text>
+<rect x="1580" y="14" width="26" height="14" rx="2" fill="#f2f2f2" stroke="#9a9a9a" stroke-width="1.2"/>
+<text x="1612" y="26" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="start">미사용 (tie-off)</text>
+<text x="1080" y="48" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="1094" y="48" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="start">PS → PL (입력)</text>
+<text x="1210" y="48" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="1224" y="48" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="start">PL → PS (출력)</text>
+<text x="1340" y="48" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#444" text-anchor="start">숫자 = 비트 폭</text>
+<rect x="20" y="120" width="180" height="420" rx="6" fill="#eef2f7" stroke="#667" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="110" y="145" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Zynq UltraScale+</text>
+<text x="110" y="163" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="13" font-weight="normal" fill="#222" text-anchor="middle">PS (ARM A53)</text>
+<rect x="35" y="190" width="150" height="92" rx="4" fill="#fff" stroke="#667" stroke-width="1.2" stroke-dasharray="4,3"/>
+<text x="110" y="210" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">M_AXI_HPM0_FPD</text>
+<text x="110" y="228" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">AXI4 master</text>
+<text x="110" y="245" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">addr 40b · ID 16b</text>
+<text x="110" y="262" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">data 128b (기본) / 64b</text>
+<text x="110" y="276" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="middle">※ 또는 AXI CDMA</text>
+<rect x="35" y="300" width="150" height="60" rx="4" fill="#fff" stroke="#667" stroke-width="1.2" stroke-dasharray="4,3"/>
+<text x="110" y="322" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">pl_clk0</text>
+<text x="110" y="340" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">pl_resetn0 (active-low)</text>
+<rect x="35" y="378" width="150" height="70" rx="4" fill="#fff" stroke="#667" stroke-width="1.2" stroke-dasharray="4,3"/>
+<text x="110" y="398" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">PS C 프로그램</text>
+<text x="110" y="416" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">write → readback 비교</text>
+<text x="110" y="432" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="middle">(현준 PC, 미공유)</text>
+<rect x="235" y="190" width="170" height="170" rx="6" fill="#eef2f7" stroke="#667" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="320" y="214" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">AXI SmartConnect</text>
+<text x="320" y="238" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">상위 주소 decode</text>
+<text x="320" y="254" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">addr[39:18] → 이 slave 선택</text>
+<text x="320" y="278" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">데이터 폭 변환</text>
+<text x="320" y="294" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#222" text-anchor="middle">128b → 64b (HPM0이 128b일 때)</text>
+<text x="320" y="318" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">Address Editor range</text>
+<text x="320" y="334" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">= 256 KiB (base 자유)</text>
+<line x1="185" y1="236" x2="233" y2="236" stroke="#333" stroke-width="1.5" marker-end="url(#ah)" marker-start="url(#ahs)"/>
+<text x="209" y="230" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#222" text-anchor="middle">AXI4</text>
+<rect x="430" y="76" width="1270" height="860" rx="6" fill="#fcfcfc" stroke="#555" stroke-width="1.5"/>
+<text x="442" y="96" font-family="Consolas, 'D2Coding', monospace" font-size="13" font-weight="bold" fill="#222" text-anchor="start">l2_ps_pl_bd_wrapper.v</text>
+<text x="640" y="96" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#444" text-anchor="start">Verilog-2001 껍데기 · X_INTERFACE_INFO로 S_AXI 인식 · 순수 배선 (레지스터 없음)</text>
+<rect x="445" y="106" width="1240" height="815" rx="6" fill="#ffffff" stroke="#777" stroke-width="1.2"/>
+<text x="457" y="124" font-family="Consolas, 'D2Coding', monospace" font-size="13" font-weight="bold" fill="#222" text-anchor="start">l2_ps_pl_top.sv</text>
+<text x="590" y="124" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#444" text-anchor="start">CH0_ADDR_WIDTH = clog2(8) + clog2(16×256) = 3 + 12 = 15</text>
+<line x1="407" y1="300" x2="452" y2="300" stroke="#333" stroke-width="3" marker-end="url(#ah)" marker-start="url(#ahs)"/>
+<text x="426" y="290" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9.5" font-weight="bold" fill="#222" text-anchor="end">S_AXI</text>
+<text x="462" y="150" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#555" text-anchor="start">AW  쓰기 주소</text>
+<text x="462" y="167" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="167" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_awid [15:0]</text>
+<text x="660" y="167" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">16</text>
+<text x="462" y="184" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="184" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_awaddr [39:0]</text>
+<text x="660" y="184" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">40</text>
+<text x="462" y="201" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="201" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_awlen [7:0]</text>
+<text x="660" y="201" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">8</text>
+<text x="462" y="218" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="218" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_awsize [2:0]</text>
+<text x="660" y="218" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">3</text>
+<text x="462" y="235" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="235" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_awburst [1:0]</text>
+<text x="660" y="235" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">2</text>
+<text x="462" y="252" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="252" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_awlock</text>
+<text x="660" y="252" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1</text>
+<text x="462" y="269" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="269" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">awcache/prot/qos 4/3/4</text>
+<text x="460" y="286" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="468" y="286" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="286" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">awvalid / awready</text>
+<text x="660" y="286" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<text x="948" y="167" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="167" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_awaddr [14:0]</text>
+<text x="1110" y="167" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">15</text>
+<text x="948" y="184" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="184" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_awlen [7:0]</text>
+<text x="1110" y="184" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">8</text>
+<text x="946" y="201" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="954" y="201" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="966" y="201" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">awvalid / awready</text>
+<text x="1110" y="201" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<line x1="455" y1="299" x2="1115" y2="299" stroke="#e3e3e3" stroke-width="1"/>
+<text x="462" y="312" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#555" text-anchor="start">W   쓰기 데이터</text>
+<text x="462" y="329" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="329" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_wdata [63:0]</text>
+<text x="660" y="329" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">64</text>
+<text x="462" y="346" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="346" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_wstrb [7:0]</text>
+<text x="660" y="346" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">8</text>
+<text x="462" y="363" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="363" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_wlast</text>
+<text x="660" y="363" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1</text>
+<text x="460" y="380" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="468" y="380" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="380" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">wvalid / wready</text>
+<text x="660" y="380" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<text x="948" y="329" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="329" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_wdata [63:0]</text>
+<text x="1110" y="329" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">64</text>
+<text x="948" y="346" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="346" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_wlast</text>
+<text x="1110" y="346" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1</text>
+<text x="946" y="363" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="954" y="363" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="966" y="363" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">wvalid / wready</text>
+<text x="1110" y="363" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<line x1="455" y1="393" x2="1115" y2="393" stroke="#e3e3e3" stroke-width="1"/>
+<text x="462" y="406" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#555" text-anchor="start">B   쓰기 응답</text>
+<text x="462" y="423" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="423" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_bid [15:0]</text>
+<text x="660" y="423" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">16</text>
+<text x="462" y="440" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="440" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_bresp [1:0]</text>
+<text x="660" y="440" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">2</text>
+<text x="460" y="457" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="468" y="457" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="457" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">bvalid / bready</text>
+<text x="660" y="457" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<text x="946" y="423" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="954" y="423" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="423" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">bvalid / bready</text>
+<text x="1110" y="423" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<text x="966" y="440" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#888" text-anchor="start" font-style="italic">(ID·RESP 없음)</text>
+<line x1="455" y1="470" x2="1115" y2="470" stroke="#e3e3e3" stroke-width="1"/>
+<text x="462" y="483" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#555" text-anchor="start">AR  읽기 주소</text>
+<text x="462" y="500" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="500" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_arid [15:0]</text>
+<text x="660" y="500" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">16</text>
+<text x="462" y="517" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="517" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_araddr [39:0]</text>
+<text x="660" y="517" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">40</text>
+<text x="462" y="534" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="534" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_arlen [7:0]</text>
+<text x="660" y="534" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">8</text>
+<text x="462" y="551" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="551" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_arsize [2:0]</text>
+<text x="660" y="551" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">3</text>
+<text x="462" y="568" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="568" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_arburst [1:0]</text>
+<text x="660" y="568" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">2</text>
+<text x="462" y="585" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="585" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_arlock</text>
+<text x="660" y="585" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1</text>
+<text x="462" y="602" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="602" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">arcache/prot/qos 4/3/4</text>
+<text x="460" y="619" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="468" y="619" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="619" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">arvalid / arready</text>
+<text x="660" y="619" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<text x="948" y="500" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="500" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_araddr [14:0]</text>
+<text x="1110" y="500" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">15</text>
+<text x="948" y="517" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="517" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_arlen [7:0]</text>
+<text x="1110" y="517" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">8</text>
+<text x="946" y="534" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="954" y="534" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="966" y="534" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">arvalid / arready</text>
+<text x="1110" y="534" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<line x1="455" y1="632" x2="1115" y2="632" stroke="#e3e3e3" stroke-width="1"/>
+<text x="462" y="645" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#555" text-anchor="start">R   읽기 데이터</text>
+<text x="462" y="662" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="662" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_rid [15:0]</text>
+<text x="660" y="662" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">16</text>
+<text x="462" y="679" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="679" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_rdata [63:0]</text>
+<text x="660" y="679" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">64</text>
+<text x="462" y="696" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="696" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_rresp [1:0]</text>
+<text x="660" y="696" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">2</text>
+<text x="462" y="713" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="480" y="713" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">s_axi_rlast</text>
+<text x="660" y="713" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1</text>
+<text x="460" y="730" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="468" y="730" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="480" y="730" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">rvalid / rready</text>
+<text x="660" y="730" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<text x="948" y="662" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="966" y="662" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_rdata [63:0]</text>
+<text x="1110" y="662" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">64</text>
+<text x="948" y="679" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="966" y="679" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">ch_rlast</text>
+<text x="1110" y="679" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1</text>
+<text x="946" y="696" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#b3261e" text-anchor="start">◀</text>
+<text x="954" y="696" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9" font-weight="normal" fill="#1d7a3a" text-anchor="start">▶</text>
+<text x="966" y="696" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="normal" fill="#222" text-anchor="start">rvalid / rready</text>
+<text x="1110" y="696" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="end">1/1</text>
+<line x1="455" y1="743" x2="1115" y2="743" stroke="#e3e3e3" stroke-width="1"/>
+<text x="462" y="762" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#666" text-anchor="start">※ AxCACHE/PROT/QOS: 무시</text>
+<text x="944" y="142" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9.5" font-weight="normal" fill="#666" text-anchor="start">→ TOP 포트명: i_/o_*_channel_0</text>
+<rect x="680" y="136" width="250" height="730" rx="6" fill="#fff4e5" stroke="#d9822b" stroke-width="2"/>
+<text x="805.0" y="158" font-family="Consolas, 'D2Coding', monospace" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">axi4_l2_ch0_bridge.sv</text>
+<text x="805.0" y="175" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">완전한 AXI4 slave → 간소화된 ch0</text>
+<rect x="692" y="188" width="226" height="120" rx="4" fill="#ffffff" stroke="#d9822b" stroke-width="1"/>
+<text x="702" y="205" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="start">① req_ok 검사 (AW/AR 수락 시)</text>
+<text x="702" y="222" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">· 주소 8B 정렬, AxSIZE = 3 (8B)</text>
+<text x="702" y="237" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">· AxLOCK = 0</text>
+<text x="702" y="252" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">· INCR 1~256 beat / FIXED 1 beat</text>
+<text x="702" y="267" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">· 끝 주소 &lt; 256 KiB</text>
+<text x="702" y="282" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">· 4 KB 경계를 넘지 않음</text>
+<rect x="692" y="316" width="226" height="92" rx="4" fill="#ffffff" stroke="#d9822b" stroke-width="1"/>
+<text x="702" y="333" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="start">② 주소 변환</text>
+<text x="702" y="350" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">axaddr[17:3] → ch_axaddr[14:0]</text>
+<text x="702" y="365" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">axaddr[2:0] = 000 (요구)</text>
+<text x="702" y="380" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">axaddr[39:18] 무시 (SmartConnect 몫)</text>
+<text x="702" y="395" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">axlen[7:0] → ch_axlen[7:0] 그대로</text>
+<rect x="692" y="416" width="226" height="104" rx="4" fill="#ffffff" stroke="#d9822b" stroke-width="1"/>
+<text x="702" y="433" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="start">③ FSM (요청 1개씩)</text>
+<text x="702" y="450" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">IDLE → WR → WB      (쓰기)</text>
+<text x="702" y="465" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">IDLE → RA → RD      (읽기)</text>
+<text x="702" y="480" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">WDRAIN / WERR / RERR (오류)</text>
+<text x="702" y="495" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">IDLE에서 R/W 우선순위 매 클럭 교대</text>
+<text x="702" y="510" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">outstanding: R 1 / W 1</text>
+<rect x="692" y="528" width="226" height="88" rx="4" fill="#ffffff" stroke="#d9822b" stroke-width="1"/>
+<text x="702" y="545" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="start">④ W 대기열 2-entry × 65b</text>
+<text x="702" y="562" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">{wlast, wdata[63:0]}</text>
+<text x="702" y="577" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">used &lt; 2 이면 WREADY = 1</text>
+<text x="702" y="592" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">WSTRB ≠ 8'hFF 또는 WLAST 위치</text>
+<text x="702" y="607" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">오류 → 그 beat부터 L2로 안 보냄</text>
+<rect x="692" y="624" width="226" height="104" rx="4" fill="#ffffff" stroke="#d9822b" stroke-width="1"/>
+<text x="702" y="641" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="start">⑤ 응답 생성</text>
+<text x="702" y="658" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">BID / RID ← 저장한 AxID 그대로</text>
+<text x="702" y="673" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">BRESP/RRESP: 00 OKAY, 10 SLVERR</text>
+<text x="702" y="688" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">B: ch_bvalid 받으면 BVALID</text>
+<text x="702" y="703" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">RLAST: bridge 내부 카운터 기준</text>
+<text x="702" y="718" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">ch_rlast 위치 불일치 → SLVERR</text>
+<rect x="692" y="736" width="226" height="72" rx="4" fill="#ffffff" stroke="#d9822b" stroke-width="1"/>
+<text x="702" y="753" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="start">⑥ fault 래치</text>
+<text x="702" y="770" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">잘못된 쓰기 이후 리셋까지</text>
+<text x="702" y="785" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">모든 요청 SLVERR (L2 접근 안 함)</text>
+<text x="702" y="800" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">timeout 없음</text>
+<line x1="668" y1="226.5" x2="678" y2="226.5" stroke="#333" stroke-width="2.5"/>
+<line x1="932" y1="226.5" x2="944" y2="226.5" stroke="#333" stroke-width="2.5"/>
+<line x1="668" y1="354.5" x2="678" y2="354.5" stroke="#333" stroke-width="2.5"/>
+<line x1="932" y1="354.5" x2="944" y2="354.5" stroke="#333" stroke-width="2.5"/>
+<line x1="668" y1="440.0" x2="678" y2="440.0" stroke="#333" stroke-width="2.5"/>
+<line x1="932" y1="440.0" x2="944" y2="440.0" stroke="#333" stroke-width="2.5"/>
+<line x1="668" y1="559.5" x2="678" y2="559.5" stroke="#333" stroke-width="2.5"/>
+<line x1="932" y1="559.5" x2="944" y2="559.5" stroke="#333" stroke-width="2.5"/>
+<line x1="668" y1="696.0" x2="678" y2="696.0" stroke="#333" stroke-width="2.5"/>
+<line x1="932" y1="696.0" x2="944" y2="696.0" stroke="#333" stroke-width="2.5"/>
+<rect x="1125" y="136" width="548" height="740" rx="6" fill="#e8f1fb" stroke="#2f6db3" stroke-width="2"/>
+<text x="1139" y="158" font-family="Consolas, 'D2Coding', monospace" font-size="13" font-weight="bold" fill="#222" text-anchor="start">TOP_L2_cache.sv</text>
+<text x="1265" y="158" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#333" text-anchor="start">BANDWIDTH_CHANNEL_0 = 64 · i_clk ← aclk · i_rstb ← aresetn</text>
+<line x1="1112" y1="226.5" x2="1143" y2="226.5" stroke="#333" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="1112" y1="354.5" x2="1143" y2="354.5" stroke="#333" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="1112" y1="440.0" x2="1143" y2="440.0" stroke="#333" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="1112" y1="559.5" x2="1143" y2="559.5" stroke="#333" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="1112" y1="696.0" x2="1143" y2="696.0" stroke="#333" stroke-width="2.5" marker-end="url(#ah)"/>
+<rect x="1145" y="172" width="180" height="470" rx="5" fill="#ffffff" stroke="#2f6db3" stroke-width="1.5"/>
+<text x="1235.0" y="190" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">sramctrl_channel_0</text>
+<text x="1235.0" y="206" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">MOR_DEPTH = 4</text>
+<rect x="1155" y="220" width="160" height="150" rx="4" fill="#e8f1fb" stroke="#2f6db3" stroke-width="1"/>
+<text x="1235.0" y="240" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="middle">sram_write_ctrl_axi</text>
+<text x="1235.0" y="258" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">AW / W / B</text>
+<text x="1235.0" y="276" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">burst → 1 word씩 SRAM 쓰기</text>
+<text x="1235.0" y="292" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">o_write_busy</text>
+<rect x="1155" y="422" width="160" height="150" rx="4" fill="#e8f1fb" stroke="#2f6db3" stroke-width="1"/>
+<text x="1235.0" y="442" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="middle">sram_read_ctrl_axi</text>
+<text x="1235.0" y="460" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">AR / R</text>
+<text x="1235.0" y="478" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">burst → 1 word씩 SRAM 읽기</text>
+<text x="1235.0" y="494" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">o_read_busy</text>
+<text x="1235.0" y="394" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="bold" fill="#2f6db3" text-anchor="middle">읽기·쓰기 상호 배제</text>
+<text x="1235.0" y="410" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="9.5" font-weight="normal" fill="#222" text-anchor="middle">(한쪽 busy면 다른 쪽 valid 차단)</text>
+<text x="1235.0" y="602" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="bold" fill="#222" text-anchor="middle">SRAM I/F (ch0)</text>
+<text x="1235.0" y="618" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="middle">addr 15b · data 64b</text>
+<line x1="1331" y1="250" x2="1423" y2="250" stroke="#333" stroke-width="2" marker-end="url(#ah)"/>
+<text x="1335" y="236" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">write addr 15</text>
+<text x="1335" y="246" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">write data 64</text>
+<text x="1335" y="266" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">valid / ready</text>
+<line x1="1331" y1="470" x2="1423" y2="470" stroke="#333" stroke-width="2" marker-start="url(#ahs)"/>
+<text x="1335" y="446" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">read addr 15</text>
+<text x="1335" y="458" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">+ valid/ready</text>
+<text x="1335" y="486" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">read data 64</text>
+<text x="1335" y="498" font-family="Consolas, 'D2Coding', monospace" font-size="9.5" font-weight="normal" fill="#222" text-anchor="start">+ valid/ready</text>
+<line x1="1377" y1="476" x2="1377" y2="476" stroke="#333" stroke-width="1.5"/>
+<rect x="1427" y="172" width="232" height="470" rx="5" fill="#ffffff" stroke="#2f6db3" stroke-width="1.5"/>
+<text x="1543.0" y="190" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#222" text-anchor="middle">cmd_decoder_SRAM_group_merge</text>
+<rect x="1437" y="202" width="212" height="108" rx="4" fill="#e8f1fb" stroke="#2f6db3" stroke-width="1"/>
+<text x="1543.0" y="220" font-family="Consolas, 'D2Coding', monospace" font-size="10" font-weight="bold" fill="#222" text-anchor="middle">SRAM_group_interface_channel_0</text>
+<text x="1447" y="238" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">Stage 1: 1→2   addr[14]</text>
+<text x="1447" y="254" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">Stage 2: 1→4   addr[13:12]</text>
+<text x="1447" y="272" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">= 8 groups, 각 FIFO_DEPTH 4</text>
+<text x="1447" y="290" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">그룹당: addr 12b · data 64b</text>
+<text x="1447" y="304" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="start">(group 번호 = addr[14:12])</text>
+<line x1="1543.0" y1="312" x2="1543.0" y2="332" stroke="#333" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="1549.0" y="326" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="bold" fill="#222" text-anchor="start">×8</text>
+<rect x="1452" y="319" width="202" height="250" rx="4" fill="#ffffff" stroke="#2f6db3" stroke-width="1"/>
+<rect x="1447" y="324" width="202" height="250" rx="4" fill="#ffffff" stroke="#2f6db3" stroke-width="1"/>
+<rect x="1442" y="329" width="202" height="250" rx="4" fill="#ffffff" stroke="#2f6db3" stroke-width="1"/>
+<rect x="1437" y="334" width="202" height="250" rx="4" fill="#ffffff" stroke="#2f6db3" stroke-width="1.2"/>
+<text x="1445" y="352" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="bold" fill="#222" text-anchor="start">SRAM_group_merge  (그룹 ×8)</text>
+<text x="1445" y="370" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">L2_FIFO_interface_wrapper</text>
+<text x="1445" y="384" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#222" text-anchor="start">5채널 중 하나 선택 (ch0만 활성)</text>
+<line x1="1533.0" y1="390" x2="1533.0" y2="404" stroke="#333" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="1445" y="420" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="bold" fill="#222" text-anchor="start">SRAM_group_decoder</text>
+<text x="1445" y="436" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">block 선택 addr[11:8] (4b)</text>
+<text x="1445" y="450" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">row       addr[7:0]  (8b)</text>
+<text x="1445" y="464" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#222" text-anchor="start">ceb / web active-low</text>
+<line x1="1533.0" y1="470" x2="1533.0" y2="484" stroke="#333" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="1445" y="488" width="186" height="86" rx="4" fill="#e8f1fb" stroke="#2f6db3" stroke-width="1"/>
+<text x="1453" y="506" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="bold" fill="#222" text-anchor="start">SRAM_group</text>
+<text x="1453" y="522" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">ram_mimic ×16 (blocks)</text>
+<text x="1453" y="538" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">각 64b × 256 rows = 2 KiB</text>
+<text x="1453" y="554" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#222" text-anchor="start">ram_style = "block" (BRAM)</text>
+<text x="1453" y="568" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="bold" fill="#222" text-anchor="start">그룹 = 32 KiB → 8그룹 256 KiB</text>
+<text x="1543.0" y="604" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="middle">ram_mimic_fpga_bram.sv 사용</text>
+<text x="1543.0" y="620" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="middle">(버그 #1 수정본, active-low)</text>
+<rect x="1145" y="656" width="508" height="206" rx="5" fill="#f2f2f2" stroke="#9a9a9a" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="1157" y="676" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10.5" font-weight="bold" fill="#555" text-anchor="start">미사용 포트 (l2_ps_pl_top에서 tie-off) — CMD_dispatcher·ch1/ch2 decoder는 있으나 idle</text>
+<text x="1157" y="700" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#666" text-anchor="start">명령</text>
+<text x="1230" y="700" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#666" text-anchor="start">i_command [63:0] ← 0,  i_command_valid ← 0,  o_command_ready → open</text>
+<text x="1157" y="725" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#666" text-anchor="start">ch1_in</text>
+<text x="1230" y="725" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#666" text-anchor="start">data 512b · addr 19b   입력 ← 0 / 출력 open   (NOC ↔ L1 쪽)</text>
+<text x="1157" y="750" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#666" text-anchor="start">ch1_wgt</text>
+<text x="1230" y="750" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#666" text-anchor="start">data 256b · addr 18b   입력 ← 0 / 출력 open</text>
+<text x="1157" y="775" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#666" text-anchor="start">ch2_in</text>
+<text x="1230" y="775" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#666" text-anchor="start">data 256b · write addr 15b · read addr 32b   입력 ← 0 / 출력 open</text>
+<text x="1157" y="800" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#666" text-anchor="start">ch2_wgt</text>
+<text x="1230" y="800" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#666" text-anchor="start">data 256b · addr 9b (write 경로만)   입력 ← 0 / 출력 open</text>
+<text x="1157" y="825" font-family="Consolas, 'D2Coding', monospace" font-size="11" font-weight="bold" fill="#666" text-anchor="start">busy</text>
+<text x="1230" y="825" font-family="Consolas, 'D2Coding', monospace" font-size="10.5" font-weight="normal" fill="#666" text-anchor="start">o_busy_channel_1_in / 2_in / 1_wgt / 2_wgt → open</text>
+<line x1="185" y1="330" x2="215" y2="330" stroke="#555" stroke-width="1.5"/>
+<line x1="215" y1="330" x2="215" y2="900" stroke="#555" stroke-width="1.5"/>
+<line x1="215" y1="900" x2="1400" y2="900" stroke="#555" stroke-width="1.5"/>
+<text x="460" y="915" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#333" text-anchor="start">aclk ← pl_clk0 ,  aresetn ← pl_resetn0  (단일 클럭 도메인, CDC 없음)</text>
+<line x1="805" y1="900" x2="805" y2="870" stroke="#555" stroke-width="1.5" marker-end="url(#ah)"/>
+<line x1="1400" y1="900" x2="1400" y2="870" stroke="#555" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="812" y="892" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="start">bridge: aclk / aresetn (async reset)</text>
+<text x="1392" y="892" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="10" font-weight="normal" fill="#555" text-anchor="end">L2: i_clk / i_rstb</text>
+<text x="20" y="952" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="14" font-weight="bold" fill="#222" text-anchor="start">PS 주소 → L2 위치 (64b 구성, 256 KiB)</text>
+<rect x="20" y="960" width="470.40000000000003" height="56" rx="0" fill="#eef2f7" stroke="#555" stroke-width="1"/>
+<text x="255.20000000000002" y="982" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">addr [39:18]</text>
+<text x="255.20000000000002" y="1002" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">SmartConnect가 decode (base)</text>
+<rect x="490.40000000000003" y="960" width="201.60000000000002" height="56" rx="0" fill="#d6e6f8" stroke="#555" stroke-width="1"/>
+<text x="591.2" y="982" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">addr [17:15]</text>
+<text x="591.2" y="1002" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">group (3b) → 8 groups</text>
+<rect x="692.0" y="960" width="268.8" height="56" rx="0" fill="#c3dbf5" stroke="#555" stroke-width="1"/>
+<text x="826.4" y="982" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">addr [14:11]</text>
+<text x="826.4" y="1002" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">block (4b) → 16 ram_mimic</text>
+<rect x="960.8" y="960" width="537.6" height="56" rx="0" fill="#b0d0f2" stroke="#555" stroke-width="1"/>
+<text x="1229.6" y="982" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">addr [10:3]</text>
+<text x="1229.6" y="1002" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">row (8b) → 256 rows</text>
+<rect x="1498.4" y="960" width="201.60000000000002" height="56" rx="0" fill="#f6e3c8" stroke="#555" stroke-width="1"/>
+<text x="1599.2" y="982" font-family="Consolas, 'D2Coding', monospace" font-size="12" font-weight="bold" fill="#222" text-anchor="middle">addr [2:0]</text>
+<text x="1599.2" y="1002" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">= 000 (8B 정렬)</text>
+<text x="20" y="1040" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#333" text-anchor="start">ch0 워드 주소 = PS addr[17:3] (15b) = {group[2:0], block[3:0], row[7:0]}.  group은 MSB 쪽이라 주소가 끊김 없이 이어짐 → 버스트가 그룹 경계를 넘어도 OK (단, AXI 4 KB 경계는 넘으면 안 됨).</text>
+<text x="20" y="1060" font-family="'Malgun Gothic', 'Noto Sans KR', Arial, sans-serif" font-size="11" font-weight="normal" fill="#666" text-anchor="start">DATA_WIDTH=128로 바꾸면: 워드 16B, PS addr[18:4] 사용, L2 512 KiB, wdata/rdata 128b, wstrb 16b.</text>
+</svg>
