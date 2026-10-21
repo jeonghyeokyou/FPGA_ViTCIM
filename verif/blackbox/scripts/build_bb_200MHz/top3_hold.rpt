@@ -1,0 +1,29 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date              : Tue Oct 20 10:41:14 2026
+| Host              : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command           : report_timing -max_paths 3 -nworst 1 -unique_pins -hold -path_type summary -file C:/RTL_YJH/L2_verification/verif/blackbox/scripts/build_bb_200MHz/top3_hold.rpt
+| Design            : l2_noc_bb_bd_wrapper
+| Device            : xczu9eg-ffvb1156
+| Speed File        : -2  PRODUCTION 1.30 05-15-2022
+| Design State      : Physopt postRoute
+| Temperature Grade : E
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Startpoint                     Endpoint                       Slack(ns)     
+----------------------------------------------------------------------------
+u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[282]/C
+                               u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[282]/D
+                                                              0.021         
+u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[349]/C
+                               u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[349]/D
+                                                              0.021         
+u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[467]/C
+                               u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[467]/D
+                                                              0.021         
+
+
+

@@ -1,0 +1,29 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date              : Tue Oct 20 11:01:48 2026
+| Host              : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command           : report_timing -max_paths 3 -nworst 1 -unique_pins -hold -path_type summary -file C:/RTL_YJH/L2_verification/verif/blackbox/scripts/build_bb_200MHz_u150/top3_hold.rpt
+| Design            : l2_noc_bb_bd_wrapper
+| Device            : xczu9eg-ffvb1156
+| Speed File        : -2  PRODUCTION 1.30 05-15-2022
+| Design State      : Physopt postRoute
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Startpoint                     Endpoint                       Slack(ns)     
+----------------------------------------------------------------------------
+u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_0/UL2_FIFO_interface_on_fire/UFIFO_DATA/wr_ptr_reg[2]/C
+                               u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_0/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_42_55/RAMA/WADR2
+                                                              0.011         
+u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_0/UL2_FIFO_interface_on_fire/UFIFO_DATA/wr_ptr_reg[2]/C
+                               u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_0/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_42_55/RAMA_D1/WADR2
+                                                              0.011         
+u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_0/UL2_FIFO_interface_on_fire/UFIFO_DATA/wr_ptr_reg[2]/C
+                               u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_0/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_42_55/RAMB/WADR2
+                                                              0.011         
+
+
+

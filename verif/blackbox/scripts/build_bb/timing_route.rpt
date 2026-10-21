@@ -1,13 +1,13 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date              : Tue Oct  6 13:51:06 2026
+| Date              : Tue Oct 20 11:18:20 2026
 | Host              : DESKTOP-A606M51 running 64-bit major release  (build 9200)
 | Command           : report_timing_summary -max_paths 10 -file C:/RTL_YJH/L2_verification/verif/blackbox/scripts/build_bb/timing_route.rpt
 | Design            : l2_noc_bb_bd_wrapper
 | Device            : xczu9eg-ffvb1156
 | Speed File        : -2  PRODUCTION 1.30 05-15-2022
-| Design State      : Routed
+| Design State      : Physopt postRoute
 | Temperature Grade : E
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ Table of Contents
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
 4. checking unconstrained_internal_endpoints (0)
-5. checking no_input_delay (232)
+5. checking no_input_delay (234)
 6. checking no_output_delay (141)
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
@@ -85,9 +85,9 @@ Table of Contents
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
 
-5. checking no_input_delay (232)
+5. checking no_input_delay (234)
 --------------------------------
- There are 232 input ports with no input delay specified. (HIGH)
+ There are 234 input ports with no input delay specified. (HIGH)
 
  There are 0 input ports with no input delay but user has a false path constraint.
 
@@ -139,7 +139,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      1.280        0.000                      0               191161        0.019        0.000                      0               191161        4.458        0.000                       0                 75143  
+      2.126        0.000                      0               179777        0.019        0.000                      0               179777        4.458        0.000                       0                 70238  
 
 
 All user specified timing constraints are met.
@@ -162,7 +162,7 @@ aclk   {0.000 5.000}      10.000          100.000
 
 Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-aclk                1.280        0.000                      0               191161        0.019        0.000                      0               191161        4.458        0.000                       0                 75143  
+aclk                2.126        0.000                      0               179777        0.019        0.000                      0               179777        4.458        0.000                       0                 70238  
 
 
 ------------------------------------------------------------------------------------------------
@@ -193,7 +193,7 @@ Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing 
 From Clock:  aclk
   To Clock:  aclk
 
-Setup :            0  Failing Endpoints,  Worst Slack        1.280ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        2.126ns,  Total Violation        0.000ns
 Hold  :            0  Failing Endpoints,  Worst Slack        0.019ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        4.458ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
@@ -201,19 +201,19 @@ PW    :            0  Failing Endpoints,  Worst Slack        4.458ns,  Total Vio
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             1.280ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+Slack (MET) :             2.126ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_control_mode_reg[0]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_56_69/RAMA/I
+  Destination:            u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69/RAME_D1/I
                             (rising edge-triggered cell RAMD32 clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.642ns  (logic 0.361ns (4.177%)  route 8.281ns (95.823%))
-  Logic Levels:           3  (LUT3=1 LUT4=1 LUT5=1)
-  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+  Data Path Delay:        7.774ns  (logic 0.277ns (3.563%)  route 7.497ns (96.437%))
+  Logic Levels:           2  (LUT4=1 LUT5=1)
+  Clock Path Skew:        0.014ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    0.043ns = ( 10.043 - 10.000 ) 
-    Source Clock Delay      (SCD):    0.030ns
+    Source Clock Delay      (SCD):    0.029ns
     Clock Pessimism Removal (CPR):    0.000ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -225,48 +225,98 @@ Slack (MET) :             1.280ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+                         net (fo=70242, unset)        0.029     0.029    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/aclk
+    SLICE_X83Y360        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_control_mode_reg[0]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.788     8.422    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/r_read_signal_reg_rep__0_4
-    SLICE_X45Y168        LUT4 (Prop_H6LUT_SLICEL_I1_O)
-                                                      0.036     8.458 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/mem_reg_0_15_56_69_i_2__11/O
-                         net (fo=1, routed)           0.214     8.672    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_56_69/DIA0
-    SLICE_X46Y167        RAMD32                                       r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_56_69/RAMA/I
+    SLICE_X83Y360        FDCE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_control_mode_reg[0]/Q
+                         net (fo=555, routed)         6.946     7.054    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/r_write_data_L1_reg[0]_0[0]
+    SLICE_X69Y174        LUT4 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.097     7.151 r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/r_write_data_L1[65]_i_1__0/O
+                         net (fo=2, routed)           0.104     7.255    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/r_control_mode_reg[0][65]
+    SLICE_X70Y174        LUT5 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.101     7.356 r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69_i_9__0/O
+                         net (fo=1, routed)           0.447     7.803    u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69/DIE1
+    SLICE_X70Y170        RAMD32                                       r  u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69/RAME_D1/I
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)      10.000    10.000 r  
                                                       0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.043    10.043    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_56_69/WCLK
-    SLICE_X46Y167        RAMD32                                       r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_56_69/RAMA/CLK
+                         net (fo=70242, unset)        0.043    10.043    u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69/WCLK
+    SLICE_X70Y170        RAMD32                                       r  u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69/RAME_D1/CLK
                          clock pessimism              0.000    10.043    
                          clock uncertainty           -0.035    10.008    
-    SLICE_X46Y167        RAMD32 (Setup_A5LUT_SLICEM_CLK_I)
-                                                     -0.056     9.952    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_56_69/RAMA
+    SLICE_X70Y170        RAMD32 (Setup_E6LUT_SLICEM_CLK_I)
+                                                     -0.079     9.929    u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_56_69/RAME_D1
+  -------------------------------------------------------------------
+                         required time                          9.929    
+                         arrival time                          -7.803    
+  -------------------------------------------------------------------
+                         slack                                  2.126    
+
+Slack (MET) :             2.174ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_control_mode_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55/RAMB/I
+                            (rising edge-triggered cell RAMD32 clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
+  Data Path Delay:        7.748ns  (logic 0.355ns (4.582%)  route 7.393ns (95.418%))
+  Logic Levels:           2  (LUT4=1 LUT5=1)
+  Clock Path Skew:        0.014ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 10.043 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.029     0.029    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/aclk
+    SLICE_X83Y360        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_control_mode_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X83Y360        FDCE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_control_mode_reg[0]/Q
+                         net (fo=555, routed)         6.940     7.048    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/r_write_data_L1_reg[0]_0[0]
+    SLICE_X77Y173        LUT4 (Prop_E6LUT_SLICEM_I1_O)
+                                                      0.124     7.172 r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/r_write_data_L1[44]_i_1__0/O
+                         net (fo=2, routed)           0.120     7.292    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/r_control_mode_reg[0][44]
+    SLICE_X77Y173        LUT5 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.152     7.444 r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55_i_4__0/O
+                         net (fo=1, routed)           0.333     7.777    u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55/DIB0
+    SLICE_X76Y172        RAMD32                                       r  u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)      10.000    10.000 r  
+                                                      0.000    10.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.043    10.043    u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55/WCLK
+    SLICE_X76Y172        RAMD32                                       r  u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55/RAMB/CLK
+                         clock pessimism              0.000    10.043    
+                         clock uncertainty           -0.035    10.008    
+    SLICE_X76Y172        RAMD32 (Setup_B5LUT_SLICEM_CLK_I)
+                                                     -0.056     9.952    u_top/u_noc_w/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_7_42_55/RAMB
   -------------------------------------------------------------------
                          required time                          9.952    
-                         arrival time                          -8.672    
+                         arrival time                          -7.777    
   -------------------------------------------------------------------
-                         slack                                  1.280    
+                         slack                                  2.174    
 
-Slack (MET) :             1.298ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+Slack (MET) :             2.213ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[148]/CE
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][230]/CE
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.597ns  (logic 0.325ns (3.781%)  route 8.272ns (96.219%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
+  Data Path Delay:        7.681ns  (logic 0.167ns (2.174%)  route 7.514ns (97.826%))
+  Logic Levels:           1  (LUT6=1)
   Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    0.020ns = ( 10.020 - 10.000 ) 
     Source Clock Delay      (SCD):    0.030ns
@@ -281,98 +331,42 @@ Slack (MET) :             1.298ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.992     8.627    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X42Y163        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[148]/CE
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.907     7.711    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X45Y183        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][230]/CE
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)      10.000    10.000 r  
                                                       0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.020    10.020    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X42Y163        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[148]/C
+                         net (fo=70242, unset)        0.020    10.020    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X45Y183        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][230]/C
                          clock pessimism              0.000    10.020    
                          clock uncertainty           -0.035     9.985    
-    SLICE_X42Y163        FDCE (Setup_HFF2_SLICEL_C_CE)
-                                                     -0.060     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[148]
+    SLICE_X45Y183        FDCE (Setup_AFF_SLICEL_C_CE)
+                                                     -0.060     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][230]
   -------------------------------------------------------------------
                          required time                          9.925    
-                         arrival time                          -8.627    
+                         arrival time                          -7.711    
   -------------------------------------------------------------------
-                         slack                                  1.298    
+                         slack                                  2.213    
 
-Slack (MET) :             1.298ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+Slack (MET) :             2.237ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[151]/CE
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][212]/CE
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.597ns  (logic 0.325ns (3.781%)  route 8.272ns (96.219%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
-  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.020ns = ( 10.020 - 10.000 ) 
-    Source Clock Delay      (SCD):    0.030ns
-    Clock Pessimism Removal (CPR):    0.000ns
-  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter     (TSJ):    0.071ns
-    Total Input Jitter      (TIJ):    0.000ns
-    Discrete Jitter          (DJ):    0.000ns
-    Phase Error              (PE):    0.000ns
-
-    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
-  -------------------------------------------------------------------    -------------------
-                         (clock aclk rise edge)       0.000     0.000 r  
-                                                      0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-  -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.992     8.627    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X42Y163        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[151]/CE
-  -------------------------------------------------------------------    -------------------
-
-                         (clock aclk rise edge)      10.000    10.000 r  
-                                                      0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.020    10.020    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X42Y163        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[151]/C
-                         clock pessimism              0.000    10.020    
-                         clock uncertainty           -0.035     9.985    
-    SLICE_X42Y163        FDCE (Setup_GFF2_SLICEL_C_CE)
-                                                     -0.060     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[151]
-  -------------------------------------------------------------------
-                         required time                          9.925    
-                         arrival time                          -8.627    
-  -------------------------------------------------------------------
-                         slack                                  1.298    
-
-Slack (MET) :             1.370ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[102]/CE
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Path Group:             aclk
-  Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.524ns  (logic 0.325ns (3.813%)  route 8.199ns (96.187%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
+  Data Path Delay:        7.657ns  (logic 0.167ns (2.181%)  route 7.490ns (97.819%))
+  Logic Levels:           1  (LUT6=1)
   Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
     Source Clock Delay      (SCD):    0.030ns
@@ -387,45 +381,42 @@ Slack (MET) :             1.370ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.920     8.554    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X41Y169        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[102]/CE
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.883     7.687    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X55Y182        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][212]/CE
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)      10.000    10.000 r  
                                                       0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X41Y169        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[102]/C
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X55Y182        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][212]/C
                          clock pessimism              0.000    10.021    
                          clock uncertainty           -0.035     9.986    
-    SLICE_X41Y169        FDCE (Setup_HFF_SLICEM_C_CE)
-                                                     -0.061     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[102]
+    SLICE_X55Y182        FDCE (Setup_HFF2_SLICEM_C_CE)
+                                                     -0.061     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][212]
   -------------------------------------------------------------------
                          required time                          9.925    
-                         arrival time                          -8.554    
+                         arrival time                          -7.687    
   -------------------------------------------------------------------
-                         slack                                  1.370    
+                         slack                                  2.237    
 
-Slack (MET) :             1.370ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+Slack (MET) :             2.237ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[104]/CE
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][52]/CE
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.524ns  (logic 0.325ns (3.813%)  route 8.199ns (96.187%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
+  Data Path Delay:        7.657ns  (logic 0.167ns (2.181%)  route 7.490ns (97.819%))
+  Logic Levels:           1  (LUT6=1)
   Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
     Source Clock Delay      (SCD):    0.030ns
@@ -440,47 +431,44 @@ Slack (MET) :             1.370ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.920     8.554    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X41Y169        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[104]/CE
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.883     7.687    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X55Y182        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][52]/CE
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)      10.000    10.000 r  
                                                       0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X41Y169        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[104]/C
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X55Y182        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][52]/C
                          clock pessimism              0.000    10.021    
                          clock uncertainty           -0.035     9.986    
-    SLICE_X41Y169        FDCE (Setup_GFF_SLICEM_C_CE)
-                                                     -0.061     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[104]
+    SLICE_X55Y182        FDCE (Setup_GFF2_SLICEM_C_CE)
+                                                     -0.061     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][52]
   -------------------------------------------------------------------
                          required time                          9.925    
-                         arrival time                          -8.554    
+                         arrival time                          -7.687    
   -------------------------------------------------------------------
-                         slack                                  1.370    
+                         slack                                  2.237    
 
-Slack (MET) :             1.398ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+Slack (MET) :             2.238ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[106]/CE
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][18]/CE
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.496ns  (logic 0.325ns (3.825%)  route 8.171ns (96.175%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
-  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.020ns = ( 10.020 - 10.000 ) 
+  Data Path Delay:        7.658ns  (logic 0.167ns (2.181%)  route 7.491ns (97.819%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
     Source Clock Delay      (SCD):    0.030ns
     Clock Pessimism Removal (CPR):    0.000ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
@@ -493,47 +481,194 @@ Slack (MET) :             1.398ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.892     8.526    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X42Y170        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[106]/CE
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.884     7.688    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X55Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][18]/CE
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)      10.000    10.000 r  
                                                       0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.020    10.020    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X42Y170        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[106]/C
-                         clock pessimism              0.000    10.020    
-                         clock uncertainty           -0.035     9.985    
-    SLICE_X42Y170        FDCE (Setup_HFF2_SLICEL_C_CE)
-                                                     -0.060     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[106]
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X55Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][18]/C
+                         clock pessimism              0.000    10.021    
+                         clock uncertainty           -0.035     9.986    
+    SLICE_X55Y174        FDCE (Setup_DFF2_SLICEM_C_CE)
+                                                     -0.060     9.926    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][18]
+  -------------------------------------------------------------------
+                         required time                          9.926    
+                         arrival time                          -7.688    
+  -------------------------------------------------------------------
+                         slack                                  2.238    
+
+Slack (MET) :             2.238ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][22]/CE
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
+  Data Path Delay:        7.658ns  (logic 0.167ns (2.181%)  route 7.491ns (97.819%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.884     7.688    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X55Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][22]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)      10.000    10.000 r  
+                                                      0.000    10.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X55Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][22]/C
+                         clock pessimism              0.000    10.021    
+                         clock uncertainty           -0.035     9.986    
+    SLICE_X55Y174        FDCE (Setup_CFF2_SLICEM_C_CE)
+                                                     -0.060     9.926    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][22]
+  -------------------------------------------------------------------
+                         required time                          9.926    
+                         arrival time                          -7.688    
+  -------------------------------------------------------------------
+                         slack                                  2.238    
+
+Slack (MET) :             2.238ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][24]/CE
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
+  Data Path Delay:        7.658ns  (logic 0.167ns (2.181%)  route 7.491ns (97.819%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.884     7.688    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X55Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][24]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)      10.000    10.000 r  
+                                                      0.000    10.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X55Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][24]/C
+                         clock pessimism              0.000    10.021    
+                         clock uncertainty           -0.035     9.986    
+    SLICE_X55Y174        FDCE (Setup_BFF2_SLICEM_C_CE)
+                                                     -0.060     9.926    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][24]
+  -------------------------------------------------------------------
+                         required time                          9.926    
+                         arrival time                          -7.688    
+  -------------------------------------------------------------------
+                         slack                                  2.238    
+
+Slack (MET) :             2.260ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][32]/CE
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
+  Data Path Delay:        7.635ns  (logic 0.167ns (2.187%)  route 7.468ns (97.813%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.861     7.665    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X44Y181        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][32]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)      10.000    10.000 r  
+                                                      0.000    10.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X44Y181        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][32]/C
+                         clock pessimism              0.000    10.021    
+                         clock uncertainty           -0.035     9.986    
+    SLICE_X44Y181        FDCE (Setup_HFF_SLICEM_C_CE)
+                                                     -0.061     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][32]
   -------------------------------------------------------------------
                          required time                          9.925    
-                         arrival time                          -8.526    
+                         arrival time                          -7.665    
   -------------------------------------------------------------------
-                         slack                                  1.398    
+                         slack                                  2.260    
 
-Slack (MET) :             1.398ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+Slack (MET) :             2.260ns  (required time - arrival time)
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[99]/CE
+  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][40]/CE
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.496ns  (logic 0.325ns (3.825%)  route 8.171ns (96.175%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
-  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.020ns = ( 10.020 - 10.000 ) 
+  Data Path Delay:        7.635ns  (logic 0.167ns (2.187%)  route 7.468ns (97.813%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 10.021 - 10.000 ) 
     Source Clock Delay      (SCD):    0.030ns
     Clock Pessimism Removal (CPR):    0.000ns
   Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
@@ -546,199 +681,31 @@ Slack (MET) :             1.398ns  (required time - arrival time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
+                         net (fo=70242, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
+    SLICE_X85Y359        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.892     8.526    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X42Y170        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[99]/CE
+    SLICE_X85Y359        FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_valid_reg/Q
+                         net (fo=13, routed)          0.607     0.715    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/r_fifo_noc_read_valid_reg_3
+    SLICE_X75Y361        LUT6 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089     0.804 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1/O
+                         net (fo=256, routed)         6.861     7.665    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem[2][255]_i_1__1_n_0
+    SLICE_X44Y181        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][40]/CE
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)      10.000    10.000 r  
                                                       0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.020    10.020    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X42Y170        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[99]/C
-                         clock pessimism              0.000    10.020    
-                         clock uncertainty           -0.035     9.985    
-    SLICE_X42Y170        FDCE (Setup_GFF2_SLICEL_C_CE)
-                                                     -0.060     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[99]
+                         net (fo=70242, unset)        0.021    10.021    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/aclk
+    SLICE_X44Y181        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][40]/C
+                         clock pessimism              0.000    10.021    
+                         clock uncertainty           -0.035     9.986    
+    SLICE_X44Y181        FDCE (Setup_GFF_SLICEM_C_CE)
+                                                     -0.061     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/u_FIFO_noc_read_data/mem_reg[2][40]
   -------------------------------------------------------------------
                          required time                          9.925    
-                         arrival time                          -8.526    
+                         arrival time                          -7.665    
   -------------------------------------------------------------------
-                         slack                                  1.398    
-
-Slack (MET) :             1.416ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[84]/CE
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Path Group:             aclk
-  Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.479ns  (logic 0.325ns (3.833%)  route 8.154ns (96.167%))
-  Logic Levels:           2  (LUT3=1 LUT5=1)
-  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.020ns = ( 10.020 - 10.000 ) 
-    Source Clock Delay      (SCD):    0.030ns
-    Clock Pessimism Removal (CPR):    0.000ns
-  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter     (TSJ):    0.071ns
-    Total Input Jitter      (TIJ):    0.000ns
-    Discrete Jitter          (DJ):    0.000ns
-    Phase Error              (PE):    0.000ns
-
-    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
-  -------------------------------------------------------------------    -------------------
-                         (clock aclk rise edge)       0.000     0.000 r  
-                                                      0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-  -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.874     8.509    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/w_write_valid_channel_2_in[0]
-    SLICE_X39Y169        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[84]/CE
-  -------------------------------------------------------------------    -------------------
-
-                         (clock aclk rise edge)      10.000    10.000 r  
-                                                      0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.020    10.020    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X39Y169        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[84]/C
-                         clock pessimism              0.000    10.020    
-                         clock uncertainty           -0.035     9.985    
-    SLICE_X39Y169        FDCE (Setup_HFF_SLICEL_C_CE)
-                                                     -0.060     9.925    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_write_data_L2_reg[84]
-  -------------------------------------------------------------------
-                         required time                          9.925    
-                         arrival time                          -8.509    
-  -------------------------------------------------------------------
-                         slack                                  1.416    
-
-Slack (MET) :             1.417ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_98_111/RAMA/I
-                            (rising edge-triggered cell RAMD32 clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Path Group:             aclk
-  Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.505ns  (logic 0.362ns (4.256%)  route 8.143ns (95.744%))
-  Logic Levels:           3  (LUT3=1 LUT4=1 LUT5=1)
-  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.043ns = ( 10.043 - 10.000 ) 
-    Source Clock Delay      (SCD):    0.030ns
-    Clock Pessimism Removal (CPR):    0.000ns
-  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter     (TSJ):    0.071ns
-    Total Input Jitter      (TIJ):    0.000ns
-    Discrete Jitter          (DJ):    0.000ns
-    Phase Error              (PE):    0.000ns
-
-    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
-  -------------------------------------------------------------------    -------------------
-                         (clock aclk rise edge)       0.000     0.000 r  
-                                                      0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-  -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.641     8.275    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/r_read_signal_reg_rep__0_4
-    SLICE_X41Y167        LUT4 (Prop_F6LUT_SLICEM_I1_O)
-                                                      0.037     8.312 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/mem_reg_0_15_98_111_i_2__11/O
-                         net (fo=1, routed)           0.223     8.535    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_98_111/DIA0
-    SLICE_X41Y168        RAMD32                                       r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_98_111/RAMA/I
-  -------------------------------------------------------------------    -------------------
-
-                         (clock aclk rise edge)      10.000    10.000 r  
-                                                      0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.043    10.043    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_98_111/WCLK
-    SLICE_X41Y168        RAMD32                                       r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_98_111/RAMA/CLK
-                         clock pessimism              0.000    10.043    
-                         clock uncertainty           -0.035    10.008    
-    SLICE_X41Y168        RAMD32 (Setup_A5LUT_SLICEM_CLK_I)
-                                                     -0.056     9.952    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_98_111/RAMA
-  -------------------------------------------------------------------
-                         required time                          9.952    
-                         arrival time                          -8.535    
-  -------------------------------------------------------------------
-                         slack                                  1.417    
-
-Slack (MET) :             1.424ns  (required time - arrival time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_70_83/RAMB_D1/I
-                            (rising edge-triggered cell RAMD32 clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Path Group:             aclk
-  Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            10.000ns  (aclk rise@10.000ns - aclk rise@0.000ns)
-  Data Path Delay:        8.474ns  (logic 0.415ns (4.897%)  route 8.059ns (95.103%))
-  Logic Levels:           3  (LUT3=1 LUT4=1 LUT5=1)
-  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    0.043ns = ( 10.043 - 10.000 ) 
-    Source Clock Delay      (SCD):    0.030ns
-    Clock Pessimism Removal (CPR):    0.000ns
-  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter     (TSJ):    0.071ns
-    Total Input Jitter      (TIJ):    0.000ns
-    Discrete Jitter          (DJ):    0.000ns
-    Phase Error              (PE):    0.000ns
-
-    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
-  -------------------------------------------------------------------    -------------------
-                         (clock aclk rise edge)       0.000     0.000 r  
-                                                      0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.030     0.030    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/aclk
-    SLICE_X13Y380        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/C
-  -------------------------------------------------------------------    -------------------
-    SLICE_X13Y380        FDCE (Prop_AFF_SLICEM_C_Q)
-                                                      0.077     0.107 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_control_mode_reg[0]/Q
-                         net (fo=8201, routed)        2.940     3.047    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/Q[0]
-    SLICE_X78Y342        LUT3 (Prop_H6LUT_SLICEL_I2_O)
-                                                      0.150     3.197 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/i___3059_i_1__0/O
-                         net (fo=53, routed)          0.340     3.536    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2_n_1933
-    SLICE_X79Y359        LUT5 (Prop_F6LUT_SLICEM_I3_O)
-                                                      0.098     3.634 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___3596/O
-                         net (fo=544, routed)         4.307     7.941    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/r_read_signal_reg_rep__0_4
-    SLICE_X39Y179        LUT4 (Prop_H6LUT_SLICEL_I1_O)
-                                                      0.090     8.031 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/BLOCK[1].u_cmd_decoder_SRAM_group_interface_stage_2/u_FIFO_interface/UFIFO_interface_handshake/mem_reg_0_15_70_83_i_3__11/O
-                         net (fo=1, routed)           0.473     8.504    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_70_83/DIB1
-    SLICE_X46Y170        RAMD32                                       r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_70_83/RAMB_D1/I
-  -------------------------------------------------------------------    -------------------
-
-                         (clock aclk rise edge)      10.000    10.000 r  
-                                                      0.000    10.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.043    10.043    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_70_83/WCLK
-    SLICE_X46Y170        RAMD32                                       r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_70_83/RAMB_D1/CLK
-                         clock pessimism              0.000    10.043    
-                         clock uncertainty           -0.035    10.008    
-    SLICE_X46Y170        RAMD32 (Setup_B6LUT_SLICEM_CLK_I)
-                                                     -0.080     9.928    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[6].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_on_fire/UFIFO_DATA/mem_reg_0_15_70_83/RAMB_D1
-  -------------------------------------------------------------------
-                         required time                          9.928    
-                         arrival time                          -8.504    
-  -------------------------------------------------------------------
-                         slack                                  1.424    
+                         slack                                  2.260    
 
 
 
@@ -747,9 +714,9 @@ Slack (MET) :             1.424ns  (required time - arrival time)
 Min Delay Paths
 --------------------------------------------------------------------------------------
 Slack (MET) :             0.019ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/r_read_data_reg[251]/C
+  Source:                 u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[235]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[251]/D
+  Destination:            u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[235]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -765,22 +732,63 @@ Slack (MET) :             0.019ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/aclk
-    SLICE_X89Y271        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/r_read_data_reg[251]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_noc/UL1_FIFO_intf/Usram_controller/aclk
+    SLICE_X81Y277        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[235]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X89Y271        FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/r_read_data_reg[251]/Q
-                         net (fo=2, routed)           0.033     0.085    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[255]_1[251]
-    SLICE_X89Y271        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[251]/D
+    SLICE_X81Y277        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[235]/Q
+                         net (fo=2, routed)           0.033     0.085    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[511]_0[235]
+    SLICE_X81Y277        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[235]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X89Y271        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[251]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/aclk
+    SLICE_X81Y277        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[235]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X89Y271        FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[4].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[251]
+    SLICE_X81Y277        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[235]
+  -------------------------------------------------------------------
+                         required time                         -0.066    
+                         arrival time                           0.085    
+  -------------------------------------------------------------------
+                         slack                                  0.019    
+
+Slack (MET) :             0.019ns  (arrival time - required time)
+  Source:                 u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[69]/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[69]/D
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             aclk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (aclk rise@0.000ns - aclk rise@0.000ns)
+  Data Path Delay:        0.072ns  (logic 0.039ns (54.167%)  route 0.033ns (45.833%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.006ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.019ns
+    Source Clock Delay      (SCD):    0.013ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_noc/UL1_FIFO_intf/Usram_controller/aclk
+    SLICE_X80Y187        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[69]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X80Y187        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[69]/Q
+                         net (fo=2, routed)           0.033     0.085    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[511]_0[69]
+    SLICE_X80Y187        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[69]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/aclk
+    SLICE_X80Y187        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[69]/C
+                         clock pessimism              0.000     0.019    
+    SLICE_X80Y187        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[69]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.085    
@@ -788,9 +796,9 @@ Slack (MET) :             0.019ns  (arrival time - required time)
                          slack                                  0.019    
 
 Slack (MET) :             0.020ns  (arrival time - required time)
-  Source:                 u_top/u_ctrl/r_bb_out_reg[1]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[485]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_bb/r_out_base_reg[1]/D
+  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[485]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -806,22 +814,22 @@ Slack (MET) :             0.020ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_ctrl/aclk
-    SLICE_X2Y241         FDCE                                         r  u_top/u_ctrl/r_bb_out_reg[1]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
+    SLICE_X89Y269        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[485]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X2Y241         FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_ctrl/r_bb_out_reg[1]/Q
-                         net (fo=2, routed)           0.034     0.086    u_top/u_bb/r_out_len_reg[8]_0[1]
-    SLICE_X2Y241         FDCE                                         r  u_top/u_bb/r_out_base_reg[1]/D
+    SLICE_X89Y269        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[485]/Q
+                         net (fo=2, routed)           0.034     0.086    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[485]
+    SLICE_X89Y269        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[485]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_bb/aclk
-    SLICE_X2Y241         FDCE                                         r  u_top/u_bb/r_out_base_reg[1]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X89Y269        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[485]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X2Y241         FDCE (Hold_EFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_bb/r_out_base_reg[1]
+    SLICE_X89Y269        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[485]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.086    
@@ -829,9 +837,9 @@ Slack (MET) :             0.020ns  (arrival time - required time)
                          slack                                  0.020    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/r_read_data_reg[205]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[160]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[205]/D
+  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[160]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -847,22 +855,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/aclk
-    SLICE_X36Y325        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/r_read_data_reg[205]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
+    SLICE_X84Y224        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[160]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X36Y325        FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_sram_controller_channel_2_in/r_read_data_reg[205]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[255]_0[205]
-    SLICE_X36Y325        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[205]/D
+    SLICE_X84Y224        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[160]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[160]
+    SLICE_X84Y224        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[160]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/aclk
-    SLICE_X36Y325        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[205]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X84Y224        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[160]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X36Y325        FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_SRAM_group_merge/SRAM_GRP[2].u_L2_FIFO_interface_wrapper/u_L2_FIFO_interface_channel_2_in/UL2_FIFO_interface_handshake/r_read_data_reg[205]
+    SLICE_X84Y224        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[160]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -870,9 +878,9 @@ Slack (MET) :             0.021ns  (arrival time - required time)
                          slack                                  0.021    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[128]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[167]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[128]/D
+  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[167]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -888,22 +896,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X3Y258         FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[128]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
+    SLICE_X84Y225        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[167]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X3Y258         FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[128]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[128]
-    SLICE_X3Y258         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[128]/D
+    SLICE_X84Y225        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[167]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[167]
+    SLICE_X84Y225        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[167]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X3Y258         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[128]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X84Y225        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[167]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X3Y258         FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[128]
+    SLICE_X84Y225        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[167]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -911,9 +919,9 @@ Slack (MET) :             0.021ns  (arrival time - required time)
                          slack                                  0.021    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[143]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[189]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[143]/D
+  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[189]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -929,22 +937,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X9Y241         FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[143]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
+    SLICE_X81Y216        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[189]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X9Y241         FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[143]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[143]
-    SLICE_X9Y241         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[143]/D
+    SLICE_X81Y216        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[189]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[189]
+    SLICE_X81Y216        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[189]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X9Y241         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[143]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X81Y216        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[189]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X9Y241         FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[143]
+    SLICE_X81Y216        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[189]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -952,9 +960,9 @@ Slack (MET) :             0.021ns  (arrival time - required time)
                          slack                                  0.021    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[154]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[480]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[154]/D
+  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[480]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -970,22 +978,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X6Y222         FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[154]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
+    SLICE_X89Y266        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[480]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X6Y222         FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[154]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[154]
-    SLICE_X6Y222         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[154]/D
+    SLICE_X89Y266        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[480]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[480]
+    SLICE_X89Y266        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[480]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X6Y222         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[154]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X89Y266        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[480]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X6Y222         FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[154]
+    SLICE_X89Y266        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[480]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -993,9 +1001,9 @@ Slack (MET) :             0.021ns  (arrival time - required time)
                          slack                                  0.021    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[180]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_noc_write_data_reg[147]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[180]/D
+  Destination:            u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[147]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -1011,22 +1019,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X9Y233         FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[180]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/aclk
+    SLICE_X69Y304        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_noc_write_data_reg[147]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X9Y233         FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[180]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[180]
-    SLICE_X9Y233         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[180]/D
+    SLICE_X69Y304        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_noc_write_data_reg[147]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[255]_1[147]
+    SLICE_X69Y304        FDCE                                         r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[147]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X9Y233         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[180]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X69Y304        FDCE                                         r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[147]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X9Y233         FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[180]
+    SLICE_X69Y304        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[147]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -1034,9 +1042,9 @@ Slack (MET) :             0.021ns  (arrival time - required time)
                          slack                                  0.021    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[208]/C
+  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_noc_write_data_reg[90]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[208]/D
+  Destination:            u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[90]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
@@ -1052,22 +1060,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X12Y229        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[208]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/aclk
+    SLICE_X66Y174        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_noc_write_data_reg[90]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X12Y229        FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[208]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[208]
-    SLICE_X12Y229        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[208]/D
+    SLICE_X66Y174        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_wgt_wrapper/u_cmd_decoder_channel_1_wgt/r_noc_write_data_reg[90]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[255]_1[90]
+    SLICE_X66Y174        FDCE                                         r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[90]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X12Y229        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[208]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/aclk
+    SLICE_X66Y174        FDCE                                         r  u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[90]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X12Y229        FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[208]
+    SLICE_X66Y174        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc_w/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[90]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -1075,14 +1083,14 @@ Slack (MET) :             0.021ns  (arrival time - required time)
                          slack                                  0.021    
 
 Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[218]/C
+  Source:                 u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[165]/C
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[218]/D
+  Destination:            u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[165]/D
                             (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             aclk
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (aclk rise@0.000ns - aclk rise@0.000ns)
-  Data Path Delay:        0.074ns  (logic 0.039ns (52.811%)  route 0.035ns (47.189%))
+  Data Path Delay:        0.074ns  (logic 0.039ns (52.637%)  route 0.035ns (47.363%))
   Logic Levels:           0  
   Clock Path Skew:        0.006ns (DCD - SCD - CPR)
     Destination Clock Delay (DCD):    0.019ns
@@ -1093,63 +1101,22 @@ Slack (MET) :             0.021ns  (arrival time - required time)
   -------------------------------------------------------------------    -------------------
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X12Y245        FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[218]/C
+                         net (fo=70242, unset)        0.013     0.013    u_top/u_noc/UL1_FIFO_intf/Usram_controller/aclk
+    SLICE_X83Y224        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[165]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X12Y245        FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[218]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[218]
-    SLICE_X12Y245        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[218]/D
+    SLICE_X83Y224        FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_top/u_noc/UL1_FIFO_intf/Usram_controller/r_read_data_reg[165]/Q
+                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[511]_0[165]
+    SLICE_X83Y224        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[165]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock aclk rise edge)       0.000     0.000 r  
                                                       0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X12Y245        FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[218]/C
+                         net (fo=70242, unset)        0.019     0.019    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/aclk
+    SLICE_X83Y224        FDCE                                         r  u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[165]/C
                          clock pessimism              0.000     0.019    
-    SLICE_X12Y245        FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[218]
-  -------------------------------------------------------------------
-                         required time                         -0.066    
-                         arrival time                           0.087    
-  -------------------------------------------------------------------
-                         slack                                  0.021    
-
-Slack (MET) :             0.021ns  (arrival time - required time)
-  Source:                 u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[261]/C
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[261]/D
-                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Path Group:             aclk
-  Path Type:              Hold (Min at Fast Process Corner)
-  Requirement:            0.000ns  (aclk rise@0.000ns - aclk rise@0.000ns)
-  Data Path Delay:        0.074ns  (logic 0.039ns (52.811%)  route 0.035ns (47.189%))
-  Logic Levels:           0  
-  Clock Path Skew:        0.006ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    0.019ns
-    Source Clock Delay      (SCD):    0.013ns
-    Clock Pessimism Removal (CPR):    -0.000ns
-
-    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
-  -------------------------------------------------------------------    -------------------
-                         (clock aclk rise edge)       0.000     0.000 r  
-                                                      0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.013     0.013    u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/aclk
-    SLICE_X6Y285         FDCE                                         r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[261]/C
-  -------------------------------------------------------------------    -------------------
-    SLICE_X6Y285         FDCE (Prop_HFF_SLICEL_C_Q)
-                                                      0.039     0.052 r  u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_1_in_wrapper/u_cmd_decoder_channel_1_in/r_noc_write_data_reg[261]/Q
-                         net (fo=2, routed)           0.035     0.087    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[511]_1[261]
-    SLICE_X6Y285         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[261]/D
-  -------------------------------------------------------------------    -------------------
-
-                         (clock aclk rise edge)       0.000     0.000 r  
-                                                      0.000     0.000 r  aclk (IN)
-                         net (fo=75142, unset)        0.019     0.019    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/aclk
-    SLICE_X6Y285         FDCE                                         r  u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[261]/C
-                         clock pessimism              0.000     0.019    
-    SLICE_X6Y285         FDCE (Hold_HFF2_SLICEL_C_D)
-                                                      0.047     0.066    u_top/u_noc/UFIFO_interface/UFIFO_interface_handshake/r_write_data_S_reg[261]
+    SLICE_X83Y224        FDCE (Hold_HFF2_SLICEL_C_D)
+                                                      0.047     0.066    u_top/u_noc/UL1_FIFO_intf/UL1_FIFO_interface/UL1_FIFO_interface_handshake/r_read_data_reg[165]
   -------------------------------------------------------------------
                          required time                         -0.066    
                          arrival time                           0.087    
@@ -1167,37 +1134,37 @@ Waveform(ns):       { 0.000 5.000 }
 Period(ns):         10.000
 Sources:            { aclk }
 
-Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location      Pin
-Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
-Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
-Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
-Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
-Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y50  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
-Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y50  u_top/u_bb/exp_mem_reg_2/CLKBWRCLK
-Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y51  u_top/u_bb/exp_mem_reg_3/CLKARDCLK
-Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X0Y51  u_top/u_bb/exp_mem_reg_3/CLKBWRCLK
-Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X1Y50  u_top/u_bb/exp_mem_reg_4/CLKARDCLK
-Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X1Y50  u_top/u_bb/exp_mem_reg_4/CLKBWRCLK
-Low Pulse Width   Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
-Low Pulse Width   Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
-Low Pulse Width   Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
-Low Pulse Width   Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
-Low Pulse Width   Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
-Low Pulse Width   Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
-Low Pulse Width   Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
-Low Pulse Width   Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
-Low Pulse Width   Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y50  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
-Low Pulse Width   Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y50  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
-High Pulse Width  Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
-High Pulse Width  Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
-High Pulse Width  Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
-High Pulse Width  Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y47  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
-High Pulse Width  Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
-High Pulse Width  Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
-High Pulse Width  Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
-High Pulse Width  Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y48  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
-High Pulse Width  Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y50  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
-High Pulse Width  Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X0Y50  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
+Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location       Pin
+Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
+Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
+Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
+Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
+Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X11Y42  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
+Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X11Y42  u_top/u_bb/exp_mem_reg_2/CLKBWRCLK
+Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X11Y43  u_top/u_bb/exp_mem_reg_3/CLKARDCLK
+Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X11Y43  u_top/u_bb/exp_mem_reg_3/CLKBWRCLK
+Min Period        n/a     RAMB36E2/CLKARDCLK  n/a            1.569         10.000      8.431      RAMB36_X12Y42  u_top/u_bb/exp_mem_reg_4/CLKARDCLK
+Min Period        n/a     RAMB36E2/CLKBWRCLK  n/a            1.569         10.000      8.431      RAMB36_X12Y42  u_top/u_bb/exp_mem_reg_4/CLKBWRCLK
+Low Pulse Width   Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
+Low Pulse Width   Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
+Low Pulse Width   Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
+Low Pulse Width   Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
+Low Pulse Width   Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
+Low Pulse Width   Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
+Low Pulse Width   Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
+Low Pulse Width   Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
+Low Pulse Width   Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X11Y42  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
+Low Pulse Width   Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X11Y42  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
+High Pulse Width  Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
+High Pulse Width  Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKARDCLK
+High Pulse Width  Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
+High Pulse Width  Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X12Y36  u_top/u_bb/exp_mem_reg_0/CLKBWRCLK
+High Pulse Width  Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
+High Pulse Width  Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKARDCLK
+High Pulse Width  Slow    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
+High Pulse Width  Fast    RAMB36E2/CLKBWRCLK  n/a            0.542         5.000       4.458      RAMB36_X10Y35  u_top/u_bb/exp_mem_reg_1/CLKBWRCLK
+High Pulse Width  Slow    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X11Y42  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
+High Pulse Width  Fast    RAMB36E2/CLKARDCLK  n/a            0.542         5.000       4.458      RAMB36_X11Y42  u_top/u_bb/exp_mem_reg_2/CLKARDCLK
 
 
 

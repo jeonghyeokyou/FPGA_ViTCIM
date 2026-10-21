@@ -31,9 +31,9 @@ C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_SRAM_group_write_interface.
 C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_SRAM_group_interface.sv
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/fix/cmd_decoder_channel_1_in.sv
 C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_1_in_wrapper.sv
-C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_2_in.sv
+C:/RTL_YJH/L2_verification/verif/blackbox/rtl/fix/cmd_decoder_channel_2_in.sv
 C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_2_in_wrapper.sv
-C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_1_wgt.sv
+C:/RTL_YJH/L2_verification/verif/blackbox/rtl/fix/cmd_decoder_channel_1_wgt.sv
 C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_1_wgt_wrapper.sv
 C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_2_wgt.sv
 C:/RTL_YJH/L2_verification/rtl/L2_260901/cmd_decoder_channel_2_wgt_wrapper.sv
@@ -50,6 +50,7 @@ C:/RTL_YJH/L2_verification/verif/fpga/fpga_fix/sram_mimic_fpga.v
 C:/RTL_YJH/L2_verification/rtl/NOC_260902/L1_FIFO_interface_handshake.v
 C:/RTL_YJH/L2_verification/rtl/NOC_260902/L1_FIFO_interface.v
 C:/RTL_YJH/L2_verification/verif/integ/noc_ch1_in_adapter.sv
+C:/RTL_YJH/L2_verification/verif/integ/noc_ch1_wgt_adapter.sv
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/noc_L1_FIFO_intf.v
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/l1_sram.sv
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/l1_port_mux.sv

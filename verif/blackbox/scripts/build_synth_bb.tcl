@@ -4,6 +4,8 @@
 #
 #  Usage (verif/blackbox/scripts 에서):
 #    "C:\Xilinx\Vivado\2024.2\bin\vivado.bat" -mode batch -source build_synth_bb.tcl -log build_bb/vivado.log -journal build_bb/vivado.jou
+#    other clock: ... -source build_synth_bb.tcl -log ... -tclargs 5.0   (period ns; results in build_bb_<MHz>MHz/)
+#    + board margin: -tclargs 5.0 0.15   (extra set_clock_uncertainty ns; results in build_bb_<MHz>MHz_u<ps>/)
 #
 #  top  = l2_noc_bb_bd_wrapper, OOC (out_of_context) 모드 -> I/O 핀 배치 없이 합성/배치/배선
 #  part = xczu9eg-ffvb1156-2-e (ZCU102), aclk 100 MHz
@@ -13,8 +15,18 @@
 # =====================================================================
 set PART  "xczu9eg-ffvb1156-2-e"
 set ROOT  [file normalize [file dirname [info script]]]
-set BUILD "$ROOT/build_bb"
+set PERIOD 10.0
+set UNC 0.0
+if {$argc >= 1} { set PERIOD [lindex $argv 0] }
+if {$argc >= 2 && [string is double -strict [lindex $argv 1]]} { set UNC [lindex $argv 1] }
+if {$PERIOD == 10.0 && $UNC == 0.0} {
+    set BUILD "$ROOT/build_bb"
+} else {
+    set BUILD "$ROOT/build_bb_[expr {int(round(1000.0 / $PERIOD))}]MHz"
+    if {$UNC != 0.0} { append BUILD "_u[expr {int(round($UNC * 1000.0))}]" }
+}
 file mkdir $BUILD
+puts "===== aclk period $PERIOD ns -> $BUILD ====="
 
 create_project -in_memory -part $PART
 
@@ -25,7 +37,15 @@ while {[gets $fh line] >= 0} {
     if {[string match "*.sv" $line]} { read_verilog -sv $line } else { read_verilog $line }
 }
 close $fh
-read_xdc -mode out_of_context "$ROOT/constraints_bb.xdc"
+if {$PERIOD == 10.0 && $UNC == 0.0} {
+    read_xdc -mode out_of_context "$ROOT/constraints_bb.xdc"
+} else {
+    set xf [open "$BUILD/constraints_period.xdc" w]
+    puts $xf "create_clock -period $PERIOD -name aclk \[get_ports aclk\]"
+    if {$UNC != 0.0} { puts $xf "set_clock_uncertainty -setup $UNC \[get_clocks aclk\]" }
+    close $xf
+    read_xdc -mode out_of_context "$BUILD/constraints_period.xdc"
+}
 
 puts "===== synth_design (OOC) ====="
 synth_design -top l2_noc_bb_bd_wrapper -part $PART -mode out_of_context
@@ -37,7 +57,9 @@ report_timing_summary -file "$BUILD/timing_synth.rpt"
 puts "===== opt / place / route ====="
 opt_design
 place_design
+phys_opt_design
 route_design
+phys_opt_design
 write_checkpoint -force "$BUILD/post_route.dcp"
 
 report_utilization -file "$BUILD/util_route.rpt"
@@ -47,5 +69,12 @@ report_timing_summary -max_paths 10 -file "$BUILD/timing_route.rpt"
 report_timing -max_paths 3 -nworst 1 -unique_pins -path_type full -file "$BUILD/top3_paths.rpt"
 report_timing -max_paths 3 -nworst 1 -unique_pins -hold -path_type summary -file "$BUILD/top3_hold.rpt"
 report_drc -file "$BUILD/drc.rpt"
+# top-level hierarchy of start/end point for the worst setup paths
+set fh [open "$BUILD/path_hier.rpt" w]
+foreach p [get_timing_paths -max_paths 2000 -nworst 1 -setup] {
+    set s [get_property STARTPOINT_PIN $p]; set e [get_property ENDPOINT_PIN $p]
+    puts $fh "[get_property SLACK $p] [get_property LOGIC_LEVELS $p] $s -> $e"
+}
+close $fh
 
 puts "===== DONE - reports in $BUILD ====="

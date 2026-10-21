@@ -26,6 +26,13 @@ module tb_blackbox_pe;
     logic [8:0]       in_len = 0, out_len = 0;
     logic [31:0]      latency = 0;
     logic [1:0]       inject = 0;
+    logic             out_sel = 0, c2_prec = 0, c2_hs = 0;
+    logic [9:0]       c2_h = 0, c2_w = 0;
+    logic [6:0]       c2_nb = 0;
+    wire              c2_valid;
+    wire [31:0]       c2_addr;
+    wire [DW/2-1:0]   c2_data;
+    logic             c2_ready = 0, c2_resp = 0;
     logic             bram_we = 0, bram_sel = 0;
     logic [7:0]       bram_addr = 0;
     logic [DW-1:0]    bram_wdata = '0;
@@ -47,6 +54,8 @@ module tb_blackbox_pe;
         .i_start(start), .i_noc_busy(noc_busy),
         .i_in_base(in_base), .i_in_len(in_len), .i_out_base(out_base), .i_out_len(out_len),
         .i_latency(latency), .i_inject(inject),
+        .i_out_sel(out_sel), .i_c2_prec(c2_prec), .i_c2_hs(c2_hs), .i_c2_h(c2_h), .i_c2_w(c2_w), .i_c2_nb(c2_nb),
+        .o_c2_valid(c2_valid), .o_c2_addr(c2_addr), .o_c2_data(c2_data), .i_c2_ready(c2_ready), .i_c2_resp(c2_resp),
         .i_bram_we(bram_we), .i_bram_sel(bram_sel), .i_bram_addr(bram_addr), .i_bram_wdata(bram_wdata),
         .o_pe_busy(pe_busy), .o_ceb(pe_ceb), .o_web(pe_web), .o_addr(pe_addr), .o_din(pe_din), .i_dout(pe_dout),
         .o_busy(bb_busy), .o_done(bb_done),
@@ -149,6 +158,71 @@ module tb_blackbox_pe;
     endfunction
 
     // ---- trace of the first RD_IN / WR_OUT cycles (Gate 1 timing evidence) ----
+    // ---- ch2 store slave model (stands in for L2 ch2_in) -------------------
+    //  burst : random ready, a beat is taken at a posedge with valid && ready
+    //  hs    : like cmd_decoder_channel_2_in HANDSHAKE_STORE - capture valid, 1-clock response
+    //          pulse on the next clock, then 0..2 idle clocks
+    typedef struct { logic [31:0] addr; logic [DW/2-1:0] data; } c2_beat_t;
+    c2_beat_t c2_got[$];
+    bit       c2_model_on = 0;
+    int       hs_idle = 0;
+    always @(posedge clk) begin
+        if (c2_model_on && !c2_hs) begin
+            if (c2_valid && c2_ready) c2_got.push_back('{c2_addr, c2_data});
+            c2_ready <= ($urandom % 3) != 0;
+        end else if (c2_model_on && c2_hs) begin
+            c2_resp <= 1'b0;
+            if (hs_idle > 0) hs_idle <= hs_idle - 1;
+            else if (c2_valid && !c2_resp) begin
+                c2_got.push_back('{c2_addr, c2_data});
+                c2_resp <= 1'b1;
+                hs_idle <= 1 + ($urandom % 3);
+            end
+        end else begin
+            c2_ready <= 1'b0;
+            c2_resp  <= 1'b0;
+        end
+    end
+
+    // expected beat list for a (H, W, NB) job : order (jp, h, w, col)
+    task automatic c2_check(input string tag, input int H, input int W, input int NB, input bit prec,
+                            ref logic [DW-1:0] g[0:255], input bit inj0);
+        int n = 0, bad = 0;
+        for (int jp = 0; jp < (NB + 1) / 2; jp++)
+            for (int h = 0; h < H; h++)
+                for (int w = 0; w < W; w++)
+                    for (int col = 0; col < 2; col++) begin
+                        logic [31:0] ea;
+                        logic [DW/2-1:0] ed;
+                        bit last;
+                        if (2*jp + col >= NB) continue;
+                        last = (jp == (NB+1)/2 - 1) && (h == H-1) && (w == W-1) && (col == 1 || 2*jp+1 >= NB);
+                        ea = prec ? {last, 7'(jp), 1'(col), 3'd0, 10'(h), 10'(w)}
+                                  : {last, 5'(jp), 1'(col), 5'd0, 10'(h), 10'(w)};
+                        ed = col ? g[jp*H*W + h*W + w][DW-1:DW/2] : g[jp*H*W + h*W + w][DW/2-1:0];
+                        if (n == 0 && inj0) ed[0] = ~ed[0];
+                        if (n >= c2_got.size()) begin bad++; n++; continue; end
+                        if (c2_got[n].addr !== ea || c2_got[n].data !== ed) begin
+                            if (bad < 4) $display("    beat %0d : addr %08h data[31:0] %08h  want %08h %08h",
+                                                  n, c2_got[n].addr, c2_got[n].data[31:0], ea, ed[31:0]);
+                            bad++;
+                        end
+                        n++;
+                    end
+        check(tag, bad == 0 && c2_got.size() == n,
+              $sformatf("%0d beats (want %0d), %0d bad (addr fields + data + last)", c2_got.size(), n, bad));
+    endtask
+
+    task automatic run_c2(input int H, input int W, input int NB, input bit prec, input bit hs, input logic [1:0] inj);
+        c2_got = {};
+        @(negedge clk);
+        out_sel = 1; c2_prec = prec; c2_hs = hs; c2_h = H; c2_w = W; c2_nb = NB;
+        c2_model_on = 1;
+        run_bb(L1_IN_BASE, NX, 0, 0, 3, inj);
+        repeat (5) @(negedge clk);
+        c2_model_on = 0; out_sel = 0;
+    endtask
+
     bit trace_on = 0;
     int trace_n  = 0;
     always @(posedge clk) if (trace_on && pe_busy && trace_n < 14) begin
@@ -269,6 +343,33 @@ module tb_blackbox_pe;
         check("U7", l1_peek(L1_OUT_BASE + 256) == '0 && l1_peek(L1_IN_BASE + 256) == '0,
               "no write past OUT+255, nothing touched at IN+256");
         report("U7", e0, $sformatf("1/1 ok, 256/256 cycles=%0d", cyc));
+
+        // ------------------------------------------------------------- U8 / U9 / U10 : ch2 output
+        $display("\n=== U8 : ch2 out, burst (random ready), 32b fields, H=2 W=8 NB=4 (16b psum 64ch) ===");
+        e0 = errors;
+        for (int k = 0; k < NX; k++) l1_poke(L1_IN_BASE + k, xv[k]);
+        for (int k = 0; k < NX; k++) bram_write(0, k, xv[k]);
+        for (int k = 0; k < 256; k++) begin
+            for (int w = 0; w < DW/32; w++) gref[k][w*32 +: 32] = {16'(k), 16'(w)};
+            bram_write(1, k, gref[k]);
+        end
+        run_c2(2, 8, 4, 1'b1, 1'b0, 2'b00);
+        check("U8", mm_cnt == 0 && bb_done && !pe_busy, $sformatf("CP-A mismatch=%0d, done", mm_cnt));
+        c2_check("U8", 2, 8, 4, 1'b1, gref, 1'b0);
+        report("U8", e0, $sformatf("ch2 burst 64 beats, cycles=%0d", cyc));
+
+        $display("\n=== U9 : ch2 out, handshake (response pulse), 8b fields, H=1 W=5 NB=3 (odd) ===");
+        e0 = errors;
+        run_c2(1, 5, 3, 1'b0, 1'b1, 2'b00);
+        c2_check("U9", 1, 5, 3, 1'b0, gref, 1'b0);
+        report("U9", e0, $sformatf("ch2 handshake 15 beats, cycles=%0d", cyc));
+
+        $display("\n=== U10 : ch2 out with inject[0] -> first beat bit 0 flipped only ===");
+        e0 = errors;
+        run_c2(1, 16, 2, 1'b0, 1'b0, 2'b01);
+        c2_check("U10", 1, 16, 2, 1'b0, gref, 1'b1);
+        report("U10", e0, "first beat bit0 flipped, others exact");
+        for (int k = 0; k < 256; k++) gref[k] = (k < NY) ? gv[k] : '0;
 
         // ------------------------------------------------------------- U6
         $display("\n=== U6 : START while noc_busy=1 ===");

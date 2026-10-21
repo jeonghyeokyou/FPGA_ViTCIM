@@ -1,0 +1,135 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date         : Wed Oct 14 11:02:05 2026
+| Host         : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command      : report_drc -file C:/RTL_YJH/L2_verification/verif/blackbox/scripts/build_bb_200MHz/drc.rpt
+| Design       : l2_noc_bb_bd_wrapper
+| Device       : xczu9eg-ffvb1156-2-e
+| Speed File   : -2
+| Design State : Fully Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: l2_noc_bb_bd_wrapper
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 18
++-----------+----------+------------------------+--------+
+| Rule      | Severity | Description            | Checks |
++-----------+----------+------------------------+--------+
+| DPIP-2    | Warning  | Input pipelining       | 10     |
+| DPOP-3    | Warning  | PREG Output pipelining | 3      |
+| DPOP-4    | Warning  | MREG Output pipelining | 4      |
+| RTSTAT-10 | Warning  | No routable loads      | 1      |
++-----------+----------+------------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+DPIP-2#1 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_data_channel0 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_data_channel0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#2 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_data_channel0 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_data_channel0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#3 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#4 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#5 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#6 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#7 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#8 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#9 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#10 Warning
+Input pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0 input u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPOP-3#1 Warning
+PREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10 output u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-3#2 Warning
+PREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11 output u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-3#3 Warning
+PREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0 output u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-4#1 Warning
+MREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_data_channel0 multiplier stage u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_data_channel0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#2 Warning
+MREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10 multiplier stage u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_10/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#3 Warning
+MREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11 multiplier stage u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#4 Warning
+MREG Output pipelining  
+DSP u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0 multiplier stage u_top/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+RTSTAT-10#1 Warning
+No routable loads  
+122 net(s) have no routable loads. The problem bus(es) and/or net(s) are u_top/u_bridge/s_axi_arready, u_top/u_bridge/s_axi_awready,
+u_top/u_bridge/s_axi_bid[15:0], u_top/u_bridge/s_axi_bresp[0],
+u_top/u_bridge/s_axi_bvalid, u_top/u_bridge/s_axi_rdata[63:0],
+u_top/u_bridge/s_axi_rresp[0], u_top/u_bridge/s_axi_rvalid,
+u_top/u_bridge/s_axi_wready, u_top/u_ctrl/s_axil_arready,
+u_top/u_ctrl/s_axil_awready, u_top/u_ctrl/s_axil_rdata[31:0]
+u_top/u_ctrl/s_axil_wready.
+Related violations: <none>
+
+

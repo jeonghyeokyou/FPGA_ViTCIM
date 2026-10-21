@@ -4,15 +4,15 @@
 //
 //   S_AXI (AXI4, 64b)  ─► axi4_l2_ch0_bridge (LHJ/, 참조만) ─► TOP_L2_cache ch0
 //   S_AXI_LITE (32b)   ─► axi_lite_ctrl ─► i_command / Blackbox 레지스터 / BRAM 창
-//   TOP_L2_cache ch1_in ─► noc_ch1_in_adapter ─► FIFO_intf_bb ─► l1_sram
-//                                                   ▲ l1_port_mux
-//                                             blackbox_pe (pe_busy)
+//   TOP_L2_cache ch1_in  ─► noc_ch1_in_adapter  ─► FIFO_intf_bb (512b x 2048) ◄─ blackbox_pe  (입력 CP-A)
+//   TOP_L2_cache ch2_in  ◄───────────────────────────────────────────────────── blackbox_pe  (출력 = ch2 store)
+//   TOP_L2_cache ch1_wgt ─► noc_ch1_wgt_adapter ─► FIFO_intf_bb (256b x 1024) ◄─ u_bbw       (weight CP-W)
 //
 //  - 클럭 1개(aclk), 리셋 active-low(aresetn) 1개. CDC 없음.
 //  - L2 크기: GROUPS/BLOCKS/ADDRESS_ROW (기본 8/16/1024 = 1 MiB).
 //    ch0 워드 = 64b 이므로 S_AXI 데이터 폭은 64 고정 (ch1_in 512b = 8 lane 매핑 때문에).
 //  - S_AXI 주소 창 = MEM_BYTES (1 MiB). Vivado Address Editor range 를 같게 둘 것.
-//  - ch1_wgt / ch2_* 는 tie-off (범위 밖, 12절 ③④).
+//  - ch2_in : store 쪽(엔진 -> L2)만 Blackbox 가 구동. load 쪽(L2 -> PE/Accum)과 ch2_wgt 는 tie-off.
 //  - ch0 <-> ch1_in 배치: FINDING_l2_ch0_ch1_layout.md
 // =============================================================================
 module l2_noc_bb_top #(
@@ -146,6 +146,18 @@ module l2_noc_bb_top #(
     wire         bb_busy, bb_done, bb_first_valid, bb_err_start_busy;
     wire [15:0]  bb_mm_cnt, bb_first_idx;
     wire [31:0]  bb_first_got, bb_first_exp, bb_cycles;
+    wire         busy_ch2_in, busy_ch1_wgt;
+    wire         bb_out_sel, bb_c2_hs, bb_c2_prec;
+    wire [9:0]   bb_c2_h, bb_c2_w;
+    wire [6:0]   bb_c2_nb;
+    wire         wbb_start, wbram_we;
+    wire [1:0]   wbb_inject;
+    wire [9:0]   wbb_in_base, wbram_addr;
+    wire [10:0]  wbb_in_len;
+    wire [255:0] wbram_wdata;
+    wire         wbb_busy, wbb_done, wbb_first_valid, wbb_err_start_busy;
+    wire [15:0]  wbb_mm_cnt, wbb_first_idx;
+    wire [31:0]  wbb_first_got, wbb_first_exp, wbb_cycles;
 
     axi_lite_ctrl #(.ADDR_W(LITE_ADDR_W), .DW(BW_CH1_IN), .L1_AW(NOC_ADDR_BW), .BAW(8)) u_ctrl (
         .clk(aclk), .rstn(aresetn),
@@ -157,15 +169,23 @@ module l2_noc_bb_top #(
         .s_axil_rdata(s_axil_rdata), .s_axil_rresp(s_axil_rresp), .s_axil_rvalid(s_axil_rvalid),
         .s_axil_rready(s_axil_rready),
         .o_command(command), .o_command_valid(command_valid), .i_command_ready(command_ready),
-        .i_busy_ch1_in(busy_ch1_in),
+        .i_busy_ch1_in(busy_ch1_in), .i_busy_ch2_in(busy_ch2_in), .i_busy_ch1_wgt(busy_ch1_wgt),
         .o_bb_start(bb_start), .o_bb_inject(bb_inject),
+        .o_bb_out_sel(bb_out_sel), .o_bb_c2_hs(bb_c2_hs), .o_bb_c2_prec(bb_c2_prec),
+        .o_bb_c2_h(bb_c2_h), .o_bb_c2_w(bb_c2_w), .o_bb_c2_nb(bb_c2_nb),
         .o_bb_in_base(bb_in_base), .o_bb_in_len(bb_in_len),
         .o_bb_out_base(bb_out_base), .o_bb_out_len(bb_out_len), .o_bb_latency(bb_latency),
         .o_bram_we(bram_we), .o_bram_sel(bram_sel), .o_bram_addr(bram_addr), .o_bram_wdata(bram_wdata),
         .i_bb_busy(bb_busy), .i_bb_done(bb_done), .i_bb_first_mm_valid(bb_first_valid),
         .i_bb_err_start_busy(bb_err_start_busy), .i_bb_mismatch_cnt(bb_mm_cnt),
         .i_bb_first_mm_idx(bb_first_idx), .i_bb_first_mm_got(bb_first_got),
-        .i_bb_first_mm_exp(bb_first_exp), .i_bb_cycle_cnt(bb_cycles)
+        .i_bb_first_mm_exp(bb_first_exp), .i_bb_cycle_cnt(bb_cycles),
+        .o_wbb_start(wbb_start), .o_wbb_inject(wbb_inject), .o_wbb_in_base(wbb_in_base), .o_wbb_in_len(wbb_in_len),
+        .o_wbram_we(wbram_we), .o_wbram_addr(wbram_addr), .o_wbram_wdata(wbram_wdata),
+        .i_wbb_busy(wbb_busy), .i_wbb_done(wbb_done), .i_wbb_first_mm_valid(wbb_first_valid),
+        .i_wbb_err_start_busy(wbb_err_start_busy), .i_wbb_mismatch_cnt(wbb_mm_cnt),
+        .i_wbb_first_mm_idx(wbb_first_idx), .i_wbb_first_mm_got(wbb_first_got),
+        .i_wbb_first_mm_exp(wbb_first_exp), .i_wbb_cycle_cnt(wbb_cycles)
     );
 
     // ---------------------------------------------------------------------
@@ -175,6 +195,16 @@ module l2_noc_bb_top #(
     wire [DA_CH1_IN-1:0] l2_w_addr, l2_r_addr;
     wire [BW_CH1_IN-1:0] l2_w_data, l2_r_data;
     wire                 l2_r_valid, l2_r_data_ready, l2_r_ready, l2_r_resp, l2_ctrl_mode;
+    // ch2_in store port (Blackbox = master)
+    wire                 c2_valid, c2_ready, c2_resp;
+    wire [31:0]          c2_addr;
+    wire [255:0]         c2_data;
+    // ch1_wgt
+    localparam integer   DA_CH1_WGT = 18;
+    wire                  w_l2_w_ready, w_l2_w_valid, w_l2_w_resp;
+    wire [DA_CH1_WGT-1:0] w_l2_w_addr, w_l2_r_addr;
+    wire [255:0]          w_l2_w_data, w_l2_r_data;
+    wire                  w_l2_r_valid, w_l2_r_data_ready, w_l2_r_ready, w_l2_r_resp, w_l2_ctrl_mode;
 
     TOP_L2_cache #(
         .GROUPS(GROUPS), .BLOCKS(BLOCKS), .ADDRESS_ROW(ADDRESS_ROW),
@@ -202,22 +232,22 @@ module l2_noc_bb_top #(
         .i_noc_read_response_channel_1_in(l2_r_resp), .i_noc_read_data_channel_1_in(l2_r_data),
         .o_noc_control_mode_channel_1_in(l2_ctrl_mode),
 
-        .o_busy_channel_2_in(),
+        .o_busy_channel_2_in(busy_ch2_in),
         .i_noc_write_ready_channel_2_in(1'b0), .o_noc_write_valid_channel_2_in(),
         .o_noc_write_addr_channel_2_in(), .o_noc_write_data_channel_2_in(),
         .i_noc_write_response_channel_2_in(1'b0),
-        .o_noc_read_ready_channel_2_in(), .i_noc_read_valid_channel_2_in(1'b0),
-        .i_noc_read_addr_channel_2_in('0), .i_noc_read_data_channel_2_in('0),
-        .o_noc_read_response_channel_2_in(), .o_noc_control_mode_channel_2_in(),
+        .o_noc_read_ready_channel_2_in(c2_ready), .i_noc_read_valid_channel_2_in(c2_valid),
+        .i_noc_read_addr_channel_2_in(c2_addr), .i_noc_read_data_channel_2_in(c2_data),
+        .o_noc_read_response_channel_2_in(c2_resp), .o_noc_control_mode_channel_2_in(),
 
-        .o_busy_channel_1_wgt(),
-        .i_noc_write_ready_channel_1_wgt(1'b0), .o_noc_write_valid_channel_1_wgt(),
-        .o_noc_write_addr_channel_1_wgt(), .o_noc_write_data_channel_1_wgt(),
-        .i_noc_write_response_channel_1_wgt(1'b0),
-        .o_noc_read_addr_channel_1_wgt(), .o_noc_read_valid_channel_1_wgt(),
-        .o_noc_read_data_ready_channel_1_wgt(), .i_noc_read_ready_channel_1_wgt(1'b0),
-        .i_noc_read_response_channel_1_wgt(1'b0), .i_noc_read_data_channel_1_wgt('0),
-        .o_noc_control_mode_channel_1_wgt(),
+        .o_busy_channel_1_wgt(busy_ch1_wgt),
+        .i_noc_write_ready_channel_1_wgt(w_l2_w_ready), .o_noc_write_valid_channel_1_wgt(w_l2_w_valid),
+        .o_noc_write_addr_channel_1_wgt(w_l2_w_addr), .o_noc_write_data_channel_1_wgt(w_l2_w_data),
+        .i_noc_write_response_channel_1_wgt(w_l2_w_resp),
+        .o_noc_read_addr_channel_1_wgt(w_l2_r_addr), .o_noc_read_valid_channel_1_wgt(w_l2_r_valid),
+        .o_noc_read_data_ready_channel_1_wgt(w_l2_r_data_ready), .i_noc_read_ready_channel_1_wgt(w_l2_r_ready),
+        .i_noc_read_response_channel_1_wgt(w_l2_r_resp), .i_noc_read_data_channel_1_wgt(w_l2_r_data),
+        .o_noc_control_mode_channel_1_wgt(w_l2_ctrl_mode),
 
         .o_busy_channel_2_wgt(),
         .i_noc_write_ready_channel_2_wgt(1'b0), .o_noc_write_valid_channel_2_wgt(),
@@ -268,11 +298,66 @@ module l2_noc_bb_top #(
         .i_start(bb_start), .i_noc_busy(busy_ch1_in),
         .i_in_base(bb_in_base), .i_in_len(bb_in_len), .i_out_base(bb_out_base), .i_out_len(bb_out_len),
         .i_latency(bb_latency), .i_inject(bb_inject),
+        .i_out_sel(bb_out_sel), .i_c2_prec(bb_c2_prec), .i_c2_hs(bb_c2_hs),
+        .i_c2_h(bb_c2_h), .i_c2_w(bb_c2_w), .i_c2_nb(bb_c2_nb),
+        .o_c2_valid(c2_valid), .o_c2_addr(c2_addr), .o_c2_data(c2_data), .i_c2_ready(c2_ready), .i_c2_resp(c2_resp),
         .i_bram_we(bram_we), .i_bram_sel(bram_sel), .i_bram_addr(bram_addr), .i_bram_wdata(bram_wdata),
         .o_pe_busy(pe_busy), .o_ceb(pe_ceb), .o_web(pe_web), .o_addr(pe_addr), .o_din(pe_din), .i_dout(pe_dout),
         .o_busy(bb_busy), .o_done(bb_done),
         .o_mismatch_cnt(bb_mm_cnt), .o_first_mm_idx(bb_first_idx), .o_first_mm_valid(bb_first_valid),
         .o_first_mm_got(bb_first_got), .o_first_mm_exp(bb_first_exp),
         .o_err_start_busy(bb_err_start_busy), .o_cycle_cnt(bb_cycles));
+
+    // ---------------------------------------------------------------------
+    //  ch1_wgt : adapter -> FIFO_intf_bb (256b x 1024, cluster array stand-in) <- weight Blackbox
+    // ---------------------------------------------------------------------
+    wire                 w_m_write_valid, w_m_write_ready, w_m_fifo_write_ready;
+    wire [9:0]           w_m_write_addr, w_m_read_addr;
+    wire [255:0]         w_m_write_data, w_m_read_data;
+    wire                 w_m_read_valid, w_m_read_ready, w_m_fifo_read_ready, w_m_data_fifo_ready, w_m_control_mode;
+
+    noc_ch1_wgt_adapter #(.DA_L2(DA_CH1_WGT), .ADDR_BW(10), .DW(256)) u_adapter_w (
+        .l2_noc_write_valid(w_l2_w_valid), .l2_noc_write_addr(w_l2_w_addr), .l2_noc_write_data(w_l2_w_data),
+        .l2_noc_write_ready(w_l2_w_ready), .l2_noc_write_response(w_l2_w_resp),
+        .l2_noc_read_valid(w_l2_r_valid), .l2_noc_read_addr(w_l2_r_addr),
+        .l2_noc_read_data_ready(w_l2_r_data_ready), .l2_noc_read_ready(w_l2_r_ready),
+        .l2_noc_read_response(w_l2_r_resp), .l2_noc_read_data(w_l2_r_data),
+        .l2_noc_control_mode(w_l2_ctrl_mode),
+        .m_write_valid(w_m_write_valid), .m_write_addr(w_m_write_addr), .m_write_data(w_m_write_data),
+        .m_write_ready(w_m_write_ready), .m_fifo_write_ready(w_m_fifo_write_ready),
+        .m_read_valid(w_m_read_valid), .m_read_addr(w_m_read_addr), .m_read_ready(w_m_read_ready),
+        .m_read_data(w_m_read_data), .m_fifo_read_ready(w_m_fifo_read_ready),
+        .m_data_fifo_ready(w_m_data_fifo_ready), .m_control_mode(w_m_control_mode));
+
+    wire                 wpe_busy, wpe_ceb, wpe_web;
+    wire [9:0]           wpe_addr;
+    wire [255:0]         wpe_din, wpe_dout;
+
+    FIFO_intf_bb #(.ADDR_DEPTH(1024), .DATA_WIDTH(256), .MEMORY_BITWIDTH(64),
+                   .FIFO_DEPTH(8), .INPUT_DELAY(3)) u_noc_w (
+        .clk(aclk), .rstb(aresetn),
+        .i_read_valid(w_m_read_valid), .o_read_ready(w_m_read_ready),
+        .i_read_addr(w_m_read_addr), .o_read_data(w_m_read_data),
+        .i_write_valid(w_m_write_valid), .o_write_ready(w_m_write_ready),
+        .i_write_addr(w_m_write_addr), .i_write_data(w_m_write_data),
+        .i_control_mode(w_m_control_mode),
+        .o_FIFO_read_ready(w_m_fifo_read_ready), .o_FIFO_write_ready(w_m_fifo_write_ready),
+        .i_data_fifo_ready(w_m_data_fifo_ready),
+        .i_pe_busy(wpe_busy), .i_pe_ceb(wpe_ceb), .i_pe_web(wpe_web), .i_pe_addr(wpe_addr),
+        .i_pe_din(wpe_din), .o_pe_dout(wpe_dout));
+
+    blackbox_pe #(.DW(256), .L1_AW(10), .BRAM_DEPTH(1024), .GUARD(BB_GUARD)) u_bbw (
+        .clk(aclk), .rstn(aresetn),
+        .i_start(wbb_start), .i_noc_busy(busy_ch1_wgt),
+        .i_in_base(wbb_in_base), .i_in_len(wbb_in_len), .i_out_base(10'd0), .i_out_len(11'd0),
+        .i_latency(32'd0), .i_inject(wbb_inject),
+        .i_out_sel(1'b0), .i_c2_prec(1'b0), .i_c2_hs(1'b0), .i_c2_h(10'd0), .i_c2_w(10'd0), .i_c2_nb(7'd0),
+        .o_c2_valid(), .o_c2_addr(), .o_c2_data(), .i_c2_ready(1'b0), .i_c2_resp(1'b0),
+        .i_bram_we(wbram_we), .i_bram_sel(1'b0), .i_bram_addr(wbram_addr), .i_bram_wdata(wbram_wdata),
+        .o_pe_busy(wpe_busy), .o_ceb(wpe_ceb), .o_web(wpe_web), .o_addr(wpe_addr), .o_din(wpe_din), .i_dout(wpe_dout),
+        .o_busy(wbb_busy), .o_done(wbb_done),
+        .o_mismatch_cnt(wbb_mm_cnt), .o_first_mm_idx(wbb_first_idx), .o_first_mm_valid(wbb_first_valid),
+        .o_first_mm_got(wbb_first_got), .o_first_mm_exp(wbb_first_exp),
+        .o_err_start_busy(wbb_err_start_busy), .o_cycle_cnt(wbb_cycles));
 
 endmodule

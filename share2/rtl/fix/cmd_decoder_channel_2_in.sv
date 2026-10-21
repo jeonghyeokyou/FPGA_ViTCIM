@@ -1,3 +1,27 @@
+// =============================================================================
+//  FIXED COPY (Blackbox 환경 전용) - FINDING_handshake_mode.md (E)
+//  원본 경로 : rtl/L2_260901/cmd_decoder_channel_2_in.sv  (원본은 수정하지 않음)
+//  모듈 이름은 그대로 -> 파일 목록에서 원본 대신 이 파일을 넣는다.
+//
+//  ch2_in handshake STORE (ctrl_mode 11) 를 동작하게 고친 3곳:
+//   (E1) o_sram_control_mode : r_control_mode[0] -> 1'b0
+//        handshake 명령이면 L2 내부 SRAM 쪽 FIFO 인터페이스까지 handshake 모드가 되어 쓰기 ready 가
+//        오지 않음 -> 내부 FIFO 가 차서 DATA_SEND_STORE 에서 정지. ch1_in 처럼 SRAM 쪽은 on-fire 고정.
+//   (E2) 메인 FSM HANDSHAKE_STORE 에 빠져나갈 조건이 없었음 (빈 블록) -> BURST_STORE 와 같이
+//        r_sram_write_done 이면 CMD_DONE.
+//   (E3) store 주소 오프셋(w + h*W + ch*H*W)을 BURST_STORE 에서만 계산 -> handshake 에서는 모든 beat 가
+//        시작 주소 하나에 덮어써짐. HANDSHAKE_STORE 에서도 계산하도록.
+//   (E4) 200 MHz 타이밍 (기능 동일, 지연 변화 없음) - store 주소 계산 경로 단축
+//        - h / w / ch / col / last 필드의 i_noc_read_valid 게이팅 mux 제거: 이 값들은 valid 일 때만
+//          r_fifo_noc_read_addr / r_noc_read_done 에 들어가므로 게이팅은 불필요. 출발점이 입력 FIFO 의
+//          empty 판정 (wr_ptr 비교) 에서 FIFO 데이터로 바뀐다.
+//        - store 상태 게이팅 (w_store_state) 도 같은 이유로 제거 (store 상태에서만 레지스터에 들어감).
+//        - wrap 쪽 상수 (first - 1 - offset) 를 명령 받을 때 r_wrap_k 로 미리 계산 -> 덧셈 1단 감소.
+//          모두 17b mod 산술이라 결과 동일.
+//  burst STORE / LOAD 경로의 동작은 바꾸지 않음.
+//  참고: ch1_in (B) 와 같은 IDLE_HS 코드 패턴이 있다. handshake STORE 연속 (O6) 에서는 문제가 없었고,
+//       handshake LOAD (L2 -> Accumulator) 는 이 환경에 받는 쪽이 없어 확인하지 못해 고치지 않았다.
+// =============================================================================
 `timescale 1ns / 1ps
 
 module cmd_decoder_channel_2_in #( 
@@ -122,6 +146,7 @@ module cmd_decoder_channel_2_in #(
     // store operation command additional register & wire
     reg [19:0]                        r_data_channel;
     reg [SOURCE_ADDR_BIT-2:0]         r_destination_offset_addr_store;
+    reg [SOURCE_ADDR_BIT-2:0]         r_wrap_k;       // FIX (E4): r_first_addr_17b - 1 - r_destination_offset_addr_store
     reg                               r_noc_read_done;
     reg                               r_sram_write_done;
     wire                              w_last;         //w_noc_read_addr_last
@@ -271,6 +296,9 @@ module cmd_decoder_channel_2_in #(
             end
             // STORE : normal handshake mode
             HANDSHAKE_STORE: begin
+                if(r_sram_write_done==1'b1) begin   // FIX (E2): exit like BURST_STORE
+                    next_state = CMD_DONE;
+                end
             end
             // cmd end state
             CMD_DONE: begin
@@ -292,7 +320,7 @@ module cmd_decoder_channel_2_in #(
     assign o_ch2_rw_cmd_ready     = r_ch2_rw_cmd_ready;
     assign o_load_busy            = r_load_busy;
     assign o_store_busy           = r_store_busy;
-    assign o_sram_control_mode    = r_control_mode[0];
+    assign o_sram_control_mode    = 1'b0;   // FIX (E1): SRAM side always on-fire, same as ch1_in
     assign o_noc_control_mode     = r_control_mode[0];
     // noc read path output
     assign o_noc_read_ready       = r_noc_read_ready && w_fifo_noc_read_ready && ~r_noc_read_done;
@@ -302,16 +330,17 @@ module cmd_decoder_channel_2_in #(
     assign o_sram_write_valid     = w_fifo_sram_write_addr_valid && w_fifo_sram_write_data_valid;
 
     // store operation command additional register & wire
-    assign w_last       = (i_noc_read_valid)                        ? i_noc_read_addr[31]   : 1'b0; //w_noc_read_addr_last
-    assign w_channel_8b = ((r_prec_mode==1'b0)&&(i_noc_read_valid)) ? i_noc_read_addr[30:26]: 5'b0; //w_noc_read_addr_channel_8b
-    assign w_channel_32b= ((r_prec_mode==1'b1)&&(i_noc_read_valid)) ? i_noc_read_addr[30:24]: 7'b0; //w_noc_read_addr_channel_32b
-    assign w_height     = (i_noc_read_valid)                        ? i_noc_read_addr[19:10]:10'b0; //w_noc_read_addr_height
-    assign w_width      = (i_noc_read_valid)                        ? i_noc_read_addr[9:0]  :10'b0; //w_noc_read_addr_width
-    assign w_fifo_sram_write_addr_col        = ((r_prec_mode==1'b0)&&(i_noc_read_valid))          ? i_noc_read_addr[25]:
-                                          ((r_prec_mode==1'b1)&&(i_noc_read_valid))          ? i_noc_read_addr[23]:1'b0;
-    assign w_fifo_sram_write_addr_17b_1 = ((r_prec_mode==1'b0)&&(current_state==BURST_STORE))? w_width+w_height*r_data_width+w_channel_8b *r_data_channel:
-                                          ((r_prec_mode==1'b1)&&(current_state==BURST_STORE))? w_width+w_height*r_data_width+w_channel_32b*r_data_channel:{SOURCE_ADDR_BIT-1{1'b0}};
-    assign w_fifo_sram_write_addr_17b_2 = (w_fifo_sram_write_addr_17b_1>r_destination_offset_addr_store) ? w_fifo_sram_write_addr_17b_1-r_destination_offset_addr_store+r_first_addr_17b-1 :
+    // FIX (E4): no i_noc_read_valid / store-state gating - every use below is already qualified by
+    //           i_noc_read_valid in BURST_STORE / HANDSHAKE_STORE (this also covers E3: both store states).
+    assign w_last       = i_noc_read_addr[31];                                   //w_noc_read_addr_last
+    assign w_channel_8b = i_noc_read_addr[30:26];                                //w_noc_read_addr_channel_8b
+    assign w_channel_32b= i_noc_read_addr[30:24];                                //w_noc_read_addr_channel_32b
+    assign w_height     = i_noc_read_addr[19:10];                                //w_noc_read_addr_height
+    assign w_width      = i_noc_read_addr[9:0];                                  //w_noc_read_addr_width
+    assign w_fifo_sram_write_addr_col        = (r_prec_mode==1'b0) ? i_noc_read_addr[25] : i_noc_read_addr[23];
+    wire [6:0] w_channel = (r_prec_mode==1'b0) ? {2'b0, w_channel_8b} : w_channel_32b;
+    assign w_fifo_sram_write_addr_17b_1 = w_width+w_height*r_data_width+w_channel*r_data_channel;
+    assign w_fifo_sram_write_addr_17b_2 = (w_fifo_sram_write_addr_17b_1>r_destination_offset_addr_store) ? w_fifo_sram_write_addr_17b_1+r_wrap_k :
                                                                                                         w_fifo_sram_write_addr_17b_1+r_destination_start_addr_store;
     
     always @(posedge i_clk or negedge i_rstn) begin
@@ -350,6 +379,7 @@ module cmd_decoder_channel_2_in #(
             // store operation command additional register
             r_data_channel                    <= 20'b0;
             r_destination_offset_addr_store   <= {SOURCE_ADDR_BIT-1{1'b0}};
+            r_wrap_k                          <= {SOURCE_ADDR_BIT-1{1'b0}};
             r_noc_read_done                   <= 1'b0;
             r_sram_write_done                 <= 1'b0;
             // cache first & last addr
@@ -401,6 +431,7 @@ module cmd_decoder_channel_2_in #(
                     r_prec_mode                       <= i_ch2_rw_cmd[57];                        //1b 
                     r_destination_start_addr_store    <= i_ch2_rw_cmd[SOURCE_ADDR_BIT+38:40];     //17b
                     r_destination_offset_addr_store   <= r_last_addr_17b - i_ch2_rw_cmd[SOURCE_ADDR_BIT+38:40];   //17b
+                    r_wrap_k                          <= r_first_addr_17b - 1'b1 - (r_last_addr_17b - i_ch2_rw_cmd[SOURCE_ADDR_BIT+38:40]); // FIX (E4)
                     r_data_height                     <= i_ch2_rw_cmd[39:30];                     //10b
                     r_data_width                      <= i_ch2_rw_cmd[29:20];                     //10b
                     r_data_channel                    <= i_ch2_rw_cmd[39:30]*i_ch2_rw_cmd[29:20]; //20b

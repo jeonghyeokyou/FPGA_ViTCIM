@@ -27,9 +27,9 @@
 ../../rtl/l2/cmd_decoder_SRAM_group_interface.sv
 ../../rtl/fix/cmd_decoder_channel_1_in.sv
 ../../rtl/l2/cmd_decoder_channel_1_in_wrapper.sv
-../../rtl/l2/cmd_decoder_channel_2_in.sv
+../../rtl/fix/cmd_decoder_channel_2_in.sv
 ../../rtl/l2/cmd_decoder_channel_2_in_wrapper.sv
-../../rtl/l2/cmd_decoder_channel_1_wgt.sv
+../../rtl/fix/cmd_decoder_channel_1_wgt.sv
 ../../rtl/l2/cmd_decoder_channel_1_wgt_wrapper.sv
 ../../rtl/l2/cmd_decoder_channel_2_wgt.sv
 ../../rtl/l2/cmd_decoder_channel_2_wgt_wrapper.sv
@@ -46,6 +46,7 @@
 ../../rtl/noc/L1_FIFO_interface_handshake.v
 ../../rtl/noc/L1_FIFO_interface.v
 ../../rtl/bb/noc_ch1_in_adapter.sv
+../../rtl/bb/noc_ch1_wgt_adapter.sv
 ../../rtl/bb/noc_L1_FIFO_intf.v
 ../../rtl/bb/l1_sram.sv
 ../../rtl/bb/l1_port_mux.sv

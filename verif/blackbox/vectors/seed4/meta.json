@@ -57,5 +57,70 @@
       "0xac000",
       "0xae000"
     ]
+  },
+  "wgt": {
+    "rows": 1024,
+    "l2_word256": "0x800",
+    "zero_word256": "0xc00",
+    "src_w": 15,
+    "layout": "256b word c, lane b (bits[64b+63:64b]) at ch0 64b word (grp<<14)|((quad*4+b)<<10)|row ; grp=c>>12, quad=(c>>10)&3, row=c&1023",
+    "lane_byte_addr": [
+      "0x10000",
+      "0x12000",
+      "0x14000",
+      "0x16000"
+    ],
+    "zero_lane_byte_addr": [
+      "0x18000",
+      "0x1a000",
+      "0x1c000",
+      "0x1e000"
+    ],
+    "cmd_burst_all": "0x5004007fe0000080",
+    "cmd_clear": "0x5006007fe0000080",
+    "custom": {
+      "711": {
+        "beats": 256,
+        "cmd": "0x5204007500000080",
+        "expected": "wgt_custom_711.hex"
+      },
+      "322": {
+        "beats": 288,
+        "cmd": "0x5204003a00000080",
+        "expected": "wgt_custom_322.hex"
+      },
+      "723": {
+        "beats": 768,
+        "cmd": "0x5204007b00000080",
+        "expected": "wgt_custom_723.hex"
+      },
+      "000": {
+        "beats": 8,
+        "cmd": "0x5204000000000080",
+        "expected": "wgt_custom_000.hex"
+      }
+    }
+  },
+  "out_ch2": {
+    "psum16": {
+      "file": "psum16.hex",
+      "words": 32,
+      "l2_ch1_word": "0x2840",
+      "H": 1,
+      "W": 16,
+      "NB": 4,
+      "prec_field": 1,
+      "cmd": "0x4a28400041000000"
+    },
+    "out8": {
+      "file": "out8.hex",
+      "words": 16,
+      "l2_ch1_word": "0x2880",
+      "H": 1,
+      "W": 16,
+      "NB": 2,
+      "prec_field": 0,
+      "cmd": "0x4828800041000000"
+    }
   }
 }

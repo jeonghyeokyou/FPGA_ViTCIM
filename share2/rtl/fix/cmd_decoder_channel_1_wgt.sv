@@ -1,3 +1,17 @@
+// =============================================================================
+//  FIXED COPY (Blackbox 환경 전용) - FINDING_handshake_mode.md (C)
+//  원본 경로 : rtl/L2_260901/cmd_decoder_channel_1_wgt.sv  (원본은 수정하지 않음)
+//  모듈 이름은 그대로 -> 파일 목록에서 원본 대신 이 파일을 넣는다.
+//
+//  바꾼 것 1곳:
+//   (C) o_sram_control_mode : r_control_mode[0] -> 1'b0
+//       handshake 명령이면 L2 내부 SRAM 쪽 FIFO 인터페이스까지 handshake 모드로 바뀌어,
+//       SRAM 읽기 데이터가 다음 것으로 넘어가지 않고 첫 줄만 반복해서 나갔다
+//       (1024줄 handshake LOAD -> L1 전부 weight 0번 줄). ch1_in decoder 는 이미 1'b0 로
+//       고정돼 있다 (cmd_decoder_channel_1_in.sv 278행) -> 같게 맞춤. NoC 쪽 모드(o_noc_control_mode)는 그대로.
+//  참고: ch1_in (B) 와 같은 IDLE_HS 코드 패턴이 있지만, handshake LOAD -> handshake STORE 를
+//       간격 10~13 클럭 (재출발 루프의 모든 위상) 으로 돌려도 hang 이 재현되지 않아 고치지 않았다 (W4h).
+// =============================================================================
 `timescale 1ns / 1ps
 
 module cmd_decoder_channel_1_wgt #(
@@ -99,7 +113,7 @@ module cmd_decoder_channel_1_wgt #(
     assign o_load_busy = r_load_busy;
 
     assign o_ch1_rw_cmd_ready = r_ch1_rw_cmd_ready;
-    assign o_sram_control_mode= r_control_mode[0];
+    assign o_sram_control_mode= 1'b0;   // FIX (C): SRAM side always on-fire, same as ch1_in
     assign o_noc_control_mode = r_control_mode[0];
 
     // channel 1 weight load cmd register (burst load & custom load)

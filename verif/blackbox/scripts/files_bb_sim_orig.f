@@ -49,6 +49,7 @@ C:/RTL_YJH/L2_verification/verif/noc/fix/sram_mimic.v
 C:/RTL_YJH/L2_verification/rtl/NOC_260902/L1_FIFO_interface_handshake.v
 C:/RTL_YJH/L2_verification/rtl/NOC_260902/L1_FIFO_interface.v
 C:/RTL_YJH/L2_verification/verif/integ/noc_ch1_in_adapter.sv
+C:/RTL_YJH/L2_verification/verif/integ/noc_ch1_wgt_adapter.sv
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/noc_L1_FIFO_intf.v
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/l1_sram.sv
 C:/RTL_YJH/L2_verification/verif/blackbox/rtl/l1_port_mux.sv

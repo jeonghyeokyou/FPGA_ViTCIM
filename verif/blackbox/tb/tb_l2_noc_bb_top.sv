@@ -335,6 +335,189 @@ module tb_l2_noc_bb_top;
     endtask
 
     // =========================================================================
+    //  PS helpers for the weight / output paths
+    // =========================================================================
+    localparam int R_BB_C2_CFG = 'h4C;
+    localparam int R_WBB_CTRL = 'h120, R_WBB_IN = 'h124, R_WBB_STATUS = 'h130, R_WBB_MM = 'h134;
+    localparam int R_WBB_CYC = 'h140, R_WBRAM_ADDR = 'h144, R_WBRAM_COMMIT = 'h148;
+
+    // poll STATUS bit `b` : 1 then 0 (bit1 ch1_in, bit3 ch2_in, bit4 ch1_wgt)
+    task automatic wait_busy_bit(input int b, input string what, output int cycles);
+        logic [31:0] st;
+        longint t0;
+        int n;
+        t0 = cyc_now; n = 0;
+        do begin lite_rd(R_STATUS, st); n++; end while (!st[b] && n < 200);
+        n = 0;
+        do begin lite_rd(R_STATUS, st); n++; end while (st[b] && n < 20000);
+        if (st[b]) begin $display("    !! %s : busy never fell", what); errors++; cycles = -1; return; end
+        if (st[2]) begin $display("    !! %s : STATUS.cmd_overflow=1", what); errors++; end
+        cycles = int'(cyc_now - t0);
+    endtask
+
+    task automatic l2_write_256(input int c0, input int n, ref logic [255:0] v[$]);
+        for (int b = 0; b < RATIO_256; b++) begin
+            int k = 0;
+            while (k < n) begin
+                logic [63:0] q[$];
+                int a0, len;
+                a0 = c256_to_ch0(c0 + k, b); len = 0; q = {};
+                while (k + len < n && len < 256 && c256_to_ch0(c0 + k + len, b) == a0 + len &&
+                       (((a0 + len) * 8) >> 12) == ((a0 * 8) >> 12)) begin
+                    q.push_back(v[k + len][b*64 +: 64]);
+                    len++;
+                end
+                axi_wr(longint'(a0) * 8, q);
+                k += len;
+            end
+        end
+    endtask
+
+    task automatic wbram_load(ref logic [255:0] v[$]);
+        lite_wr(R_WBRAM_ADDR, 32'd0);
+        foreach (v[k]) begin
+            for (int w = 0; w < 8; w++) lite_wr(R_BRAM_WIN + 4*w, v[k][w*32 +: 32]);
+            lite_wr(R_WBRAM_COMMIT, 32'd1);
+        end
+    endtask
+
+    task automatic run_wbb_ps(input int len, output int mm, output int cyc);
+        logic [31:0] st, d;
+        int n = 0;
+        lite_wr(R_WBB_IN, {5'd0, 11'(len), 6'd0, 10'd0});
+        lite_wr(R_WBB_CTRL, 32'd1);
+        do begin lite_rd(R_WBB_STATUS, st); n++; end while (!st[1] && n < 20000);
+        if (!st[1]) begin $display("    !! weight BB done never seen (WBB_STATUS=%08h)", st); errors++; end
+        lite_rd(R_WBB_MM, d);  mm = d[15:0];
+        lite_rd(R_WBB_CYC, d); cyc = d;
+    endtask
+
+    task automatic read_wimg(input int seed, ref logic [255:0] w[$]);
+        logic [255:0] a [0:NWROWS-1];
+        $readmemh($sformatf("%s/seed%0d/wgt.hex", VEC_ROOT, seed), a);
+        w = {};
+        foreach (a[k]) begin
+            if ($isunknown(a[k])) begin $display("    !! wgt.hex row %0d has X", k); errors++; end
+            w.push_back(a[k]);
+        end
+    endtask
+
+    // =========================================================================
+    //  PW : weight path through the PS interfaces
+    //   custom < 0 : burst load of all 1024 rows ; else custom load (g,u,c) after a zero clear
+    // =========================================================================
+    task automatic test_wgt_ps(input string tname, input int seed, input int g, input int u, input int c,
+                               input bit custom, input bit hs);
+        logic [255:0] wq [$], zq [$], ev [$];
+        int e0, c_clr, c_load, mm, cyc, nb;
+        string kind;
+        if (custom) kind = $sformatf("custom (%0d,%0d,%0d)", g, u, c);
+        else        kind = "burst 1024 rows";
+        $display("\n=== %s : seed %0d %s hs=%0d ===", tname, seed, kind, hs);
+        e0 = errors;
+        read_wimg(seed, wq);
+        do_reset();
+        ev = {};
+        if (custom) begin
+            nb = wcustom_beats(g, u, c);
+            for (int k = 0; k < NWROWS; k++) ev.push_back('0);
+            for (int i = 0; i < nb; i++) ev[wcustom_row(i, g, u, c)] = wq[i];
+            zq = {};
+            for (int k = 0; k < NWROWS; k++) zq.push_back('0);
+            l2_write_256(ZERO_W_WORD, NWROWS, zq);
+        end else begin
+            nb = NWROWS;
+            ev = wq;
+        end
+        l2_write_256(WGT_W_WORD, NWROWS, wq);
+        wbram_load(ev);
+        if (custom) begin
+            push_cmd(mk_wload_burst(ZERO_W_WORD, NWROWS, 0, hs));
+            wait_busy_bit(4, {tname, " clear"}, c_clr);
+            push_cmd(mk_wload_custom(WGT_W_WORD, g, u, c, hs));
+        end else
+            push_cmd(mk_wload_burst(WGT_W_WORD, NWROWS, 0, hs));
+        wait_busy_bit(4, {tname, " WLOAD"}, c_load);
+        run_wbb_ps(NWROWS, mm, cyc);
+        chk(tname, mm == 0, $sformatf("CP-W (WBB_MISMATCH) = %0d over %0d rows (%0d beats loaded, LOAD %0d clk)",
+                                      mm, NWROWS, nb, c_load));
+        report(tname, e0, $sformatf("CP-W mm %0d | %0d beats, LOAD %0d clk", mm, nb, c_load));
+    endtask
+
+    // =========================================================================
+    //  PO : output path through the PS interfaces (Blackbox -> ch2_in store)
+    //   CP-B = AXI4 readback ; chain = ch1_in LOAD of the stored words into L1 512.. and a 2nd
+    //   Blackbox run that compares them (Expected = the same words) -> CP-A of the 2nd run
+    // =========================================================================
+    task automatic test_out_ps(input string tname, input int seed, input bit psum, input int H, input int W,
+                               input int NB, input bit prec, input bit hs, input bit chain, input int dest);
+        logic [DW-1:0] xa [0:NX-1];
+        logic [DW-1:0] ga [0:31];
+        logic [DW-1:0] xv [$], gv [$], rb [$], pz [$];
+        logic [31:0] st, d;
+        int e0, c_load, c_st, nw, bad, n, mm2;
+        string ctxt;
+        string gfile;
+        nw = ((NB + 1) / 2) * H * W;
+        if (psum) gfile = "psum16.hex"; else gfile = "out8.hex";
+        $display("\n=== %s : seed %0d %s H=%0d W=%0d NB=%0d prec_field=%0d hs=%0d dest=0x%04h ===",
+                 tname, seed, gfile, H, W, NB, prec, hs, dest);
+        e0 = errors;
+        $readmemh($sformatf("%s/seed%0d/x.hex", VEC_ROOT, seed), xa);
+        $readmemh($sformatf("%s/seed%0d/%s", VEC_ROOT, seed, gfile), ga);
+        xv = {}; gv = {};
+        foreach (xa[k]) xv.push_back(xa[k]);
+        for (int k = 0; k < nw; k++) begin
+            if ($isunknown(ga[k])) begin $display("    !! %s word %0d has X", gfile, k); errors++; end
+            gv.push_back(ga[k]);
+        end
+        do_reset();
+        pz = {};
+        for (int k = 0; k < nw; k++) pz.push_back({16{32'hBAD0_C200}});
+        l2_write_beats(dest, nw, pz);
+        l2_write_beats(X_CH1_WORD, NX, xv);
+        bram_load(0, xv);
+        bram_load(1, gv);
+        push_cmd(mk_load(X_CH1_WORD, NX, L1_IN_BASE));
+        wait_cmd_done({tname, " LOAD"}, c_load);
+        // Blackbox -> ch2 store
+        lite_wr(R_BB_IN,  {7'd0, 9'(NX), 5'd0, 11'(L1_IN_BASE)});
+        lite_wr(R_BB_LAT, 32'd10);
+        lite_wr(R_BB_C2_CFG, {prec, 4'd0, 7'(NB), 10'(H), 10'(W)});
+        push_cmd(mk_c2_store(dest, H, W, prec, hs));
+        lite_wr(R_BB_CTRL, {27'd0, hs, 1'b1, 2'b00, 1'b1});          // C2_HS, OUT_SEL=1, START
+        n = 0;
+        do begin lite_rd(R_BB_STATUS, st); n++; end while (!st[1] && n < 20000);
+        if (!st[1]) begin $display("    !! BB done never seen (BB_STATUS=%08h)", st); errors++; end
+        wait_busy_bit(3, {tname, " ch2 store"}, c_st);
+        lite_rd(R_BB_MM, d);
+        chk(tname, d[15:0] == 0, $sformatf("CP-A (input X) mismatch = %0d", d[15:0]));
+        // CP-B
+        l2_read_beats(dest, nw, rb);
+        bad = 0;
+        for (int k = 0; k < nw; k++) if (rb[k] !== gv[k]) bad++;
+        chk(tname, bad == 0, $sformatf("CP-B : %0d/%0d L2 words == Golden (AXI4 readback)", nw - bad, nw));
+        // chain : stored words -> ch1_in LOAD -> L1 512.. -> Blackbox compares them (CP-A of a 2nd run)
+        mm2 = -1;
+        if (chain) begin
+            push_cmd(mk_load(dest, nw, 512));
+            wait_cmd_done({tname, " chain LOAD"}, c_load);
+            bram_load(0, gv);
+            lite_wr(R_BB_IN,  {7'd0, 9'(nw), 5'd0, 11'd512});
+            lite_wr(R_BB_OUT, 32'd0);                                   // no output phase
+            lite_wr(R_BB_CTRL, 32'd1);                                  // OUT_SEL=0, START
+            n = 0;
+            do begin lite_rd(R_BB_STATUS, st); n++; end while (!st[1] && n < 20000);
+            lite_rd(R_BB_MM, d);
+            mm2 = d[15:0];
+            chk(tname, mm2 == 0, $sformatf("chain : ch1_in LOAD of the stored words, Blackbox CP-A mismatch = %0d", mm2));
+        end
+        if (chain) ctxt = $sformatf(", chain mm %0d", mm2);
+        else       ctxt = "";
+        report(tname, e0, $sformatf("CP-A 0, CP-B %0d/%0d%s | ch2 store %0d clk", nw - bad, nw, ctxt, c_st));
+    endtask
+
+    // =========================================================================
     //  REG test
     // =========================================================================
     task automatic test_reg();
@@ -366,6 +549,18 @@ module tb_l2_noc_bb_top;
         chk("REG", dut.u_top.u_bb.gold_mem[5][31:0] == 32'hC0DE_0000 && dut.u_top.u_bb.gold_mem[6][511:480] == 32'hC0DE_000F,
             "Golden[5], Golden[6] written through window (backdoor check)");
         lite_rd('h10, d); chk("REG", d == 0, "unmapped offset reads 0");
+        // registers added for the weight / output paths
+        lite_rd(R_STATUS, d); chk("REG", d[4:3] == 2'b00, $sformatf("STATUS busy_ch2_in / busy_ch1_wgt = %0d%0d", d[4], d[3]));
+        lite_wr(R_BB_C2_CFG, 32'h8180_4010); lite_rd(R_BB_C2_CFG, d);
+        chk("REG", d == 32'h8180_4010, $sformatf("BB_C2_CFG = %08h (PREC=1 NB=24 H=16 W=16)", d));
+        lite_wr(R_BB_CTRL, 32'h18); lite_rd(R_BB_CTRL, d); chk("REG", d == 32'h18, $sformatf("BB_CTRL OUT_SEL/C2_HS readback = %08h", d));
+        lite_wr(R_BB_CTRL, 32'h0);
+        lite_wr(R_WBB_IN, 32'h0400_0003); lite_rd(R_WBB_IN, d); chk("REG", d == 32'h0400_0003, $sformatf("WBB_IN = %08h", d));
+        lite_wr(R_WBRAM_ADDR, 32'h3FE);
+        for (int w = 0; w < 8; w++) lite_wr(R_BRAM_WIN + 4*w, 32'hA000_0000 + w);
+        lite_wr(R_WBRAM_COMMIT, 1); lite_wr(R_WBRAM_COMMIT, 1);
+        lite_rd(R_WBRAM_ADDR, d); chk("REG", d == 32'h0, $sformatf("WBRAM_ADDR 0x3FE +2 wraps to %03h", d));
+        chk("REG", dut.u_top.u_bbw.exp_mem[10'h3FF][255:224] == 32'hA000_0007, "weight Expected[0x3FF] written through the lower 256b window");
         report("REG", e0, "register map / WSTRB / BRAM window");
     endtask
 
@@ -477,6 +672,18 @@ module tb_l2_noc_bb_top;
 
         if (only == "" || only == "REG") test_reg();
         if (only == "" || only == "MAP") test_map();
+
+        if (only == "" || only == "W") begin
+            test_wgt_ps("PW1 wgt burst",        1, 0, 0, 0, 1'b0, 1'b0);
+            test_wgt_ps("PW2 custom711",        2, 7, 1, 1, 1'b1, 1'b0);
+            test_wgt_ps("PW3 custom322 hs",     3, 3, 2, 2, 1'b1, 1'b1);
+        end
+        if (only == "" || only == "O") begin
+            //         name               seed psum H  W  NB prec hs chain dest
+            test_out_ps("PO1 psum16",       1, 1,  1, 16, 4, 1,  0, 0,   C2_PSUM_WORD);
+            test_out_ps("PO2 out8 + chain", 2, 0,  1, 16, 2, 0,  0, 1,   C2_OUT8_WORD);
+            test_out_ps("PO3 out8 hs+chain",3, 0,  1, 16, 2, 0,  1, 1,   C2_OUT8_WORD);
+        end
 
         if (only == "" || only == "S1") begin
             c = '{seed:1, inject:2'b00, latency:10, fast:0, hs_load:0, hs_store:0};
