@@ -1,0 +1,5 @@
+# simulation run directories (regenerate with scripts/00_run_sim.bat)
+scripts/work_*/
+# synthesis console capture (reports *.rpt are kept, *.dcp / *.log are ignored at the repo root)
+scripts/build*/console.txt
+scripts/build*/constraints_period.xdc

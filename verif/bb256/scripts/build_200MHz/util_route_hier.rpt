@@ -1,0 +1,40 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date         : Wed Oct 21 15:05:55 2026
+| Host         : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -hierarchical_depth 3 -file C:/RTL_YJH/L2_verification/verif/bb256/scripts/build_200MHz/util_route_hier.rpt
+| Design       : l2_system_bd_wrapper
+| Device       : xczu9eg-ffvb1156-2-e
+| Speed File   : -2
+| Design State : Physopt postRoute
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++--------------------------+-------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|         Instance         |          Module         | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++--------------------------+-------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| l2_system_bd_wrapper     |                   (top) |      78324 |      71980 |    6344 |    0 | 56509 |    308 |      0 |    0 |          5 |
+|   (l2_system_bd_wrapper) |                   (top) |          0 |          0 |       0 |    0 |     0 |      0 |      0 |    0 |          0 |
+|   u_top                  |           l2_system_top |      78324 |      71980 |    6344 |    0 | 56509 |    308 |      0 |    0 |          5 |
+|     u_bb_ctrl            |        axi_lite_bb_ctrl |        563 |        563 |       0 |    0 |   671 |      0 |      0 |    0 |          2 |
+|     u_bridge             |      axi4_l2_ch0_bridge |        188 |        148 |      40 |    0 |    70 |      0 |      0 |    0 |          0 |
+|     u_cmd_adapter        | axi_lite_l2_cmd_adapter |        119 |        119 |       0 |    0 |   333 |      0 |      0 |    0 |          0 |
+|     u_core               |          l2_noc_bb_core |      77456 |      71152 |    6304 |    0 | 55435 |    308 |      0 |    0 |          3 |
+|       (u_core)           |          l2_noc_bb_core |         14 |         14 |       0 |    0 |   102 |      0 |      0 |    0 |          0 |
+|       u_bb               |             blackbox_ip |       2729 |       2417 |     312 |    0 |  1910 |     12 |      0 |    0 |          0 |
+|       u_bb2              |             blackbox_nl |       3514 |       2890 |     624 |    0 |  2280 |     24 |      0 |    0 |          0 |
+|       u_l2               |            TOP_L2_cache |      68824 |      63768 |    5056 |    0 | 49474 |    256 |      0 |    0 |          3 |
+|       u_noc              |            FIFO_intf_bb |       2382 |       2070 |     312 |    0 |  1669 |     16 |      0 |    0 |          0 |
++--------------------------+-------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+
