@@ -1,0 +1,252 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date              : Wed Oct 21 15:06:01 2026
+| Host              : DESKTOP-A606M51 running 64-bit major release  (build 9200)
+| Command           : report_timing -max_paths 3 -nworst 1 -unique_pins -path_type full -file C:/RTL_YJH/L2_verification/verif/bb256/scripts/build_200MHz/top3_paths.rpt
+| Design            : l2_system_bd_wrapper
+| Device            : xczu9eg-ffvb1156
+| Speed File        : -2  PRODUCTION 1.30 05-15-2022
+| Design State      : Physopt postRoute
+| Temperature Grade : E
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.411ns  (required time - arrival time)
+  Source:                 u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[14]/D
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.570ns  (logic 3.188ns (69.754%)  route 1.382ns (30.246%))
+  Logic Levels:           16  (CARRY8=3 DSP_A_B_DATA=1 DSP_ALU=2 DSP_C_DATA=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_OUTPUT=2 DSP_PREADD_DATA=1 LUT2=2 LUT6=2)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 5.020 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.028     0.028    
+    SLICE_X48Y334        FDCE                         0.000     0.028 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[0]/C
+    SLICE_X48Y334        FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[0]/Q
+                         net (fo=63, routed)          0.222     0.329    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[1]_0[0]
+    SLICE_X49Y335        LUT6 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.152     0.481 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/w_fifo_sram_write_addr_17b_11_i_18/O
+                         net (fo=1, routed)           0.175     0.656    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/w_fifo_sram_write_addr_17b_11_i_18_n_0
+    SLICE_X49Y336        LUT6 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.039     0.695 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/w_fifo_sram_write_addr_17b_11_i_8/O
+                         net (fo=1, routed)           0.256     0.951    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/A[2]
+    DSP48E2_X9Y137       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[2]_A2_DATA[2])
+                                                      0.192     1.143 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_A_B_DATA_INST/A2_DATA[2]
+                         net (fo=1, routed)           0.000     1.143    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_A_B_DATA.A2_DATA<2>
+    DSP48E2_X9Y137       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[2]_A2A1[2])
+                                                      0.076     1.219 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_PREADD_DATA_INST/A2A1[2]
+                         net (fo=1, routed)           0.000     1.219    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_PREADD_DATA.A2A1<2>
+    DSP48E2_X9Y137       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[2]_U[2])
+                                                      0.505     1.724 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_MULTIPLIER_INST/U[2]
+                         net (fo=1, routed)           0.000     1.724    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_MULTIPLIER.U<2>
+    DSP48E2_X9Y137       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[2]_U_DATA[2])
+                                                      0.047     1.771 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_M_DATA_INST/U_DATA[2]
+                         net (fo=1, routed)           0.000     1.771    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_M_DATA.U_DATA<2>
+    DSP48E2_X9Y137       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[2]_ALU_OUT[2])
+                                                      0.585     2.356 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_ALU_INST/ALU_OUT[2]
+                         net (fo=1, routed)           0.000     2.356    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_ALU.ALU_OUT<2>
+    DSP48E2_X9Y137       DSP_OUTPUT (Prop_DSP_OUTPUT_DSP48E2_ALU_OUT[2]_P[2])
+                                                      0.109     2.465 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_OUTPUT_INST/P[2]
+                         net (fo=1, routed)           0.232     2.697    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/C[2]
+    DSP48E2_X9Y136       DSP_C_DATA (Prop_DSP_C_DATA_DSP48E2_C[2]_C_DATA[2])
+                                                      0.105     2.802 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_C_DATA_INST/C_DATA[2]
+                         net (fo=2, routed)           0.000     2.802    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_C_DATA.C_DATA<2>
+    DSP48E2_X9Y136       DSP_ALU (Prop_DSP_ALU_DSP48E2_C_DATA[2]_ALU_OUT[2])
+                                                      0.585     3.387 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_ALU_INST/ALU_OUT[2]
+                         net (fo=1, routed)           0.000     3.387    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_ALU.ALU_OUT<2>
+    DSP48E2_X9Y136       DSP_OUTPUT (Prop_DSP_OUTPUT_DSP48E2_ALU_OUT[2]_P[2])
+                                                      0.109     3.496 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_OUTPUT_INST/P[2]
+                         net (fo=1, routed)           0.229     3.725    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/P[2]
+    SLICE_X49Y338        LUT2 (Prop_C6LUT_SLICEM_I1_O)
+                                                      0.037     3.762 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr[7]_i_24/O
+                         net (fo=1, routed)           0.021     3.783    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr[7]_i_24_n_0
+    SLICE_X49Y338        CARRY8 (Prop_CARRY8_SLICEM_S[2]_O[5])
+                                                      0.200     3.983 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[7]_i_2/O[5]
+                         net (fo=2, routed)           0.185     4.168    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/O[5]
+    SLICE_X48Y338        LUT2 (Prop_F6LUT_SLICEL_I1_O)
+                                                      0.097     4.265 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr[7]_i_5/O
+                         net (fo=1, routed)           0.011     4.276    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/S[5]
+    SLICE_X48Y338        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     4.431 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[7]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     4.457    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[7]_i_1_n_0
+    SLICE_X48Y339        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.116     4.573 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[14]_i_1/O[5]
+                         net (fo=1, routed)           0.025     4.598    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[14]_1[14]
+    SLICE_X48Y339        FDCE                                         r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[14]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                         propagated clock network latency
+                                                      0.020     5.020    
+                         clock pessimism              0.000     5.020    
+                         clock uncertainty           -0.035     4.985    
+    SLICE_X48Y339        FDCE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     5.010    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[14]
+  -------------------------------------------------------------------
+                         required time                          5.010    
+                         arrival time                          -4.598    
+  -------------------------------------------------------------------
+                         slack                                  0.411    
+
+Slack (MET) :             0.441ns  (required time - arrival time)
+  Source:                 u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[13]/D
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.540ns  (logic 3.158ns (69.554%)  route 1.382ns (30.446%))
+  Logic Levels:           16  (CARRY8=3 DSP_A_B_DATA=1 DSP_ALU=2 DSP_C_DATA=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_OUTPUT=2 DSP_PREADD_DATA=1 LUT2=2 LUT6=2)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 5.020 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.028     0.028    
+    SLICE_X48Y334        FDCE                         0.000     0.028 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[0]/C
+    SLICE_X48Y334        FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[0]/Q
+                         net (fo=63, routed)          0.222     0.329    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/rd_ptr_reg[1]_0[0]
+    SLICE_X49Y335        LUT6 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.152     0.481 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/w_fifo_sram_write_addr_17b_11_i_18/O
+                         net (fo=1, routed)           0.175     0.656    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/w_fifo_sram_write_addr_17b_11_i_18_n_0
+    SLICE_X49Y336        LUT6 (Prop_H6LUT_SLICEM_I0_O)
+                                                      0.039     0.695 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/w_fifo_sram_write_addr_17b_11_i_8/O
+                         net (fo=1, routed)           0.256     0.951    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/A[2]
+    DSP48E2_X9Y137       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[2]_A2_DATA[2])
+                                                      0.192     1.143 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_A_B_DATA_INST/A2_DATA[2]
+                         net (fo=1, routed)           0.000     1.143    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_A_B_DATA.A2_DATA<2>
+    DSP48E2_X9Y137       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[2]_A2A1[2])
+                                                      0.076     1.219 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_PREADD_DATA_INST/A2A1[2]
+                         net (fo=1, routed)           0.000     1.219    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_PREADD_DATA.A2A1<2>
+    DSP48E2_X9Y137       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[2]_U[2])
+                                                      0.505     1.724 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_MULTIPLIER_INST/U[2]
+                         net (fo=1, routed)           0.000     1.724    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_MULTIPLIER.U<2>
+    DSP48E2_X9Y137       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[2]_U_DATA[2])
+                                                      0.047     1.771 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_M_DATA_INST/U_DATA[2]
+                         net (fo=1, routed)           0.000     1.771    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_M_DATA.U_DATA<2>
+    DSP48E2_X9Y137       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[2]_ALU_OUT[2])
+                                                      0.585     2.356 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_ALU_INST/ALU_OUT[2]
+                         net (fo=1, routed)           0.000     2.356    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_ALU.ALU_OUT<2>
+    DSP48E2_X9Y137       DSP_OUTPUT (Prop_DSP_OUTPUT_DSP48E2_ALU_OUT[2]_P[2])
+                                                      0.109     2.465 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_11/DSP_OUTPUT_INST/P[2]
+                         net (fo=1, routed)           0.232     2.697    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/C[2]
+    DSP48E2_X9Y136       DSP_C_DATA (Prop_DSP_C_DATA_DSP48E2_C[2]_C_DATA[2])
+                                                      0.105     2.802 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_C_DATA_INST/C_DATA[2]
+                         net (fo=2, routed)           0.000     2.802    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_C_DATA.C_DATA<2>
+    DSP48E2_X9Y136       DSP_ALU (Prop_DSP_ALU_DSP48E2_C_DATA[2]_ALU_OUT[2])
+                                                      0.585     3.387 f  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_ALU_INST/ALU_OUT[2]
+                         net (fo=1, routed)           0.000     3.387    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_ALU.ALU_OUT<2>
+    DSP48E2_X9Y136       DSP_OUTPUT (Prop_DSP_OUTPUT_DSP48E2_ALU_OUT[2]_P[2])
+                                                      0.109     3.496 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/w_fifo_sram_write_addr_17b_1/DSP_OUTPUT_INST/P[2]
+                         net (fo=1, routed)           0.229     3.725    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/P[2]
+    SLICE_X49Y338        LUT2 (Prop_C6LUT_SLICEM_I1_O)
+                                                      0.037     3.762 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr[7]_i_24/O
+                         net (fo=1, routed)           0.021     3.783    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr[7]_i_24_n_0
+    SLICE_X49Y338        CARRY8 (Prop_CARRY8_SLICEM_S[2]_O[5])
+                                                      0.200     3.983 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[7]_i_2/O[5]
+                         net (fo=2, routed)           0.185     4.168    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/O[5]
+    SLICE_X48Y338        LUT2 (Prop_F6LUT_SLICEL_I1_O)
+                                                      0.097     4.265 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr[7]_i_5/O
+                         net (fo=1, routed)           0.011     4.276    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/S[5]
+    SLICE_X48Y338        CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     4.431 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[7]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     4.457    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[7]_i_1_n_0
+    SLICE_X48Y339        CARRY8 (Prop_CARRY8_SLICEL_CI_O[4])
+                                                      0.086     4.543 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_ADDR/r_fifo_noc_read_addr_reg[14]_i_1/O[4]
+                         net (fo=1, routed)           0.025     4.568    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[14]_1[13]
+    SLICE_X48Y339        FDCE                                         r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[13]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                         propagated clock network latency
+                                                      0.020     5.020    
+                         clock pessimism              0.000     5.020    
+                         clock uncertainty           -0.035     4.985    
+    SLICE_X48Y339        FDCE (Setup_EFF_SLICEL_C_D)
+                                                      0.025     5.010    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_cmd_decoder_channel_2_in/r_fifo_noc_read_addr_reg[13]
+  -------------------------------------------------------------------
+                         required time                          5.010    
+                         arrival time                          -4.568    
+  -------------------------------------------------------------------
+                         slack                                  0.441    
+
+Slack (MET) :             0.444ns  (required time - arrival time)
+  Source:                 u_top/u_core/u_bb2/r_c2_valid_reg/C
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/mem_reg[3][233]/CE
+                            (rising edge-triggered cell FDCE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.451ns  (logic 0.176ns (3.954%)  route 4.275ns (96.046%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 5.021 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X50Y348        FDCE                         0.000     0.030 r  u_top/u_core/u_bb2/r_c2_valid_reg/C
+    SLICE_X50Y348        FDCE (Prop_HFF2_SLICEM_C_Q)
+                                                      0.078     0.108 r  u_top/u_core/u_bb2/r_c2_valid_reg/Q
+                         net (fo=588, routed)         0.618     0.726    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/r_write_data_S_reg[0][0]
+    SLICE_X47Y334        LUT5 (Prop_C5LUT_SLICEL_I1_O)
+                                                      0.098     0.824 r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/i___1611/O
+                         net (fo=256, routed)         3.657     4.481    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/mem_reg[3][0]_0[0]
+    SLICE_X14Y211        FDCE                                         r  u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/mem_reg[3][233]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                         propagated clock network latency
+                                                      0.021     5.021    
+                         clock pessimism              0.000     5.021    
+                         clock uncertainty           -0.035     4.986    
+    SLICE_X14Y211        FDCE (Setup_DFF_SLICEM_C_CE)
+                                                     -0.061     4.925    u_top/u_core/u_l2/u_cmd_decoder_SRAM_group_merge/u_cmd_decoder_channel_2_in_wrapper/u_FIFO_interface/UFIFO_interface_on_fire/UFIFO_DATA/mem_reg[3][233]
+  -------------------------------------------------------------------
+                         required time                          4.925    
+                         arrival time                          -4.481    
+  -------------------------------------------------------------------
+                         slack                                  0.444    
+
+
+
+

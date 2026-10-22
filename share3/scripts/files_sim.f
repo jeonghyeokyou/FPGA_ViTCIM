@@ -1,0 +1,64 @@
+# bb256 : full system (sim models). + tb/bb256_pkg.sv + TB
+# paths are relative to share3/scripts/work_*/ (the directory the .bat / Tcl run in)
+# L2
+../../rtl/l2/FIFO.sv
+../../rtl/l2/FIFO_modified.sv
+../../rtl/l2/skid_buffer.sv
+../../rtl/l2/sync_fifo_L2.sv
+../../rtl/model_sim/ram_mimic.sv
+../../rtl/l2/sram_controller.sv
+../../rtl/l2/sram_read_ctrl_axi.sv
+../../rtl/l2/sram_write_ctrl_axi.sv
+../../rtl/l2/sramctrl_channel_0.sv
+../../rtl/l2/FIFO_interface_handshake.sv
+../../rtl/l2/FIFO_interface_on_fire.sv
+../../rtl/l2/FIFO_interface.sv
+../../rtl/l2/L2_FIFO_interface_handshake.sv
+../../rtl/l2/L2_FIFO_interface_on_fire.sv
+../../rtl/l2/L2_FIFO_interface.sv
+../../rtl/l2/L2_FIFO_interface_wrapper.sv
+../../rtl/l2/SRAM_group.sv
+../../rtl/l2/SRAM_group_decoder.sv
+../../rtl/l2/SRAM_group_merge.sv
+../../rtl/l2/SRAM_group_interface_channel_0.sv
+../../rtl/l2/CMD_dispatcher.sv
+../../rtl/l2/cmd_decoder_SRAM_group_read_interface.sv
+../../rtl/l2/cmd_decoder_SRAM_group_write_interface.sv
+../../rtl/l2/cmd_decoder_SRAM_group_interface.sv
+../../rtl/l2/cmd_decoder_channel_1_in.sv
+../../rtl/l2/cmd_decoder_channel_1_in_wrapper.sv
+../../rtl/fix/cmd_decoder_channel_2_in.sv
+../../rtl/l2/cmd_decoder_channel_2_in_wrapper.sv
+../../rtl/fix/cmd_decoder_channel_1_wgt.sv
+../../rtl/l2/cmd_decoder_channel_1_wgt_wrapper.sv
+../../rtl/fix/cmd_decoder_channel_2_wgt.sv
+../../rtl/l2/cmd_decoder_channel_2_wgt_wrapper.sv
+../../rtl/l2/cmd_decoder_SRAM_group_merge.sv
+../../rtl/l2/TOP_L2_cache.sv
+# NoC
+../../rtl/noc/noc_FIFO.v
+../../rtl/noc/noc_FIFO_modified.v
+../../rtl/noc/noc_FIFO_interface_handshake.v
+../../rtl/noc/noc_FIFO_interface_on_fire.v
+../../rtl/noc/noc_FIFO_interface_hsfix.v
+../../rtl/noc/noc_sram_controller.v
+../../rtl/noc/L1_FIFO_interface_on_fire.v
+../../rtl/model_sim/sram_mimic.v
+../../rtl/noc/L1_FIFO_interface_handshake.v
+../../rtl/noc/L1_FIFO_interface.v
+# L1 / weight memory / blackbox / PS interface
+../../rtl/bb/noc_ch1_in_adapter.sv
+../../rtl/bb/noc_ch1_wgt_adapter.sv
+../../rtl/bb/noc_L1_FIFO_intf.v
+../../rtl/bb/l1_sram.sv
+../../rtl/bb/l1_port_mux.sv
+../../rtl/fix/FIFO_intf_bb.sv
+../../rtl/bb/blackbox_ip.sv
+../../rtl/bb/noc_wr_adapter.sv
+../../rtl/bb/blackbox_nl.sv
+../../rtl/bb/axi4_l2_ch0_bridge.sv
+../../rtl/bb/axi_lite_bb_ctrl.sv
+../../rtl/bb/axi_lite_l2_cmd_adapter.sv
+../../rtl/bb/l2_noc_bb_core.sv
+../../rtl/bb/l2_system_top.sv
+../../rtl/bb/l2_system_bd_wrapper.v

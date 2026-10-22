@@ -1,0 +1,4 @@
+# simulation run directories (regenerate with scripts/00_run_sim.bat)
+scripts/work_*/
+# synthesis output (regenerate with scripts/01_build_synth.bat ; reference reports are in reports/)
+scripts/build*/

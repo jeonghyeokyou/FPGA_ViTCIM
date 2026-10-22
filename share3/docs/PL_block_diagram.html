@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>bb256 PL 블록도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* layout : one wide left-to-right block diagram (PS -> PL interfaces -> L2 -> L1 / blackboxes), two reference tables under it */
+  :root {
+    --bg: #f4f6f8;
+    --fg: #1b2430;
+    --muted: #5d6a78;
+    --line: #c3ccd6;
+    --panel: #ffffff;
+    --acc: #2459c9;
+    --acc-tint: #e6edfb;
+    --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12171e; --fg: #e6ebf1; --muted: #9aa7b5; --line: #3a4552;
+      --panel: #1b222c; --acc: #7ea6ff; --acc-tint: #1d2a44; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12171e; --fg: #e6ebf1; --muted: #9aa7b5; --line: #3a4552;
+    --panel: #1b222c; --acc: #7ea6ff; --acc-tint: #1d2a44; color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-block: 32px 48px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  header { display: flex; flex-direction: column; gap: 6px; }
+  h1 { margin: 0; font-size: 26px; font-weight: 700; text-wrap: balance; }
+  .sub { margin: 0; color: var(--muted); max-width: 68ch; }
+  h2 { margin: 0 0 10px; font-size: 16px; font-weight: 600; }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  svg.diag { display: block; width: 100%; min-width: 920px; height: auto; color: var(--fg); }
+  figcaption { color: var(--muted); font-size: 14px; max-width: 80ch; }
+
+  /* svg text + shapes (page CSS styles the inline svg) */
+  .diag text { font-family: var(--font-body); font-size: 12.5px; fill: currentColor; }
+  .diag .name { font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; }
+  .diag .big { font-size: 15px; font-weight: 700; }
+  .diag .mono { font-family: var(--font-mono); font-size: 11.5px; }
+  .diag .mut { fill: var(--muted); }
+  .diag .accT { fill: var(--acc); }
+  .diag .box { fill: var(--panel); stroke: var(--fg); stroke-width: 1.4; }
+  .diag .grp { fill: var(--acc-tint); stroke: var(--acc); stroke-width: 1.4; }
+  .diag .sub { fill: var(--panel); stroke: var(--acc); stroke-width: 1.2; }
+  .diag .pl { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+  .diag .w64 { stroke: var(--fg); stroke-width: 1.8; fill: none; }
+  .diag .w256 { stroke: var(--acc); stroke-width: 3.2; fill: none; }
+  .diag .ctl { stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 5 4; fill: none; }
+  .diag .cFg { color: var(--fg); }
+  .diag .cAcc { color: var(--acc); }
+  .diag .cMut { color: var(--muted); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .sw { width: 30px; height: 0; border-top: 2px solid var(--fg); display: inline-block; }
+  .sw.acc { border-top: 4px solid var(--acc); }
+  .sw.ctl { border-top: 2px dashed var(--muted); }
+
+  .tables { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 24px; }
+  @media (max-width: 860px) { .tables { grid-template-columns: minmax(0, 1fr); } }
+  .tbl { overflow-x: auto; min-width: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--muted); }
+  td code, .mono-i { font-family: var(--font-mono); font-size: 12.5px; }
+  td.w { color: var(--acc); font-weight: 600; font-family: var(--font-mono); font-size: 12.5px; white-space: nowrap; }
+  td.w.n { color: var(--fg); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>bb256 PL 블록도</h1>
+    <p class="sub">L2 1 MiB에 CH1, CH2 blackbox를 붙인 PL 영역을 데이터 폭과 주소 비트만 남겨 정리했습니다. 모든 블록은 aclk 하나로 동작합니다.</p>
+  </header>
+
+  <figure>
+    <div class="scroll">
+      <svg class="diag" viewBox="0 0 1120 640" role="img"
+           aria-label="PS가 AXI4 64비트와 AXI-Lite 두 포트로 PL에 연결되고, L2 1 MiB가 ch1_in과 ch1_wgt 256비트로 L1과 CH1 blackbox에, ch2_in과 ch2_wgt 256비트로 CH2 blackbox에 연결된 블록도">
+        <defs>
+          <marker id="aFg" class="cFg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+          <marker id="aAcc" class="cAcc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+          <marker id="aMut" class="cMut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <!-- PL boundary -->
+        <rect class="pl" x="170" y="16" width="934" height="608" rx="14"/>
+        <text x="188" y="40" class="mut">PL · aclk 100 / 200 MHz</text>
+
+        <!-- PS -->
+        <rect class="box" x="16" y="60" width="110" height="520" rx="10"/>
+        <text x="71" y="300" text-anchor="middle" class="big">PS</text>
+        <text x="71" y="320" text-anchor="middle" class="mut">ARM A53</text>
+
+        <!-- PS -> PL ports -->
+        <line class="w64" x1="126" y1="115" x2="230" y2="115" marker-start="url(#aFg)" marker-end="url(#aFg)"/>
+        <text x="178" y="106" text-anchor="middle" class="name">S_AXI_DATA</text>
+        <text x="178" y="132" text-anchor="middle" class="mono mut">AXI4 64b</text>
+
+        <line class="w64" x1="126" y1="297" x2="230" y2="297" marker-end="url(#aFg)"/>
+        <text x="178" y="288" text-anchor="middle" class="name">S_AXI_CMD</text>
+        <text x="178" y="314" text-anchor="middle" class="mono mut">Lite 64b</text>
+
+        <line class="w64" x1="126" y1="520" x2="230" y2="520" marker-start="url(#aFg)" marker-end="url(#aFg)"/>
+        <text x="178" y="511" text-anchor="middle" class="name">S_AXI_BB</text>
+        <text x="178" y="537" text-anchor="middle" class="mono mut">Lite 32b</text>
+
+        <!-- interface blocks -->
+        <rect class="box" x="230" y="80" width="170" height="70" rx="8"/>
+        <text x="315" y="110" text-anchor="middle" class="name">axi4_l2_ch0_bridge</text>
+        <text x="315" y="130" text-anchor="middle" class="mut">1 MiB 창 · addr 20b</text>
+
+        <rect class="box" x="230" y="262" width="170" height="70" rx="8"/>
+        <text x="315" y="292" text-anchor="middle" class="name">axi_lite_l2_cmd_adapter</text>
+        <text x="315" y="312" text-anchor="middle" class="mut">명령 push · 완료 카운터</text>
+
+        <rect class="box" x="230" y="480" width="170" height="80" rx="8"/>
+        <text x="315" y="510" text-anchor="middle" class="name">axi_lite_bb_ctrl</text>
+        <text x="315" y="530" text-anchor="middle" class="mut">CH1 0x20~ · CH2 0x120~</text>
+        <text x="315" y="548" text-anchor="middle" class="mut">Golden 창 32b × 8</text>
+
+        <!-- interface -> L2 -->
+        <line class="w64" x1="400" y1="115" x2="470" y2="115" marker-start="url(#aFg)" marker-end="url(#aFg)"/>
+        <text x="435" y="106" text-anchor="middle" class="mono">ch0 64b</text>
+        <text x="435" y="132" text-anchor="middle" class="mono mut">addr 17b</text>
+
+        <line class="w64" x1="400" y1="297" x2="470" y2="297" marker-end="url(#aFg)"/>
+        <text x="435" y="288" text-anchor="middle" class="mono">cmd 64b</text>
+        <text x="435" y="314" text-anchor="middle" class="mono mut">op 1~7</text>
+
+        <!-- L2 -->
+        <rect class="box" x="470" y="60" width="180" height="520" rx="10"/>
+        <text x="560" y="272" text-anchor="middle" class="big">L2 · 1 MiB</text>
+        <text x="560" y="294" text-anchor="middle" class="name">TOP_L2_cache</text>
+        <text x="560" y="314" text-anchor="middle" class="mono mut">8 grp × 16 blk</text>
+        <text x="560" y="330" text-anchor="middle" class="mono mut">× 1024 × 64b</text>
+
+        <!-- ===== CH1 ===== -->
+        <!-- L1 -->
+        <rect class="box" x="770" y="72" width="170" height="76" rx="8"/>
+        <text x="855" y="100" text-anchor="middle" class="big">L1</text>
+        <text x="855" y="120" text-anchor="middle" class="mono">256b × 2048</text>
+        <text x="855" y="137" text-anchor="middle" class="mut">FIFO_intf_bb</text>
+
+        <line class="w256" x1="650" y1="110" x2="770" y2="110" marker-start="url(#aAcc)" marker-end="url(#aAcc)"/>
+        <text x="710" y="100" text-anchor="middle" class="mono accT">ch1_in 256b</text>
+        <text x="710" y="128" text-anchor="middle" class="mono mut">addr 19b</text>
+
+        <!-- blackbox_ip -->
+        <rect class="grp" x="770" y="200" width="310" height="120" rx="10"/>
+        <text x="786" y="222" class="name accT">blackbox_ip (CH1)</text>
+        <rect class="sub" x="786" y="236" width="140" height="64" rx="6"/>
+        <text x="856" y="262" text-anchor="middle">weight mem</text>
+        <text x="856" y="281" text-anchor="middle" class="mono">256b × 1024</text>
+        <rect class="sub" x="940" y="236" width="124" height="64" rx="6"/>
+        <text x="1002" y="262" text-anchor="middle">Golden</text>
+        <text x="1002" y="281" text-anchor="middle" class="mono">256b × 256</text>
+
+        <line class="w256" x1="650" y1="268" x2="786" y2="268" marker-start="url(#aAcc)" marker-end="url(#aAcc)"/>
+        <text x="712" y="258" text-anchor="middle" class="mono accT">ch1_wgt 256b</text>
+        <text x="712" y="286" text-anchor="middle" class="mono mut">addr 18b</text>
+
+        <!-- L1 <-> blackbox_ip -->
+        <line class="w256" x1="855" y1="148" x2="855" y2="236" marker-start="url(#aAcc)" marker-end="url(#aAcc)"/>
+        <text x="868" y="172" class="mut">input 읽기 · Golden 쓰기</text>
+        <text x="868" y="189" class="mono">256b · addr 11b</text>
+
+        <!-- ===== CH2 ===== -->
+        <rect class="grp" x="770" y="372" width="310" height="196" rx="10"/>
+        <text x="786" y="394" class="name accT">blackbox_nl (CH2)</text>
+        <rect class="sub" x="786" y="406" width="140" height="44" rx="6"/>
+        <text x="856" y="424" text-anchor="middle">input mem</text>
+        <text x="856" y="441" text-anchor="middle" class="mono">256b × 2048</text>
+        <rect class="sub" x="786" y="460" width="140" height="44" rx="6"/>
+        <text x="856" y="478" text-anchor="middle">weight mem</text>
+        <text x="856" y="495" text-anchor="middle" class="mono">256b × 512</text>
+        <rect class="sub" x="786" y="514" width="140" height="44" rx="6"/>
+        <text x="856" y="532" text-anchor="middle">Golden</text>
+        <text x="856" y="549" text-anchor="middle" class="mono">256b × 256</text>
+        <text x="942" y="532" class="mut">BB 가 master</text>
+        <text x="942" y="549" class="mono mut">{last,ch,h,w}</text>
+        <text x="942" y="440" class="mut">DBG2 로</text>
+        <text x="942" y="457" class="mut">PS 가 한 줄씩 읽음</text>
+
+        <line class="w256" x1="650" y1="428" x2="786" y2="428" marker-end="url(#aAcc)"/>
+        <text x="712" y="418" text-anchor="middle" class="mono accT">ch2_in LOAD</text>
+        <text x="712" y="446" text-anchor="middle" class="mono mut">256b · addr 15b</text>
+
+        <line class="w256" x1="650" y1="482" x2="786" y2="482" marker-end="url(#aAcc)"/>
+        <text x="712" y="472" text-anchor="middle" class="mono accT">ch2_wgt LOAD</text>
+        <text x="712" y="500" text-anchor="middle" class="mono mut">256b · addr 9b</text>
+
+        <line class="w256" x1="786" y1="536" x2="650" y2="536" marker-end="url(#aAcc)"/>
+        <text x="712" y="526" text-anchor="middle" class="mono accT">ch2_in STORE</text>
+        <text x="712" y="554" text-anchor="middle" class="mono mut">256b · addr 32b</text>
+
+        <!-- control bus from axi_lite_bb_ctrl -->
+        <polyline class="ctl" points="315,560 315,600 1092,600 1092,260"/>
+        <line class="ctl" x1="1092" y1="260" x2="1080" y2="260" marker-end="url(#aMut)"/>
+        <line class="ctl" x1="1092" y1="470" x2="1080" y2="470" marker-start="url(#aMut)" marker-end="url(#aMut)"/>
+        <text x="700" y="592" text-anchor="middle" class="mut">제어 레지스터 · Golden 적재 · DBG2 읽기 (32b)</text>
+      </svg>
+    </div>
+    <figcaption>
+      굵은 파란 선은 L2와 blackbox 쪽 메모리 사이의 256b NoC 경로입니다.
+      CH1은 input을 L1에서 읽고 Golden을 L1 OUT에 써서 ch1_in STORE로 L2에 돌려줍니다.
+      CH2는 Golden을 ch2_in STORE 포트로 직접 보냅니다. CH2의 weight와 input은 L2로 되돌리는 경로가 없어서 BB 레지스터의 DBG2 창으로 확인합니다.
+    </figcaption>
+    <div class="legend" aria-hidden="true">
+      <span><i class="sw acc"></i>256b 데이터 (NoC 채널)</span>
+      <span><i class="sw"></i>64b AXI / ch0 / 명령</span>
+      <span><i class="sw ctl"></i>32b 제어 (AXI-Lite 레지스터)</span>
+    </div>
+  </figure>
+
+  <section class="tables">
+    <div class="tbl">
+      <h2>L2 채널</h2>
+      <table>
+        <thead><tr><th>채널</th><th>데이터</th><th>주소</th><th>상대 메모리</th><th>opcode</th></tr></thead>
+        <tbody>
+          <tr><td><code>ch0</code></td><td class="w n">64b</td><td><code>17b</code></td><td>PS AXI4 창</td><td>–</td></tr>
+          <tr><td><code>ch1_in</code></td><td class="w">256b</td><td><code>19b</code> {mc 8, local 11}</td><td>L1 256b × 2048</td><td>1 LOAD · 2 STORE</td></tr>
+          <tr><td><code>ch1_wgt</code></td><td class="w">256b</td><td><code>18b</code> {mc 8, local 10}</td><td>CH1 weight 256b × 1024</td><td>5 LOAD · 6 STORE</td></tr>
+          <tr><td><code>ch2_in</code></td><td class="w">256b</td><td>LOAD <code>15b</code> (하위 11b 사용)<br>STORE <code>32b</code> {last, ch, h, w}</td><td>CH2 input 256b × 2048<br>CH2 Golden → L2</td><td>3 LOAD · 4 STORE</td></tr>
+          <tr><td><code>ch2_wgt</code></td><td class="w">256b</td><td><code>9b</code></td><td>CH2 weight 256b × 512</td><td>7 LOAD</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl">
+      <h2>PS ↔ PL 포트</h2>
+      <table>
+        <thead><tr><th>포트</th><th>종류</th><th>데이터</th><th>주소</th></tr></thead>
+        <tbody>
+          <tr><td><code>S_AXI_DATA</code></td><td>AXI4</td><td class="w n">64b</td><td><code>40b</code> (1 MiB = 20b 사용)</td></tr>
+          <tr><td><code>S_AXI_CMD</code></td><td>AXI-Lite</td><td class="w n">64b</td><td><code>12b</code></td></tr>
+          <tr><td><code>S_AXI_BB</code></td><td>AXI-Lite</td><td class="w n">32b</td><td><code>12b</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+</body>
+</html>
