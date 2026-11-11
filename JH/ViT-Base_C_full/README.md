@@ -9,7 +9,7 @@
 |---|---|---|
 | **0 준비** | 폴더 복사, 회귀, HF 구조 확인, 함수 분리 계획 | **완료** (2026-11-11) |
 | **1 생성기 `--full`** | 12 layer golden, layer별 cosine · top-1 | **완료** (2026-11-11) — 회귀 byte 동일, mock / HF PASS, top-1 285 = HF |
-| 2 PS 함수 | `ps_embed`, `ps_ln_bf16`, `ps_head` (x86 + aarch64) | 미착수 |
+| **2 PS 함수** | `ps_embed`, `ps_ln_bf16`, `ps_head` (x86 + aarch64) | **완료** (2026-11-11) — `test_full_ps` x86 / aarch64 (qemu) PASS, mock · data_full |
 | 3 전체 흐름 | `layer_run` 분리, `vit_full_sim --layers 12` | 미착수 |
 | 4 보드 준비 | 데이터 zip, 보드 명령 | 미착수 |
 
@@ -57,6 +57,41 @@ lnc (python float), logits (python float 순서대로 합, bit-exact), top-1 = a
 | logits cosine vs HF | 0.917219 |
 | top-1 | 우리 **285 Egyptian cat** = HF 285 Egyptian cat (같음) |
 | HF top-5 | 285 Egyptian cat, 281 tabby, 282 tiger cat, 287 lynx, 284 Siamese cat → 우리 top-1 포함 |
+| top-1 − top-2 logit 차이 (우리) | 11.0883 − 9.7691 (281 tabby) = **1.3191** |
+| top-1 − top-2 logit 차이 (HF) | 12.4216 − 9.2270 (281 tabby) = **3.1946** |
+
+`meta.json` 의 `summary` 에 `top2`, `top1_top2_gap`, `hf_top2`, `hf_top1_top2_gap` 로도 기록. 같은 결론이지만 여유가 HF 의 약 41 % 로 줄었다
+(양자화 오차가 쌓인 결과 — 다른 이미지에서는 top-1 이 바뀔 수 있음, 지시서 10절 ③ 여러 장 검증 때 확인).
+meta.json 에는 지시서 5.3절대로 `torchvision` 버전 (0.29.2+cpu) 과 `image_processor`
+(`transformers.models.vit.image_processing_vit.ViTImageProcessor`) 도 기록한다.
+
+## Phase 2 결과 (`full_ps.c`, `test_full_ps.c`)
+
+| 함수 | 파일 | 내용 |
+|---|---|---|
+| `ps_embed` | `full_ps.c` | pixels → 패치 (t/14, t%14), 원소 (ch, kh, kw) 를 직접 index → 순서대로 double 합 + b + pos → BF16. CLS = cls + pos[0] |
+| `ps_ln_bf16` | `full_ps.c` | 토큰 1개 LN → BF16 (마지막 LN, CLS). 식은 `ps_ln_row` 공유 |
+| `ps_ln_row` | `mlp_ps.c` | `ps_ln2_mx` 안의 토큰 1개 LN 을 함수로 뺀 것 (`ps_ln2_mx` 결과 불변) |
+| LN1 | `ps_ln2_mx` 그대로 | 파라미터만 `ln1_w` / `ln1_b` |
+| `ps_head`, `ps_top1` | `full_ps.c` | 768 BF16 → logits float32 (순서대로 double 합 + b), 첫 번째 최댓값 index |
+
+빌드: `make test_full_ps` (x86: `mingw32-make test_full_ps CC=gcc EXE=.exe`, aarch64: `CC=aarch64-linux-gnu-gcc CFLAGS="... -static"`),
+`full_ps.c` / `mlp_ps.c` 는 `-ffp-contract=off`. 실행: `test_full_ps --data C:\RTL_YJH\data_full`.
+
+| 테스트 | x86 mock | x86 data_full | aarch64 (qemu) mock | aarch64 (qemu) data_full |
+|---|---|---|---|---|
+| T1 embed == h0_golden (151,296 BF16) | PASS | PASS (51 ms) | PASS | PASS (806 ms) |
+| T2 LN1 × 12 layer == x.bin + x_scale.bin | 12 PASS | 12 PASS (3–4 ms / layer) | 12 PASS | 12 PASS (25 ms / layer) |
+| T3 마지막 LN (l11 R2 CLS) == lnc_golden | PASS | PASS | PASS | PASS |
+| T4 head == logits_golden (bit-exact), top-1 | PASS, 492 | PASS, **285** | PASS, 492 | PASS, **285** |
+| T5 1 bit 고장 4가지 (pixel / l05 h_in / LN_f γ / head W) | 4 검출 | 4 검출 | 4 검출 | 4 검출 |
+| 마지막 줄 | `PASS (errors=0)` | `PASS (errors=0)` | `PASS (errors=0)` | `PASS (errors=0)` |
+
+- 회귀: `ps_ln_row` 분리 후 `test_mlp_ps` PASS — `data_l0_mx`, `data_full/l00`…`l11` (x86), `l05` (aarch64).
+- 경고: x86 / aarch64 경고 0, 새 파일 `-Wconversion -Werror` 통과. aarch64 `full_ps.o` / `mlp_ps.o` fmadd 0개.
+- (참고, 판정 아님) `-ffp-contract=off` 없이 빌드하면 `ps_embed` / `ps_head` / `ps_ln_row` 에 fmadd 가 생기지만 data_full 결과는 같았다.
+  embed / head 는 float × float 곱이 double 에서 정확해서 FMA 를 써도 값이 같고, LN 은 BF16 반올림이 차이를 흡수한 것. 규칙대로 플래그는 유지.
+- 시간은 참고값 (x86 clock, qemu 는 에뮬레이션이라 보드 A53 시간과 다름). 보드 예상은 Phase 4.
 
 - cosine 은 layer 5 에서 가장 낮고 (0.876) 6 부터 0.92 대로 회복. layer 4–6 에서 max\|R2\| 가 커지는 (243 → 1232) 것은 ViT 의 큰 activation 채널로 보이며 [추론], MXFP4 블록 scale 이 그 값에 맞춰지면서 같은 블록의 작은 값이 0 으로 깎이는 영향일 수 있다 [추론] — Phase 3 이후 필요하면 분석.
 - layer 0 cosine (0.975577) 이 `data_l0_mx` (0.975498) 와 조금 다른 것은 x.bin 이 HF float LN1 대신 PS LN1 (BF16 입력) 결과이기 때문 (지시서 3.1절, 정상).

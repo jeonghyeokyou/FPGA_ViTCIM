@@ -729,6 +729,10 @@ def get_tensors_hf_full(image_path):
     HF hook (transformers 5.x 구조 기준, 4.x 도 같은 방식으로 찾힘) : embedding 출력, layer l 출력, 마지막 LN 출력, logits"""
     import torch
     import transformers
+    try:    # VIT_FULL_TASK.md 5.3 : 없으면 transformers 5.x 가 PIL 전처리로 바꿔 pixels / x 가 현준 데이터와 달라진다
+        import torchvision
+    except ImportError:
+        raise RuntimeError("torchvision 이 없음 : pip install torchvision --index-url https://download.pytorch.org/whl/cpu")
     from PIL import Image
     from transformers import ViTImageProcessor, ViTForImageClassification
 
@@ -744,6 +748,7 @@ def get_tensors_hf_full(image_path):
         img = Image.open(image_path).convert("RGB")
         img_name = os.path.basename(image_path)
     pv = proc(images=img, return_tensors="pt")["pixel_values"]          # [1,3,224,224] float32
+    proc_name = type(proc).__module__ + "." + type(proc).__name__
     if tuple(pv.shape) != (1, 3, IMG, IMG):
         raise RuntimeError(f"pixel_values 크기 {tuple(pv.shape)}")
 
@@ -847,7 +852,7 @@ def get_tensors_hf_full(image_path):
     ref = {"h0": cap["emb"][0].double().numpy(), "out": [cap[f"out{l}"][0].double().numpy() for l in range(NL)],
            "lnf_cls": cap["lnf"][0, 0].double().numpy(), "logits": lg, "top5": top5}
     info = {"model": mid, "image": img_name, "transformers": transformers.__version__, "torch": torch.__version__,
-            "layer_norm_eps": eps, "hidden_act": act, "n_layers": NL, "embeddings": emb_name, "patch_conv": cv_name,
+            "torchvision": torchvision.__version__, "image_processor": proc_name, "layer_norm_eps": eps, "hidden_act": act, "n_layers": NL, "embeddings": emb_name, "patch_conv": cv_name,
             "cls_token": cls[0][0], "position_embeddings": pos[0][0], "final_ln": lnf_name, "classifier": hd_name,
             "qkv_names": list(names), "layer_modules": lnames,
             "hf_top1": top5[0], "hf_top1_label": id2label[top5[0]], "hf_top5": top5,
@@ -1129,9 +1134,19 @@ def main_full(a):
         print(f"  {r_['layer']:2d}   {r_.get('cos_hf', float('nan')):9.6f}   {r_.get('rel_hf', float('nan')):8.3%}"
               f"   {r_['cos_fp64']:11.6f}   {r_['rel_fp64']:10.3%}   {r_.get('fp64_vs_hf', float('nan')):10.2e}   {r_['max_abs']:7.4g}")
     h0v = bf16_to_f32(np.frombuffer(fe["h0"], dtype="<u2").reshape(N_TOK, D)).astype(np.float64)
-    summ = {"top1": top1, "top1_label": lab[top1], "logits_cos_fp64": cosine(lg, ref["logits"]),
+
+    def margin(v):
+        """top-1 과 top-2 의 logit 차이 (top-2 = top-1 을 뺀 최댓값)"""
+        v = np.asarray(v, np.float64)
+        o = np.argsort(-v, kind="stable")
+        return int(o[1]), float(v[o[0]] - v[o[1]])
+
+    t2, gap = margin(lg)
+    summ = {"top1": top1, "top1_label": lab[top1], "top2": t2, "top2_label": lab[t2], "top1_top2_gap": gap,
+            "logits_cos_fp64": cosine(lg, ref["logits"]),
             "fp64_top1": int(np.argmax(ref["logits"])), "h0_cos_fp64": cosine(h0v, ref["h0"])}
     print(f"  (info) h0 vs FP64 : cosine {summ['h0_cos_fp64']:.6f}")
+    print(f"  (info) 우리 logits : top-1 {top1} {lg[top1]:.4f}, top-2 {t2} '{lab[t2]}' {lg[t2]:.4f}, 차이 {gap:.4f}")
     print(f"  (info) logits vs FP64 : cosine {summ['logits_cos_fp64']:.6f}, FP64 top-1 {summ['fp64_top1']} {lab[summ['fp64_top1']]}")
     if hf:
         d_e = rel(ref["h0"], hf["h0"])
@@ -1142,6 +1157,10 @@ def main_full(a):
         summ.update(logits_cos_hf=cosine(lg, hf["logits"]), hf_top1=hf["top5"][0], hf_top1_label=lab[hf["top5"][0]],
                     hf_top5=hf["top5"], top1_in_hf_top5=top1 in hf["top5"], top1_eq_hf=top1 == hf["top5"][0])
         print(f"  (info) logits vs HF : cosine {summ['logits_cos_hf']:.6f}")
+        ht2, hgap = margin(hf["logits"])
+        summ.update(hf_top2=ht2, hf_top2_label=lab[ht2], hf_top1_top2_gap=hgap)
+        print(f"  (info) HF logits : top-1 {hf['top5'][0]} {hf['logits'][hf['top5'][0]]:.4f}, top-2 {ht2} '{lab[ht2]}'"
+              f" {hf['logits'][ht2]:.4f}, 차이 {hgap:.4f}")
         print(f"  (info) top-1 : ours {top1} '{lab[top1]}'  /  HF {hf['top5'][0]} '{lab[hf['top5'][0]]}'"
               f"  -> {'같음' if summ['top1_eq_hf'] else '다름'}, HF top-5 {hf['top5']} 안에 {'있음' if summ['top1_in_hf_top5'] else '없음'}")
         print(f"  (info) HF top-5 : " + ", ".join(f"{i} '{lab[i]}'" for i in hf["top5"]))

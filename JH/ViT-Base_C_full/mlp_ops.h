@@ -77,6 +77,8 @@ static inline size_t y2_off(int n, uint32_t t)  { return LB(Y2_LINES * (uint32_t
  * per token, double : mean / var summed i = 0..767 in order, y = ((x - mean) / sqrt(var + eps)) * g + b
  * -> float -> BF16 RNE -> MXFP4                                                                   */
 int  ps_ln2_mx(const uint8_t *r, const float *g, const float *b, double eps, uint8_t *x2, uint8_t *x2s);
+/* the LN of one token used above (no quantization) : in 768 BF16 (LE bytes) -> out 768 BF16 values (JH 2026-11-11) */
+void ps_ln_row(const uint8_t *in, const float *g, const float *b, double eps, uint16_t *out);
 /* g : GELU tile j (788 lines) -> lines 12t + (j % 12) of H4 plane j / 12 (h4 = all 4 planes) */
 int  ps_mx_g(const uint8_t *g, int tile, uint8_t *h4, uint8_t *h4s);
 /* partial (n, k) into acc (12,608 floats of tile n) : k = 0 starts from b2n (64 floats of tile n);

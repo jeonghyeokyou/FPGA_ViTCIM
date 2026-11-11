@@ -3,33 +3,42 @@
  * Build with -ffp-contract=off : gcc (gnu modes) may otherwise fuse a*b + c into one FMA
  * (aarch64 does), which rounds differently from numpy and breaks bit-exact LN2.
  * No hardware access here (x86 test: test_mlp_ps.c).
+ * JH 2026-11-11 (VIT_FULL_TASK.md 6.1): one token's LN moved to ps_ln_row() so that full_ps.c
+ *   (ps_ln_bf16, final LN) shares the same formula; ps_ln2_mx results unchanged (test_mlp_ps T1).
  */
 #include "mlp_ops.h"
 #include "mxfp4.h"
 
 #include <math.h>
 
+void ps_ln_row(const uint8_t *in, const float *g, const float *b, double eps, uint16_t *out)
+{
+    double x[VIT_DMODEL];
+    double s = 0.0;
+    for (int i = 0; i < VIT_DMODEL; i++) {                       /* in order, like the generator */
+        x[i] = bf16_to_d(rd_bf16(in + 2 * i));
+        s += x[i];
+    }
+    double mean = s / VIT_DMODEL;
+    double q = 0.0;
+    for (int i = 0; i < VIT_DMODEL; i++) {
+        double d = x[i] - mean;
+        q += d * d;
+    }
+    double sd = sqrt(q / VIT_DMODEL + eps);
+    for (int i = 0; i < VIT_DMODEL; i++) {
+        double y = ((x[i] - mean) / sd) * (double)g[i] + (double)b[i];
+        out[i] = f32_to_bf16((float)y);                          /* f64 -> f32 -> BF16 RNE */
+    }
+}
+
 int ps_ln2_mx(const uint8_t *r, const float *g, const float *b, double eps, uint8_t *x2, uint8_t *x2s)
 {
-    double x[VIT_DMODEL], v[VIT_DMODEL];
+    uint16_t y[VIT_DMODEL];
+    double v[VIT_DMODEL];
     for (uint32_t t = 0; t < VIT_TOKENS; t++) {
-        const uint8_t *rt = r + (size_t)t * VIT_DMODEL * 2;
-        double s = 0.0;
-        for (int i = 0; i < VIT_DMODEL; i++) {                   /* in order, like the generator */
-            x[i] = bf16_to_d(rd_bf16(rt + 2 * i));
-            s += x[i];
-        }
-        double mean = s / VIT_DMODEL;
-        double q = 0.0;
-        for (int i = 0; i < VIT_DMODEL; i++) {
-            double d = x[i] - mean;
-            q += d * d;
-        }
-        double sd = sqrt(q / VIT_DMODEL + eps);
-        for (int i = 0; i < VIT_DMODEL; i++) {
-            double y = ((x[i] - mean) / sd) * (double)g[i] + (double)b[i];
-            v[i] = bf16_to_d(f32_to_bf16((float)y));             /* f64 -> f32 -> BF16 RNE */
-        }
+        ps_ln_row(r + (size_t)t * VIT_DMODEL * 2, g, b, eps, y);
+        for (int i = 0; i < VIT_DMODEL; i++) v[i] = bf16_to_d(y[i]);
         if (mx_quant(v, VIT_DMODEL, x2 + LB(X_LINES_PER_TOKEN * t), x2s + 24 * t)) return -1;
     }
     return 0;

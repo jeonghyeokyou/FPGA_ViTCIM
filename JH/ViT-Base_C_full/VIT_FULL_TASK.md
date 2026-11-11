@@ -107,6 +107,13 @@
 - layer별: 우리 R2_l (BF16) vs HF layer l 출력 — cosine, 상대오차.
 - 마지막: logits cosine, **우리 top-1 vs HF top-1 (클래스 이름)**, HF top-5 안에 우리 top-1이 있는지.
 
+### 5.3 실행 환경 (2026-11-11 layer 0 실제 데이터 생성 때 확인된 것)
+- Python: `C:\RTL_YJH\venv_golden` (Python 3.11.9, torch 2.15.0+cpu, transformers 5.22.2)을 그대로 쓴다. Windows는 `golden/run_gen_win.py`로 실행.
+- **torchvision 필수**: transformers 5.x는 torchvision이 없으면 이미지 전처리를 PIL 방식으로 바꿔 `pixels` / `x.bin`이 달라진다 (현준 데이터와 md5 불일치). 생성 전에 `import torchvision` 확인, meta.json에 torchvision 버전과 사용된 image processor 클래스 이름을 기록.
+- `PYTHONUTF8=1` (생성기가 meta.json을 encoding 지정 없이 연다 — Windows cp949 문제).
+- 출력은 저장소 밖 (`C:\RTL_YJH\data_full\`).
+- 보드 빌드는 `make OUT=.` (기본 `make`는 `../vit_main`을 덮어써 현준 실행 파일을 지운다).
+
 ---
 
 ## 6. C 코드
@@ -131,7 +138,7 @@
 ## 7. Phase별 작업과 Gate
 
 ### Phase 0 — 준비
-- `JH/ViT-Base_C_full/` 생성 (복사), 이 문서 복사. 복사본 그대로 빌드 + PC 모델 회귀 (검사 24개, 명령 1308 / BB 1080 / CDMA 511, dbg 4가지).
+- `JH/ViT-Base_C_full/` 생성 (복사), 이 문서 복사. 복사본 그대로 빌드 + PC 모델 회귀 (검사 23개, 명령 1308 / BB 1080 / CDMA 511, dbg 4가지).
 - HF 모델 구조 확인: 12 layer, patch embedding conv, CLS, position embedding, 마지막 LN, classifier의 모듈 경로와 크기 (python으로 출력).
 
 **Gate 0 보고**: 회귀 결과, 모듈 경로 · 크기 표, 6.1절 함수 분리 계획 (어느 static 함수를 어디로 옮기는지).
@@ -157,7 +164,7 @@
 **Gate 3 보고**: 결과 표, layer별 시간 (PC 모델), 명령 / BB / CDMA 수 (layer 0과 ×12 비교), 변경 파일 표.
 
 ### Phase 4 — 보드 준비 (실행은 JH / 현준)
-- 데이터 zip (embed / l00~l11 / head), 보드 명령 정리: 새 폴더 `~/vit_base/data_full`, `make`, `vit_full --layers 1` → `--layers 12`, 회귀용 `vit_main --mlp --data ~/vit_base/data_l0`.
+- 데이터 zip (embed / l00~l11 / head), 보드 명령 정리: 새 폴더 `~/vit_base/data_full`, `make OUT=.`, `vit_full --layers 1` → `--layers 12`, 회귀용 `vit_main --mlp --data ~/vit_base/data_l0`.
 - 예상 검사 개수와 예상 시간 [추론]을 README에 표로.
 
 **Gate 4 보고**: 보드 명령, 예상 출력, 빌드 확인.
@@ -177,7 +184,7 @@ MLP_TASK.md 9절과 같다.
 | 토큰 / d_model / head / layer | 197 (CLS + 196) / 768 / 12 / 12 |
 | patch | 16 × 16 × 3 = 768, 14 × 14 = 196개 |
 | 분류 | 1000 class (ImageNet), classifier 768 → 1000 |
-| layer 0 PC 모델 | 검사 24개, 명령 1308, BB 1080, CDMA 511 |
+| layer 0 PC 모델 | 검사 23개 (attention 15 + MLP 8), 명령 1308, BB 1080, CDMA 511 |
 | 보드 예상 [추론] | layer당 약 0.8 s (Golden 주입이 대부분) → 12 layer 약 10 s. 실제 IP 성능과 무관 |
 
 ---

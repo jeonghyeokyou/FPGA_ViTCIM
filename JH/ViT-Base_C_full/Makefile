@@ -23,13 +23,20 @@ all: $(OUT)/vit_main $(OUT)/vit_dbg
 mlp_ps.o: mlp_ps.c $(HDRS)
 	$(CC) $(CFLAGS) -ffp-contract=off -c -o $@ mlp_ps.c
 
+full_ps.o: full_ps.c $(HDRS)
+	$(CC) $(CFLAGS) -ffp-contract=off -c -o $@ full_ps.c
+
+# PS test of embed / LN1 / final LN / head (VIT_FULL_TASK.md Phase 2); x86 or cross (CC=aarch64-linux-gnu-gcc)
+test_full_ps$(EXE): test_full_ps.c full_ps.o mlp_ps.o attn_ops.c mxfp4.c $(HDRS)
+	$(CC) $(CFLAGS) -ffp-contract=off -o $@ test_full_ps.c full_ps.o mlp_ps.o attn_ops.c mxfp4.c $(LDLIBS)
+
 $(OUT)/vit_main: vit_main.c vit_hw.c $(OPS) mlp_ps.o $(HDRS)
 	$(CC) $(CFLAGS) -o $@ vit_main.c vit_hw.c $(OPS) mlp_ps.o $(LDLIBS)
 
 $(OUT)/vit_dbg: vit_dbg.c vit_hw.c $(OPS) $(DBG) mlp_ps.o $(HDRS)
 	$(CC) $(CFLAGS) -o $@ vit_dbg.c vit_hw.c $(OPS) $(DBG) mlp_ps.o $(LDLIBS)
 
-sim: vit_main_sim$(EXE) vit_dbg_sim$(EXE) test_mlp_ps$(EXE)
+sim: vit_main_sim$(EXE) vit_dbg_sim$(EXE) test_mlp_ps$(EXE) test_full_ps$(EXE)
 
 vit_main_sim$(EXE): vit_main.c hw_sim.c $(OPS) mlp_ps.o $(HDRS)
 	$(CC) $(CFLAGS) -o $@ vit_main.c hw_sim.c $(OPS) mlp_ps.o $(LDLIBS)
@@ -41,4 +48,4 @@ test_mlp_ps$(EXE): test_mlp_ps.c mlp_ops.c attn_ops.c mxfp4.c mlp_ps.o $(HDRS)
 	$(CC) $(CFLAGS) -ffp-contract=off -o $@ test_mlp_ps.c mlp_ops.c attn_ops.c mxfp4.c mlp_ps.o $(LDLIBS)
 
 clean:
-	rm -f mlp_ps.o vit_main_sim$(EXE) vit_dbg_sim$(EXE) test_mlp_ps$(EXE)
+	rm -f mlp_ps.o full_ps.o vit_main_sim$(EXE) vit_dbg_sim$(EXE) test_mlp_ps$(EXE) test_full_ps$(EXE)
