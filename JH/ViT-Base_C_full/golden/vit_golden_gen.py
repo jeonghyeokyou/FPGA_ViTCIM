@@ -13,6 +13,10 @@
 #      MAC BB : H4 plane k x W2 (n, k) -> partial (n, k) (BF16, bias 없음)   ※ 임시 (11절 ③)
 #      PS     : Y2 = BF16( float32 누산 : b2 + p(n,0) + .. + p(n,3) )      ※ 임시 (11절 ③)
 #      PS     : R2 = BF16( f32(R) + f32(Y2) ) = layer 0 출력
+#  --full (JH, 2026-11-11, VIT_FULL_TASK.md 4 / 5절): 이미지 -> patch embedding -> layer 0..11 -> 마지막 LN -> head.
+#    --full 이 없으면 위 동작과 byte 단위로 같다 (기존 함수는 고치지 않고 main_full() 이하를 새로 둠).
+#    PS : h0 = embed(pixels) , layer l : x_l = MXFP4(LN1_l(h_l)) -> build() -> build_mlp() -> h_{l+1} = R2_l
+#    PS : lnc = LN_f(h_12[CLS]) (BF16) -> logits = head(lnc) (float32) -> top-1
 #
 #  Colab : !python vit_golden_gen.py                (모델 카드 예시 이미지)
 #          !python vit_golden_gen.py --image a.jpg
@@ -702,12 +706,476 @@ def verify_mlp(out_dir, fp, fp_mlp, hf_ref, W, b, eps):
     return ok
 
 
+# ----------------------------------------------------------------------------- 12 layer (--full, JH, VIT_FULL_TASK.md)
+IMG, PATCH = 224, 16
+GRID = IMG // PATCH                           # 14 -> 196 패치
+N_PATCH = GRID * GRID
+
+FILES_LN1 = [
+    ("ln1_w.bin", "ln1_w", D * 4, "LN1 gamma float32 LE (layernorm_before)"),
+    ("ln1_b.bin", "ln1_b", D * 4, "LN1 beta float32 LE"),
+]
+FILES_LAYER = FILES + FILES_LN1               # lXX/ : 지금의 40개 + LN1 2개
+
+
+def _layer_of(name):
+    """모듈 이름 -> (layer 경로, 번호). '.layer.N' / '.layers.N' / '.blocks.N' 구조"""
+    m = re.match(r"^(.*?\.(?:layer|layers|blocks)\.(\d+))(?:\.|$)", name)
+    return (m.group(1), int(m.group(2))) if m else (None, None)
+
+
+def get_tensors_hf_full(image_path):
+    """12 layer 전부 + patch embedding / CLS / position / 마지막 LN / classifier. 이름이 아니라 크기 · 구조로 찾는다.
+    HF hook (transformers 5.x 구조 기준, 4.x 도 같은 방식으로 찾힘) : embedding 출력, layer l 출력, 마지막 LN 출력, logits"""
+    import torch
+    import transformers
+    from PIL import Image
+    from transformers import ViTImageProcessor, ViTForImageClassification
+
+    mid = "google/vit-base-patch16-224"
+    proc = ViTImageProcessor.from_pretrained(mid)
+    model = ViTForImageClassification.from_pretrained(mid).eval()
+    if image_path is None:
+        import requests
+        url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+        img = Image.open(requests.get(url, stream=True).raw).convert("RGB")
+        img_name = url
+    else:
+        img = Image.open(image_path).convert("RGB")
+        img_name = os.path.basename(image_path)
+    pv = proc(images=img, return_tensors="pt")["pixel_values"]          # [1,3,224,224] float32
+    if tuple(pv.shape) != (1, 3, IMG, IMG):
+        raise RuntimeError(f"pixel_values 크기 {tuple(pv.shape)}")
+
+    named = list(model.named_modules())
+    mods = dict(named)
+    names, hits = None, []
+    for cand in (("query", "key", "value"), ("q_proj", "k_proj", "v_proj")):
+        hits = [(n, m) for n, m in named if all(isinstance(getattr(m, c, None), torch.nn.Linear) for c in cand)]
+        if hits:
+            names = cand
+            break
+    if names is None:
+        raise RuntimeError("query/key/value Linear 를 찾지 못함 : 모듈 목록\n" + "\n".join(mods))
+    by_l = {}
+    for n, sa in hits:
+        lp, li = _layer_of(n)
+        if lp is None or li in by_l:
+            raise RuntimeError(f"attention 모듈의 layer 구조를 알 수 없음 : {n}")
+        by_l[li] = (lp, n, sa)
+    NL = len(by_l)
+    if sorted(by_l) != list(range(NL)):
+        raise RuntimeError(f"layer 번호가 0..{NL - 1} 연속이 아님 : {sorted(by_l)}")
+
+    per = []
+    for l in range(NL):
+        lp, sa_name, sa = by_l[l]
+        inside = [(n, mm) for n, mm in named if n.startswith(lp + ".")]
+        lin = [(n, mm) for n, mm in inside if isinstance(mm, torch.nn.Linear)]
+        qkv = [getattr(sa, c) for c in names]
+        oc = [(n, mm) for n, mm in lin if mm.in_features == D and mm.out_features == D and all(mm is not q for q in qkv)]
+        f1 = [(n, mm) for n, mm in lin if mm.in_features == D and mm.out_features == MLP_H]
+        f2 = [(n, mm) for n, mm in lin if mm.in_features == MLP_H and mm.out_features == D]
+        lns = [(n, mm) for n, mm in inside if isinstance(mm, torch.nn.LayerNorm)]
+        if len(oc) != 1 or len(f1) != 1 or len(f2) != 1 or len(lns) != 2:
+            raise RuntimeError(f"layer {l} ({lp}) : out proj {len(oc)}, FC1 {len(f1)}, FC2 {len(f2)}, LN {len(lns)} 개")
+        per.append(dict(lp=lp, sa_name=sa_name, sa=sa, qkv=qkv, o=oc[0], f1=f1[0], f2=f2[0], lns=lns, blk=mods[lp]))
+
+    lps = [p["lp"] for p in per]
+    in_layer = lambda n: any(n == lp or n.startswith(lp + ".") for lp in lps)
+    outside = [(n, mm) for n, mm in named if n and not in_layer(n)]
+    convs = [(n, mm) for n, mm in outside if isinstance(mm, torch.nn.Conv2d)]
+    lnf = [(n, mm) for n, mm in outside if isinstance(mm, torch.nn.LayerNorm)]
+    hd = [(n, mm) for n, mm in outside if isinstance(mm, torch.nn.Linear) and mm.in_features == D]
+    params = [(n, p) for n, p in model.named_parameters() if not in_layer(n)]
+    cls = [(n, p) for n, p in params if tuple(p.shape) == (1, 1, D)]
+    pos = [(n, p) for n, p in params if tuple(p.shape) == (1, N_TOK, D)]
+    if len(convs) != 1 or len(lnf) != 1 or len(hd) != 1 or len(cls) != 1 or len(pos) != 1:
+        raise RuntimeError(f"layer 밖 : Conv2d {len(convs)}, LN {len(lnf)}, classifier {len(hd)}, CLS {len(cls)}, pos {len(pos)} 개")
+    (cv_name, cv), (lnf_name, lnf_mod), (hd_name, hd_mod) = convs[0], lnf[0], hd[0]
+    if (cv.in_channels, cv.out_channels, tuple(cv.kernel_size), tuple(cv.stride)) != (3, D, (PATCH, PATCH), (PATCH, PATCH)):
+        raise RuntimeError(f"patch conv {cv_name} : {cv}")
+    emb_name = cls[0][0].rsplit(".", 1)[0]
+    if pos[0][0].rsplit(".", 1)[0] != emb_name:
+        raise RuntimeError(f"CLS / position 이 같은 모듈이 아님 : {cls[0][0]}, {pos[0][0]}")
+
+    cap, hooks = {}, []
+    tens = lambda o: (o[0] if isinstance(o, (tuple, list)) else o).detach()
+    hooks.append(mods[emb_name].register_forward_hook(lambda mm, i, o: cap.__setitem__("emb", tens(o))))
+    hooks.append(lnf_mod.register_forward_hook(lambda mm, i, o: cap.__setitem__("lnf", tens(o))))
+    for l, p in enumerate(per):
+        hooks.append(p["blk"].register_forward_hook(lambda mm, i, o, l=l: cap.__setitem__(f"out{l}", tens(o))))
+        hooks.append(p["qkv"][0].register_forward_hook(lambda mm, i, o, l=l: cap.__setitem__(f"x{l}", i[0].detach())))
+        for n, ln in p["lns"]:
+            hooks.append(ln.register_forward_hook(lambda mm, i, o, n=n: cap.__setitem__("ln:" + n, o.detach())))
+    with torch.no_grad():
+        logits = model(pixel_values=pv).logits
+    for hk in hooks:
+        hk.remove()
+
+    eps = float(model.config.layer_norm_eps)
+    act = getattr(model.config, "hidden_act", None)
+    if act != "gelu":   # TODO(JH): exact erf GELU 가 아니면 golden 의 GELU 식을 바꿔야 함 (MLP_TASK.md 11절 ④)
+        raise RuntimeError(f"hidden_act = {act} : exact erf GELU ('gelu') 가 아님")
+    f32 = lambda t: t.detach().float().numpy()
+    layers, lnames = [], []
+    for l, p in enumerate(per):
+        xin = cap[f"x{l}"][0].float().numpy()
+        ln1 = [(n, mm) for n, mm in p["lns"] if np.allclose(cap["ln:" + n][0].float().numpy(), xin, atol=1e-6)]
+        if len(ln1) != 1:
+            raise RuntimeError(f"layer {l} : QKV 입력과 같은 출력을 내는 LayerNorm 이 1개가 아님")
+        ln2 = [(n, mm) for n, mm in p["lns"] if n != ln1[0][0]]
+        for n, mm in p["lns"]:
+            if float(mm.eps) != eps:
+                raise RuntimeError(f"{n} eps {mm.eps} != config.layer_norm_eps {eps}")
+        W = {pp: f32(q.weight) for pp, q in zip(PROJ, p["qkv"])}
+        b = {pp: f32(q.bias) for pp, q in zip(PROJ, p["qkv"])}
+        for k, (n, mm) in (("O", p["o"]), ("FC1", p["f1"]), ("FC2", p["f2"]), ("LN1", ln1[0]), ("LN2", ln2[0])):
+            W[k], b[k] = f32(mm.weight), f32(mm.bias)
+        layers.append((W, b))
+        lnames.append({"layer": p["lp"], "qkv": p["sa_name"], "out_proj": p["o"][0], "fc1": p["f1"][0], "fc2": p["f2"][0],
+                       "ln1": ln1[0][0], "ln2": ln2[0][0]})
+    if float(lnf_mod.eps) != eps:
+        raise RuntimeError(f"{lnf_name} eps {lnf_mod.eps} != {eps}")
+    id2label = [model.config.id2label[i] for i in range(hd_mod.out_features)]
+    lg = logits[0].double().numpy()
+    top5 = [int(i) for i in np.argsort(-lg, kind="stable")[:5]]
+    T = dict(pixels=f32(pv[0]), patch_w=f32(cv.weight).reshape(D, -1), patch_b=f32(cv.bias),
+             cls=f32(cls[0][1]).reshape(D), pos=f32(pos[0][1]).reshape(N_TOK, D), layers=layers,
+             lnf_w=f32(lnf_mod.weight), lnf_b=f32(lnf_mod.bias), head_w=f32(hd_mod.weight), head_b=f32(hd_mod.bias),
+             id2label=id2label)
+    ref = {"h0": cap["emb"][0].double().numpy(), "out": [cap[f"out{l}"][0].double().numpy() for l in range(NL)],
+           "lnf_cls": cap["lnf"][0, 0].double().numpy(), "logits": lg, "top5": top5}
+    info = {"model": mid, "image": img_name, "transformers": transformers.__version__, "torch": torch.__version__,
+            "layer_norm_eps": eps, "hidden_act": act, "n_layers": NL, "embeddings": emb_name, "patch_conv": cv_name,
+            "cls_token": cls[0][0], "position_embeddings": pos[0][0], "final_ln": lnf_name, "classifier": hd_name,
+            "qkv_names": list(names), "layer_modules": lnames,
+            "hf_top1": top5[0], "hf_top1_label": id2label[top5[0]], "hf_top5": top5,
+            "hf_top5_labels": [id2label[i] for i in top5]}
+    return T, ref, info
+
+
+def get_tensors_mock_full(seed=0, n_layers=12):
+    """같은 크기의 무작위 텐서 (12 layer). layer 마다 다른 generator (seed + 2000 + l)"""
+    r = np.random.default_rng(seed + 1000)
+    T = dict(pixels=r.standard_normal((3, IMG, IMG)).astype(np.float32),
+             patch_w=(r.standard_normal((D, D)) * 0.03).astype(np.float32),
+             patch_b=(r.standard_normal(D) * 0.1).astype(np.float32),
+             cls=(r.standard_normal(D) * 0.5).astype(np.float32),
+             pos=(r.standard_normal((N_TOK, D)) * 0.1).astype(np.float32))
+    layers = []
+    for l in range(n_layers):
+        g = np.random.default_rng(seed + 2000 + l)
+        W = {p: (g.standard_normal((D, D)) * 0.05).astype(np.float32) for p in PROJ}
+        b = {p: (g.standard_normal(D) * 0.1).astype(np.float32) for p in PROJ}
+        W["O"], b["O"] = (g.standard_normal((D, D)) * 0.02).astype(np.float32), (g.standard_normal(D) * 0.05).astype(np.float32)
+        for k in ("LN1", "LN2"):
+            W[k], b[k] = (1.0 + g.standard_normal(D) * 0.1).astype(np.float32), (g.standard_normal(D) * 0.1).astype(np.float32)
+        W["FC1"], b["FC1"] = (g.standard_normal((MLP_H, D)) * 0.05).astype(np.float32), (g.standard_normal(MLP_H) * 0.1).astype(np.float32)
+        W["FC2"], b["FC2"] = (g.standard_normal((D, MLP_H)) * 0.01).astype(np.float32), (g.standard_normal(D) * 0.05).astype(np.float32)
+        layers.append((W, b))
+    T.update(layers=layers, lnf_w=(1.0 + r.standard_normal(D) * 0.1).astype(np.float32),
+             lnf_b=(r.standard_normal(D) * 0.1).astype(np.float32),
+             head_w=(r.standard_normal((1000, D)) * 0.05).astype(np.float32),
+             head_b=(r.standard_normal(1000) * 0.1).astype(np.float32),
+             id2label=[f"mock_{i}" for i in range(1000)])
+    info = {"model": "MOCK (random)", "image": None, "layer_norm_eps": 1e-12, "hidden_act": "gelu", "n_layers": n_layers}
+    return T, {}, info
+
+
+# ---- PS 규칙 (VIT_FULL_TASK.md 4절) : 합은 인덱스 오름차순으로 하나씩 (float64), 곱은 float32 x float32 -> float64 (정확)
+def patch_vectors(px):
+    """pixels [3,224,224] -> [196, 768] , 패치 t = (t/14, t%14), 원소 i = (ch, kh, kw) = conv weight 를 [768,768] 로 펼친 순서"""
+    return np.ascontiguousarray(px.reshape(3, GRID, PATCH, GRID, PATCH).transpose(1, 3, 0, 2, 4).reshape(N_PATCH, -1))
+
+
+def embed_bf16(px, pw, pb, cls, pos):
+    """h0 [197,768] BF16 : 패치 t -> 토큰 1+t , acc = sum_i (순서대로) p[i] w[o][i] ; v = acc + b[o] + pos[1+t][o] -> f32 -> BF16.
+    CLS : BF16(f32(cls[o] + pos[0][o]))"""
+    P = patch_vectors(px).astype(np.float64)
+    Wd = pw.astype(np.float64)
+    acc = np.zeros((N_PATCH, D))
+    for i in range(D):
+        acc = acc + P[:, i:i + 1] * Wd[None, :, i]
+    h = np.empty((N_TOK, D), dtype=np.uint16)
+    h[1:] = bf16_bits(((acc + pb.astype(np.float64)[None, :]) + pos[1:].astype(np.float64)).astype(np.float32))
+    h[0] = bf16_bits((cls.astype(np.float64) + pos[0].astype(np.float64)).astype(np.float32))
+    return h
+
+
+def head_f32(lnc_bits, hw, hb):
+    """logits[o] = f32( sum_i (순서대로) lnc[i] Wh[o][i] + bh[o] ) (float64)"""
+    x = bf16_to_f32(lnc_bits).astype(np.float64).reshape(-1)
+    Wd = hw.astype(np.float64)
+    acc = np.zeros(hw.shape[0])
+    for i in range(D):
+        acc = acc + x[i] * Wd[:, i]
+    return (acc + hb.astype(np.float64)).astype(np.float32)
+
+
+# ---- FP64 기준 (양자화 없음) : 구조 확인용
+def ln_f64(x, g, b, eps):
+    mu = x.mean(-1, keepdims=True)
+    return (x - mu) / np.sqrt(((x - mu) ** 2).mean(-1, keepdims=True) + eps) * g.astype(np.float64) + b.astype(np.float64)
+
+
+def ref_fp_full(T, eps):
+    h = patch_vectors(T["pixels"]).astype(np.float64) @ T["patch_w"].astype(np.float64).T + T["patch_b"]
+    h = np.concatenate([T["cls"].astype(np.float64)[None, :], h], 0) + T["pos"].astype(np.float64)
+    h0, outs = h, []
+    for W, b in T["layers"]:
+        fp = ref_fp(ln_f64(h, W["LN1"], b["LN1"], eps), h, W, b)
+        h = ref_fp_mlp(fp["R"], W, b, eps)["R2"]
+        outs.append(h)
+    lnc = ln_f64(h[0], T["lnf_w"], T["lnf_b"], eps)
+    return dict(h0=h0, out=outs, lnc=lnc, logits=lnc @ T["head_w"].astype(np.float64).T + T["head_b"])
+
+
+# ---- 검증 (파일만 읽어서, 다른 경로로)
+def ln_pyfloat(rows, g, b, eps):
+    """LN 을 python float 로 (토큰마다 순서대로 합) -> float64 [n, 768]"""
+    import math
+    gl, bl = np.asarray(g, np.float64).tolist(), np.asarray(b, np.float64).tolist()
+    out = np.empty((len(rows), D))
+    for t, row in enumerate(rows):
+        s = 0.0
+        for v in row:
+            s += v
+        mean = s / D
+        q = 0.0
+        for v in row:
+            q += (v - mean) * (v - mean)
+        sd = math.sqrt(q / D + eps)
+        out[t] = [((v - mean) / sd) * gg + bb for v, gg, bb in zip(row, gl, bl)]
+    return out
+
+
+def verify_full(out, NL, eps, id2label):
+    ok = True
+
+    def chk(name, cond, msg=""):
+        nonlocal ok
+        print(f"  [{'ok' if cond else 'FAIL'}] {name} {msg}")
+        ok &= bool(cond)
+
+    rd = lambda *p: open(os.path.join(out, *p), "rb").read()
+    f4 = lambda *p: np.frombuffer(rd(*p), dtype="<f4")
+    bf = lambda *p: np.frombuffer(rd(*p), dtype="<u2")
+    for sub, lst in (("embed", FILES_EMBED), ("head", FILES_HEAD)):
+        for n, _, sz, _ in lst:
+            chk(f"{sub}/{n} size", len(rd(sub, n)) == sz, f"{len(rd(sub, n))}")
+    for l in range(NL):
+        bad = [n for n, _, sz, _ in FILES_LAYER if len(rd(f"l{l:02d}", n)) != sz]
+        chk(f"l{l:02d}/ 42개 파일 크기", not bad, ",".join(bad))
+
+    # (E) embed : patch 벡터를 index 계산으로 직접 모으고 (reshape 와 다른 경로), 합은 np.cumsum (순차 누적)
+    px = f4("embed", "pixels.bin").reshape(3, IMG, IMG)
+    pw = f4("embed", "patch_w.bin").reshape(D, D).astype(np.float64)
+    pb, pos = f4("embed", "patch_b.bin").astype(np.float64), f4("embed", "pos.bin").reshape(N_TOK, D).astype(np.float64)
+    cls = f4("embed", "cls.bin").astype(np.float64)
+    t, i = np.arange(N_PATCH)[:, None], np.arange(D)[None, :]
+    ch, kh, kw = i // (PATCH * PATCH), (i // PATCH) % PATCH, i % PATCH
+    P = px[ch, (t // GRID) * PATCH + kh, (t % GRID) * PATCH + kw].astype(np.float64)
+    acc = np.empty((N_PATCH, D))
+    for t0 in range(0, N_PATCH, 4):
+        acc[t0:t0 + 4] = np.cumsum(P[t0:t0 + 4, None, :] * pw[None, :, :], axis=-1)[..., -1]
+    h0 = bf("embed", "h0_golden.bin").reshape(N_TOK, D)
+    e1 = bf16_bits(((acc + pb[None, :]) + pos[1:]).astype(np.float32))
+    e0 = bf16_bits(np.array([float(c) + float(p) for c, p in zip(cls.tolist(), pos[0].tolist())], dtype=np.float64).astype(np.float32))
+    chk("h0 패치 토큰 (index 경로 + cumsum)", np.array_equal(e1, h0[1:]), f"mismatch {int((e1 != h0[1:]).sum())}")
+    chk("h0 CLS = cls + pos[0] (python float)", np.array_equal(e0, h0[0]))
+
+    # (L) layer 연결 + LN1 (python float 경로)
+    chk("l00/h_in == embed/h0_golden", rd("l00", "h_in.bin") == rd("embed", "h0_golden.bin"))
+    bad_c, bad_x = [], []
+    for l in range(NL):
+        d = f"l{l:02d}"
+        if l + 1 < NL and rd(f"l{l + 1:02d}", "h_in.bin") != rd(d, "r2_golden.bin"):
+            bad_c.append(l)
+        hin = bf16_to_f32(bf(d, "h_in.bin").reshape(N_TOK, D)).astype(np.float64).tolist()
+        xv = ln_pyfloat(hin, f4(d, "ln1_w.bin"), f4(d, "ln1_b.bin"), eps)
+        c2, X2 = mx_of_bf16(bf16_bits(xv.astype(np.float32)))
+        if not (np.array_equal(pack4(c2), rd(d, "x.bin")) and np.array_equal(e8m0(X2), rd(d, "x_scale.bin"))):
+            bad_x.append(l)
+    chk(f"l(l+1)/h_in == l(l)/r2_golden ({NL - 1} 연결)", not bad_c, f"{bad_c}")
+    chk(f"x.bin / x_scale.bin == MXFP4(LN1(h_in)) ({NL} layer, python float)", not bad_x, f"{bad_x}")
+
+    # (H) 마지막 LN (CLS) + head (python float 로 순서대로 합)
+    last = bf16_to_f32(bf(f"l{NL - 1:02d}", "r2_golden.bin").reshape(N_TOK, D)[0]).astype(np.float64).tolist()
+    lnc = bf("head", "lnc_golden.bin")
+    lv = ln_pyfloat([last], f4("head", "lnf_w.bin"), f4("head", "lnf_b.bin"), eps)
+    chk("lnc = LN_f(h_12 CLS) BF16 (python float)", np.array_equal(bf16_bits(lv.astype(np.float32))[0], lnc))
+    hw, hb = f4("head", "head_w.bin").reshape(-1, D), f4("head", "head_b.bin")
+    xl = bf16_to_f32(lnc).astype(np.float64).tolist()
+    lg_ref = np.empty(hw.shape[0], dtype=np.float32)
+    for o, row in enumerate(hw.astype(np.float64).tolist()):
+        s = 0.0
+        for a_, w_ in zip(xl, row):
+            s += a_ * w_
+        lg_ref[o] = np.float32(s + float(hb[o]))
+    lg = f4("head", "logits_golden.bin")
+    chk("logits (python float, 순서대로 합) bit-exact", lg_ref.tobytes() == lg.tobytes(), f"mismatch {int((lg_ref != lg).sum())}")
+    return ok, lg
+
+
+FILES_EMBED = [
+    ("pixels.bin", "pixels", 3 * IMG * IMG * 4, "HF ViTImageProcessor 출력 float32 [3][224][224]"),
+    ("patch_w.bin", "patch_w", D * D * 4, "patch conv W float32 [768 out][768 = (ch, kh, kw)]"),
+    ("patch_b.bin", "patch_b", D * 4, "patch conv bias float32"),
+    ("cls.bin", "cls", D * 4, "CLS 토큰 float32"),
+    ("pos.bin", "pos", N_TOK * D * 4, "position embedding float32 [197][768]"),
+    ("h0_golden.bin", "h0", N_TOK * D * 2, "h0 BF16 [197][768] (토큰 0 = CLS, 1+t = 패치 t)"),
+]
+FILES_HEAD = [
+    ("lnf_w.bin", "lnf_w", D * 4, "마지막 LN gamma float32"),
+    ("lnf_b.bin", "lnf_b", D * 4, "마지막 LN beta float32"),
+    ("head_w.bin", "head_w", 1000 * D * 4, "classifier W float32 [1000][768]"),
+    ("head_b.bin", "head_b", 1000 * 4, "classifier bias float32"),
+    ("lnc_golden.bin", "lnc", D * 2, "LN_f(h_12[CLS]) BF16 [768]"),
+    ("logits_golden.bin", "logits", 1000 * 4, "logits float32 [1000]"),
+]
+
+
+def _write(d, lst, files, extra=None):
+    os.makedirs(d, exist_ok=True)
+    for n, k, _, _ in lst:
+        open(os.path.join(d, n), "wb").write(files[k])
+    meta = {**(extra or {}), "files": {n: {"bytes": len(files[k]), "md5": md5(files[k]), "layout": ds} for n, k, _, ds in lst}}
+    json.dump(meta, open(os.path.join(d, "meta.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    return meta
+
+
+def cosine(a_, b_):
+    a_, b_ = np.asarray(a_, np.float64).ravel(), np.asarray(b_, np.float64).ravel()
+    return float(a_ @ b_ / (np.linalg.norm(a_) * np.linalg.norm(b_)))
+
+
+def main_full(a):
+    import time
+    t_start = time.time()
+    T, hf, info = get_tensors_mock_full() if a.mock else get_tensors_hf_full(a.image)
+    NL, eps = len(T["layers"]), float(info["layer_norm_eps"])
+    rel = lambda a_, b_: float(np.linalg.norm(np.ravel(a_) - np.ravel(b_)) / max(np.linalg.norm(np.ravel(b_)), 1e-12))
+    print(f"model={info['model']}  image={info['image']}  layers={NL}  eps={eps}  -> {a.out}/")
+    ok = True
+
+    # ---- embed (PS)
+    h = embed_bf16(T["pixels"], T["patch_w"], T["patch_b"], T["cls"], T["pos"])
+    fe = {k: T[k].astype("<f4").tobytes() for k in ("pixels", "patch_w", "patch_b", "cls", "pos")}
+    fe["h0"] = h.astype("<u2").tobytes()
+    meta_e = _write(os.path.join(a.out, "embed"), FILES_EMBED, fe)
+
+    # ---- layer 0..NL-1 : 각 layer 는 지금의 build() / build_mlp() 그대로 (입력만 x_l = LN1 PS, h_in = h_l)
+    lay_meta, times, hmax = [], [], []
+    our_out = []
+    for l, (W, b) in enumerate(T["layers"]):
+        t0 = time.time()
+        d = os.path.join(a.out, f"l{l:02d}")
+        xb = ln2_bf16(h, W["LN1"], b["LN1"], eps)                          # LN 식은 LN2 와 같음 (파라미터만 LN1)
+        xf, hf32 = bf16_to_f32(xb).astype(np.float64), bf16_to_f32(h)
+        files, _ = build(xf, hf32, W, b)
+        files_mlp, _ = build_mlp(files["r"], W, b, eps)
+        files.update(files_mlp)
+        files["ln1_w"], files["ln1_b"] = W["LN1"].astype("<f4").tobytes(), b["LN1"].astype("<f4").tobytes()
+        extra = {k: v for k, v in info.items() if k not in ("layer_modules", "hf_top5", "hf_top5_labels")}
+        extra.update(layer=l, h_in="embed/h0_golden.bin" if l == 0 else f"l{l - 1:02d}/r2_golden.bin",
+                     x_rule="x = MXFP4( BF16( LN1(h_in) ) ) : ps_ln2_mx rule with ln1_w / ln1_b (VIT_FULL_TASK.md 4)")
+        if hf:
+            extra["modules"] = info["layer_modules"][l]
+        lay_meta.append(_write(d, FILES_LAYER, files, extra))
+        print(f"  ---- layer {l:2d} : files written ({time.time() - t0:.1f} s)")
+        fp = ref_fp(xf, hf32, W, b)
+        okl = verify(d, fp, {}, b)
+        okl = verify_mlp(d, fp, ref_fp_mlp(fp["R"], W, b, eps), {}, W, b, eps) and okl
+        ok &= okl
+        h = np.frombuffer(files["r2"], dtype="<u2").reshape(N_TOK, D).copy()
+        hv = bf16_to_f32(h)
+        if not np.isfinite(hv).all():
+            raise ValueError(f"layer {l} 출력에 non-finite 값")
+        our_out.append(hv.astype(np.float64))
+        hmax.append(float(np.abs(hv).max()))
+        times.append(time.time() - t0)
+        print(f"  layer {l:2d} : {'ok' if okl else 'FAIL'}  max|R2| {hmax[-1]:.4g}  ({times[-1]:.1f} s)")
+
+    # ---- 마지막 LN (CLS) + head (PS)
+    lnc = ln2_bf16(h[0:1], T["lnf_w"], T["lnf_b"], eps)[0]
+    lg = head_f32(lnc, T["head_w"], T["head_b"])
+    fh = {k: T[k].astype("<f4").tobytes() for k in ("lnf_w", "lnf_b", "head_w", "head_b")}
+    fh["lnc"], fh["logits"] = lnc.astype("<u2").tobytes(), lg.astype("<f4").tobytes()
+    meta_h = _write(os.path.join(a.out, "head"), FILES_HEAD, fh)
+    top1 = int(np.argmax(lg))
+    lab = T["id2label"]
+
+    print("  ---- 앞뒤 단계 / 연결 검증 (파일만 읽어서, 다른 경로로)")
+    okf, lg_file = verify_full(a.out, NL, eps, lab)
+    ok &= okf
+    chk_top = top1 == int(np.argmax(lg_file))
+    print(f"  [{'ok' if chk_top else 'FAIL'}] top-1 = argmax(logits_golden) {top1}")
+    ok &= chk_top
+
+    # ---- 비교 (보고용, 판정 아님)
+    ref = ref_fp_full(T, eps)
+    rows = []
+    for l in range(NL):
+        row = {"layer": l, "cos_fp64": cosine(our_out[l], ref["out"][l]), "rel_fp64": rel(our_out[l], ref["out"][l]),
+               "max_abs": hmax[l]}
+        if hf:
+            row.update(cos_hf=cosine(our_out[l], hf["out"][l]), rel_hf=rel(our_out[l], hf["out"][l]),
+                       fp64_vs_hf=rel(ref["out"][l], hf["out"][l]))
+        rows.append(row)
+    print("  ---- (info) layer 별 R2_l (BF16 golden) 비교")
+    print("   l   cos vs HF   rel vs HF   cos vs FP64   rel vs FP64   FP64 vs HF   max|R2|")
+    for r_ in rows:
+        print(f"  {r_['layer']:2d}   {r_.get('cos_hf', float('nan')):9.6f}   {r_.get('rel_hf', float('nan')):8.3%}"
+              f"   {r_['cos_fp64']:11.6f}   {r_['rel_fp64']:10.3%}   {r_.get('fp64_vs_hf', float('nan')):10.2e}   {r_['max_abs']:7.4g}")
+    h0v = bf16_to_f32(np.frombuffer(fe["h0"], dtype="<u2").reshape(N_TOK, D)).astype(np.float64)
+    summ = {"top1": top1, "top1_label": lab[top1], "logits_cos_fp64": cosine(lg, ref["logits"]),
+            "fp64_top1": int(np.argmax(ref["logits"])), "h0_cos_fp64": cosine(h0v, ref["h0"])}
+    print(f"  (info) h0 vs FP64 : cosine {summ['h0_cos_fp64']:.6f}")
+    print(f"  (info) logits vs FP64 : cosine {summ['logits_cos_fp64']:.6f}, FP64 top-1 {summ['fp64_top1']} {lab[summ['fp64_top1']]}")
+    if hf:
+        d_e = rel(ref["h0"], hf["h0"])
+        d_l = rel(ref["logits"], hf["logits"])
+        print(f"  [{'ok' if d_e < 1e-5 else 'FAIL'}] FP64 embed == HF embedding 출력 (patch 순서 / CLS / pos 확인) 상대오차 {d_e:.2e}")
+        print(f"  [{'ok' if d_l < 1e-4 else 'FAIL'}] FP64 12 layer + LN + head == HF logits (구조 확인) 상대오차 {d_l:.2e}")
+        ok &= d_e < 1e-5 and d_l < 1e-4
+        summ.update(logits_cos_hf=cosine(lg, hf["logits"]), hf_top1=hf["top5"][0], hf_top1_label=lab[hf["top5"][0]],
+                    hf_top5=hf["top5"], top1_in_hf_top5=top1 in hf["top5"], top1_eq_hf=top1 == hf["top5"][0])
+        print(f"  (info) logits vs HF : cosine {summ['logits_cos_hf']:.6f}")
+        print(f"  (info) top-1 : ours {top1} '{lab[top1]}'  /  HF {hf['top5'][0]} '{lab[hf['top5'][0]]}'"
+              f"  -> {'같음' if summ['top1_eq_hf'] else '다름'}, HF top-5 {hf['top5']} 안에 {'있음' if summ['top1_in_hf_top5'] else '없음'}")
+        print(f"  (info) HF top-5 : " + ", ".join(f"{i} '{lab[i]}'" for i in hf["top5"]))
+    else:
+        print(f"  (info) top-1 (mock) : {top1} '{lab[top1]}'")
+    elapsed = time.time() - t_start
+    top = {**info, "mode": "full", "summary": summ, "layers": rows, "layer_seconds": times, "elapsed_seconds": elapsed,
+           "embed_files": meta_e["files"], "head_files": meta_h["files"],
+           "layer_files_md5": [{n: v["md5"] for n, v in m["files"].items()} for m in lay_meta],
+           "id2label": lab,
+           "rule_full": {
+               "embed": "patch t = (t/14, t%14), element i = (ch, kh, kw) ; acc = sum_{i in order} f64(p[i]) f64(W[o][i]) ;"
+                        " v = acc + f64(b[o]) + f64(pos[1+t][o]) -> f32 -> BF16 = h0[1+t] ; h0[0] = BF16(f32(cls + pos[0]))",
+               "ln1": "same as ln2 rule with layernorm_before -> BF16 -> MXFP4 = x.bin",
+               "final_ln": "same LN rule on the CLS token only -> BF16 (no quantization) = lnc",
+               "head": "logits[o] = f32( sum_{i in order} f64(lnc[i]) f64(Wh[o][i]) + f64(bh[o]) ) ; top-1 = first argmax",
+               "link": "h_{l+1} = R2_l (BF16)"}}
+    json.dump(top, open(os.path.join(a.out, "meta.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    tot = sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(a.out) for f in fs)
+    print(f"  (info) 출력 {tot / 1e6:.1f} MB, 실행 {elapsed:.0f} s (layer 평균 {np.mean(times):.1f} s)")
+    print("PASS" if ok else "FAIL")
+    if not ok:
+        sys.exit(1)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="vit_l0_mx")
     ap.add_argument("--image", default=None)
     ap.add_argument("--mock", action="store_true")
+    ap.add_argument("--full", action="store_true")
     a, _ = ap.parse_known_args()
+    if a.full:
+        return main_full(a)
 
     x, h_in, W, b, hf_ref, info = get_tensors_mock() if a.mock else get_tensors_hf(a.image)
     assert x.shape == (N_TOK, D) and h_in.shape == (N_TOK, D)

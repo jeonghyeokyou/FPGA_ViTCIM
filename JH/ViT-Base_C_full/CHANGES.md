@@ -5,6 +5,7 @@
 | 날짜 | Phase | 변경 |
 |---|---|---|
 | 2026-11-11 | 0 | `JH/ViT-Base_C_mlp/` (c3db75b) 를 그대로 복사, `VIT_FULL_TASK.md` 추가, `README.md` 를 이 폴더용으로 새로 씀. **코드 변경 없음** |
+| 2026-11-11 | 1 | `golden/vit_golden_gen.py` : `--full` 추가 (`get_tensors_hf_full`, `get_tensors_mock_full`, `embed_bf16`, `head_f32`, `ref_fp_full`, `ln_pyfloat`, `verify_full`, `main_full`). 기존 함수는 고치지 않음 → `--full` 없으면 40개 byte 동일 |
 
 아래는 `ViT-Base_C_mlp` 에서 이어받은 내용 (MLP 단계).
 

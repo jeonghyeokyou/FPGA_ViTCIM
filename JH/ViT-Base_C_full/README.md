@@ -8,10 +8,59 @@
 | Phase | 내용 | 결과 |
 |---|---|---|
 | **0 준비** | 폴더 복사, 회귀, HF 구조 확인, 함수 분리 계획 | **완료** (2026-11-11) |
-| 1 생성기 `--full` | 12 layer golden, layer별 cosine · top-1 | 미착수 |
+| **1 생성기 `--full`** | 12 layer golden, layer별 cosine · top-1 | **완료** (2026-11-11) — 회귀 byte 동일, mock / HF PASS, top-1 285 = HF |
 | 2 PS 함수 | `ps_embed`, `ps_ln_bf16`, `ps_head` (x86 + aarch64) | 미착수 |
 | 3 전체 흐름 | `layer_run` 분리, `vit_full_sim --layers 12` | 미착수 |
 | 4 보드 준비 | 데이터 zip, 보드 명령 | 미착수 |
+
+## Phase 1 결과 (생성기 `golden/vit_golden_gen.py --full`)
+
+실행 (Windows venv, 절차는 `../ViT-Base_C_mlp/README.md` "데이터" 절 — torchvision · `PYTHONUTF8=1` 필수):
+```
+%VPY% golden\run_gen_win.py golden\vit_golden_gen.py --full --out C:\RTL_YJH\data_full          (HF, 약 55 s)
+%VPY% golden\run_gen_win.py golden\vit_golden_gen.py --full --mock --out <dir>                    (형식 시험, 약 50 s)
+```
+출력 (`C:\RTL_YJH\data_full`, 166 MB, git 에 없음): `meta.json` (전체 정보 · layer 별 cosine 표 · id2label),
+`embed/` 6개 + meta.json, `l00/` … `l11/` 각 42개 (지금의 40개 + `ln1_w.bin`, `ln1_b.bin`) + meta.json, `head/` 6개 + meta.json.
+각 `lXX/` 는 기존 C 코드에 그대로 쓸 수 있다: `vit_main_sim --mlp --data …\l00 / l05 / l11` = 23 PASS, 1308 / 1080 / 511.
+
+| 확인 | 결과 |
+|---|---|
+| `--full` 없이 (mock) | 40개 + meta.json, 로그까지 `ViT-Base_C_mlp` 생성기와 byte 동일 (이전 numpy 1.24 mock 과도 동일) |
+| `--full` 없이 (HF) | 40개 + meta.json = `C:\RTL_YJH\data_l0_mx` 와 byte 동일 |
+| `--full --mock` | layer 12개 각각 기존 verify / verify_mlp 전부 ok, 앞뒤 단계 · 연결 검사 전부 ok, 발산 없음 (max\|R2\| 4.7 → 10.6) |
+| `--full` (HF) | 같은 검사 전부 ok (`[ok]` 838줄, `[FAIL]` 0) + FP64 embed == HF embedding (6.9e-07), FP64 12 layer + LN + head == HF logits (2.6e-06) → `PASS` |
+
+앞뒤 단계 검사 (파일만 읽어서 다른 경로로): h0 패치 (index 계산으로 모은 패치 + `np.cumsum` 순차 합), CLS (python float),
+`l00/h_in == h0`, `l(l+1)/h_in == l(l)/r2` (11개), 12 layer `x.bin` / `x_scale.bin` == MXFP4(LN1(h_in)) (python float),
+lnc (python float), logits (python float 순서대로 합, bit-exact), top-1 = argmax.
+
+**HF 비교 (보고용, 판정 아님)** — 기본 COCO 이미지, R2_l (BF16 golden) vs HF `vit.layers.l` 출력:
+
+| layer | cosine vs HF | 상대오차 vs HF | max\|R2\| |
+|---|---|---|---|
+| 0 | 0.975577 | 22.15 % | 20.1 |
+| 1 | 0.955166 | 29.62 % | 21 |
+| 2 | 0.941581 | 33.69 % | 21 |
+| 3 | 0.927451 | 37.45 % | 29.3 |
+| 4 | 0.911784 | 42.05 % | 243 |
+| 5 | **0.876050** | 48.99 % | 732 |
+| 6 | 0.926353 | 39.18 % | 1232 |
+| 7 | 0.927602 | 38.87 % | 1280 |
+| 8 | 0.927698 | 38.75 % | 1304 |
+| 9 | 0.927184 | 38.83 % | 1360 |
+| 10 | 0.921390 | 39.95 % | 1344 |
+| 11 | 0.911995 | 41.82 % | 1376 |
+
+| 최종 | 결과 |
+|---|---|
+| logits cosine vs HF | 0.917219 |
+| top-1 | 우리 **285 Egyptian cat** = HF 285 Egyptian cat (같음) |
+| HF top-5 | 285 Egyptian cat, 281 tabby, 282 tiger cat, 287 lynx, 284 Siamese cat → 우리 top-1 포함 |
+
+- cosine 은 layer 5 에서 가장 낮고 (0.876) 6 부터 0.92 대로 회복. layer 4–6 에서 max\|R2\| 가 커지는 (243 → 1232) 것은 ViT 의 큰 activation 채널로 보이며 [추론], MXFP4 블록 scale 이 그 값에 맞춰지면서 같은 블록의 작은 값이 0 으로 깎이는 영향일 수 있다 [추론] — Phase 3 이후 필요하면 분석.
+- layer 0 cosine (0.975577) 이 `data_l0_mx` (0.975498) 와 조금 다른 것은 x.bin 이 HF float LN1 대신 PS LN1 (BF16 입력) 결과이기 때문 (지시서 3.1절, 정상).
+- HF hook 은 transformers 5.x 구조 (`vit.layers.l`, `vit.embeddings`, `vit.layernorm`, `classifier`) 를 이름이 아니라 크기 · 구조로 찾는다 (`get_tensors_hf_full`).
 
 ## Phase 0 결과
 
