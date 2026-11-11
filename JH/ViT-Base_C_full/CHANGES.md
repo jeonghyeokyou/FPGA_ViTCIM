@@ -8,6 +8,8 @@
 | 2026-11-11 | 1 | `golden/vit_golden_gen.py` : `--full` 추가 (`get_tensors_hf_full`, `get_tensors_mock_full`, `embed_bf16`, `head_f32`, `ref_fp_full`, `ln_pyfloat`, `verify_full`, `main_full`). 기존 함수는 고치지 않음 → `--full` 없으면 40개 byte 동일 |
 | 2026-11-11 | 1 | `VIT_FULL_TASK.md` 최신본 (13,643 B, 5.3절) 으로 교체. 생성기 `--full` : torchvision 확인 + meta.json 에 torchvision / image_processor, logits top-1 − top-2 차이 (우리, HF) |
 | 2026-11-11 | 2 | 새 파일 `full_ps.h` / `full_ps.c` (`ps_embed`, `ps_ln_bf16`, `ps_head`, `ps_top1`), `test_full_ps.c`. `mlp_ps.c` : 토큰 1개 LN 을 `ps_ln_row()` 로 분리 (`mlp_ops.h` 선언 추가, `ps_ln2_mx` 결과 불변). `Makefile` : `full_ps.o` (`-ffp-contract=off`), `test_full_ps` (sim 에 포함) |
+| 2026-11-11 | 3 | 새 파일 `layer_run.h` / `layer_run.c` (vit_main.c 의 블록 · 검사 · 시간 표를 옮김, 본문 그대로), `vit_full.c`. `vit_main.c` 는 얇은 main (명령 로그 byte 동일). `attn_ops.h/.c` : `OP_EMBED`, `OP_LN1`, `OP_HEAD`. `Makefile` : `vit_full`, `vit_full_sim`, 머리 주석 `make OUT=.` |
+| 2026-11-11 | 4 | README "보드 실행" (명령 순서, 예상 검사 · 명령 수 · 시간 [추론]). 데이터 `C:\RTL_YJH\data_full.zip` + `.md5` (git 에 없음). `JH/.gitignore` 에 vit_full / vit_full_sim / test_full_ps |
 
 아래는 `ViT-Base_C_mlp` 에서 이어받은 내용 (MLP 단계).
 

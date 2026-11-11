@@ -2,6 +2,7 @@
  *
  * 원본: LHJ/ViT-Base_C_261110/attn_ops.h (55d6f24) / JH 2026-11-10: enum 에 MLP 연산 7개를
  *       OP_VERIFY 앞에 추가 (시간 표에 MLP 연산을 따로 보이기 위해). 그 밖에는 그대로.
+ *       JH 2026-11-11 (VIT_FULL_TASK.md 6.1): OP_EMBED, OP_LN1, OP_HEAD 추가 (OP_N 21 <= PROF_OPS 24).
  *
  * Same structure as vit_ops: vit_main passes no hooks, vit_dbg attaches verification at the
  * hook points; the command sequence sent to the hardware is identical in both.
@@ -30,6 +31,7 @@
 enum { OP_OTHER = 0, OP_QKV, OP_QKV_MX, OP_QKT, OP_SOFTMAX, OP_A_MX, OP_AV, OP_O_MX,
        OP_OPROJ, OP_RESID,
        OP_LN2, OP_FC1, OP_GELU, OP_H_MX, OP_FC2, OP_FC2_ACC, OP_RESID2,   /* MLP (mlp_ops.h) */
+       OP_EMBED, OP_LN1, OP_HEAD,                                          /* vit_full (full_ps.h) */
        OP_VERIFY, OP_N };
 _Static_assert(OP_N <= PROF_OPS, "PROF_OPS too small");
 extern const char *const OP_NAME[OP_N];

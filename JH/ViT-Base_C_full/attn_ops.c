@@ -2,6 +2,7 @@
  *
  * 원본: LHJ/ViT-Base_C_261110/attn_ops.c (55d6f24) / JH 2026-11-10: OP_NAME[] 에 MLP 연산 7개 이름
  *       추가 (attn_ops.h enum 과 같은 순서). 그 밖에는 그대로.
+ *       JH 2026-11-11: OP_EMBED / OP_LN1 / OP_HEAD 이름 추가.
  */
 #include "attn_ops.h"
 #include "mxfp4.h"
@@ -29,6 +30,9 @@ const char *const OP_NAME[OP_N] = {
     "FC2 partial (MAC)",
     "FC2 accumulate (PS)",
     "residual 2 (PS)",
+    "embed (PS)",
+    "LN1 -> MXFP4 (PS)",
+    "final LN + head (PS)",
     "verify only (poison)",
 };
 

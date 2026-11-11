@@ -1,7 +1,7 @@
 # ViT-Base 전체 (patch embedding → 12 layer → 분류) — 진행본
 
 작업: JH, 2026-11-11 · 지시서: [VIT_FULL_TASK.md](VIT_FULL_TASK.md) · 출발점: [`../ViT-Base_C_mlp/`](../ViT-Base_C_mlp/) (layer 0 attention + MLP 완료본, 커밋 c3db75b)
-변경 목록: [CHANGES.md](CHANGES.md) · 빌드 · 데이터 · 보드 명령은 지금은 [`../ViT-Base_C_mlp/README.md`](../ViT-Base_C_mlp/README.md) 와 같다.
+변경 목록: [CHANGES.md](CHANGES.md) · 보드 명령은 아래 "보드 실행". 데이터 생성 환경 (venv, torchvision, `PYTHONUTF8`) 은 [`../ViT-Base_C_mlp/README.md`](../ViT-Base_C_mlp/README.md) "데이터" 절.
 
 ## 상태
 
@@ -10,8 +10,87 @@
 | **0 준비** | 폴더 복사, 회귀, HF 구조 확인, 함수 분리 계획 | **완료** (2026-11-11) |
 | **1 생성기 `--full`** | 12 layer golden, layer별 cosine · top-1 | **완료** (2026-11-11) — 회귀 byte 동일, mock / HF PASS, top-1 285 = HF |
 | **2 PS 함수** | `ps_embed`, `ps_ln_bf16`, `ps_head` (x86 + aarch64) | **완료** (2026-11-11) — `test_full_ps` x86 / aarch64 (qemu) PASS, mock · data_full |
-| 3 전체 흐름 | `layer_run` 분리, `vit_full_sim --layers 12` | 미착수 |
-| 4 보드 준비 | 데이터 zip, 보드 명령 | 미착수 |
+| **3 전체 흐름** | `layer_run` 분리, `vit_full_sim --layers 12` | **완료** (2026-11-11) — vit_main 회귀 (명령 로그 byte 동일), mock · data_full 316 검사 PASS, top-1 285, 고장 3종 검출 |
+| **4 보드 준비** | 데이터 zip, 보드 명령 | **완료** (2026-11-11) — `C:\RTL_YJH\data_full.zip` + md5, 아래 "보드 실행" (실행은 JH / 현준) |
+
+## 보드 실행 (Phase 4, 실행은 JH / 현준)
+
+전송 (PC → 보드, 예: `~/`): `C:\RTL_YJH\data_full.zip` (133 MB, md5 `b3fa7cec…`), `C:\RTL_YJH\data_full.md5` (531줄),
+layer 0 회귀용 `C:\RTL_YJH\data_l0_mx.zip` + `.md5` (이미 `~/vit_base/data_l0` 에 있으면 생략),
+이 폴더의 `*.c *.h Makefile` (예: `~/vit_c_full_src/`). **기존 `~/vit_base/data`, `vit_c`, `vit_main` 은 건드리지 않는다.**
+```
+mkdir -p ~/vit_base/data_full && cd ~/vit_base/data_full
+unzip -o ~/data_full.zip                         # 531개 (unzip 없으면: python3 -m zipfile -e ~/data_full.zip .)
+md5sum -c --quiet ~/data_full.md5 && echo MD5 OK
+mkdir -p ~/vit_base/vit_c_full && cp ~/vit_c_full_src/*.c ~/vit_c_full_src/*.h ~/vit_c_full_src/Makefile ~/vit_base/vit_c_full/
+cd ~/vit_base/vit_c_full && make OUT=.           # ./vit_main ./vit_dbg ./vit_full (그냥 make 는 ../vit_main 을 덮어씀)
+
+sudo ./vit_main --data ~/vit_base/data_l0 --mlp                  # 1) layer 0 회귀
+sudo ./vit_dbg  --data ~/vit_base/data_l0 --op mlp --tile 0      # 2) dbg 4가지
+sudo ./vit_dbg  --data ~/vit_base/data_l0 --op mlp --tile 47
+sudo ./vit_dbg  --data ~/vit_base/data_l0 --op fc2 --n 0
+sudo ./vit_dbg  --data ~/vit_base/data_l0 --op fc2 --n 11
+sudo ./vit_full --data ~/vit_base/data_full --layers 1           # 3) embed + layer 0
+sudo ./vit_full --data ~/vit_base/data_full --layers 12 | tee full12.log   # 4) 전체
+```
+
+예상 출력 (PC 모델과 같아야 하는 것: 검사 개수 · 명령 수 · top-1. 시간은 [추론]):
+
+| 실행 | 검사 | L2 명령 / BB / CDMA | 마지막 줄 | 예상 시간 [추론] |
+|---|---|---|---|---|
+| `vit_main --mlp` (data_l0) | 23 PASS | 1308 / 1080 / 511 | `BOARD_RESULT=PASS op=layer heads=12 tiles=48 mode=seq` | 약 0.76 s |
+| `vit_dbg --op mlp --tile 0` / `47` | C1–C6 = 2 / 9 / 8 / 17 / 4 / 4 | 32 / 12 / 3 | `BOARD_RESULT=PASS op=mlp …` | < 0.1 s |
+| `vit_dbg --op fc2 --n 0` / `11` | C1–C6 = 8 / 32 / 16 / 32 / 2 / 2 | 88 / 18 / 12 | `BOARD_RESULT=PASS op=fc2 …` | < 0.1 s |
+| `vit_full --layers 1` | 27 PASS (embed 1 + layer 26) | 1308 / 1080 / 511 | `BOARD_RESULT=PASS op=full layers=1 top1=-1` | 약 1.3 s |
+| `vit_full --layers 12` | **316 PASS** (embed 1 + 12 × 26 + head 3) | 15696 / 12960 / 6132 | `BOARD_RESULT=PASS op=full layers=12 top1=285` | 약 10–13 s |
+
+layer 1개의 26 검사 = 입력 h == h_in.bin 1 + LN1 x / x_scale 2 + `vit_main --mlp` 와 같은 출력 검사 23. C3 CYCLES 값은 `../ViT-Base_C_mlp/README.md` 와 같다.
+
+시간 추정 근거 [추론]: layer 본체 (attention + MLP, Golden 주입 포함) ≈ 0.76 s (layer 0 추정과 같음), PS 는 layer 0 의
+x86 → 보드 비 (약 5배, MLP PS 16.7 ms → 약 80 ms 추정에서) 를 그대로 써서 embed ≈ 0.26 s, LN1 ≈ 17 ms / layer, head ≈ 2 ms,
+layer 파일 읽기 13 MB / layer ≈ 0.1–0.25 s (저장 장치 속도 모름). → 0.26 + 12 × (0.76 + 0.02 + 0.1~0.25) ≈ 10.8–12.6 s.
+메모리 [추론]: PC 모델 최대 resident 26 MB (x86) / 30 MB (aarch64 qemu) — 호스트 layer 버퍼 6.6 MB + layer 파일 약 13 MB + 앞뒤 단계 파일.
+
+## Phase 3 결과 (`layer_run.c`, `vit_full.c`)
+
+| 파일 | 내용 |
+|---|---|
+| `layer_run.h` / `layer_run.c` (새) | `vit_main.c` 의 `run_ctx` (→ `layer_ctx`), DMA helper, `qkv_head` / `attn_head` / `out_block` / `mlp_block`, 최종 검사, 시간 표를 옮김. 본문 그대로, 바뀐 것은 입력 `x4` / `h_in` 이 인자가 된 것과 검사 실패 수를 반환하는 것 |
+| `vit_main.c` | 490 → 108 줄. layer 0 파일 읽기 → `layer_run(qf.x, af.hin)` → `layer_check` → `layer_report` |
+| `vit_full.c` (새) | embed (PS) → layer 0..N−1 (layer 파일 읽기 · 해제, 입력 h 검사, LN1 PS → x 검사, `layer_run`, 23 검사, h ← R2) → 마지막 LN + head (PS) → logits bit-exact, top-1. `--inject r2:L` / `--inject headw` (고장 시험용) |
+| `attn_ops.h/.c` | enum / 이름 `OP_EMBED`, `OP_LN1`, `OP_HEAD` (`OP_N` 21) |
+| `Makefile` | `vit_full` (보드, `all` 에 포함), `vit_full_sim` (sim) |
+
+계획 (Phase 0) 과 다른 점: `report()` 도 `vit_full` 이 같이 쓰도록 `layer_run.c` 의 `layer_report()` 로 옮겼다.
+
+**회귀** (data_l0_mx, x86 모델): `vit_main_sim --mlp` 23 PASS · 1308 / 1080 / 511, **L2 명령 로그 1308 줄이 분리 전과 byte 동일**,
+검사 · 흐름 출력 줄 동일, `--mlp` 없이 15 PASS · 588 / 504 / 218, `--tiles 3` 18 PASS · 618 / 528 / 228,
+dbg mlp tile 0 / 47 · fc2 n 0 / 11 = 2/9/8/17/4/4 · 32/12/3 · 8/32/16/32/2/2 · 88/18/12 (동일).
+경고: x86 / aarch64 기본 플래그 0. `-Wconversion` 은 새 코드 (`vit_full.c`, `vit_main.c`) 0, `layer_run.c` 15건 = 분리 전 `vit_main.c` 의 15건 (현준 코드에서 온 것, 본문 그대로라 유지).
+
+**vit_full_sim**
+
+| 실행 | 검사 | 명령 / BB / CDMA | top-1 | 시간 (PC 모델) | 최대 메모리 |
+|---|---|---|---|---|---|
+| mock `--layers 1` | 27 PASS | 1308 / 1080 / 511 | — | 122 ms | 26.7 MB |
+| mock `--layers 12` | 316 PASS | 15696 / 12960 / 6132 | 492 = golden | 838 ms | 26.4 MB |
+| data_full `--layers 1` | 27 PASS | 1308 / 1080 / 511 | — | 110 ms | 26.3 MB |
+| data_full `--layers 12` | **316 PASS** | 15696 / 12960 / 6132 | **285 Egyptian cat** | 726 ms (layer 평균 55 ms) | 26.4 MB |
+| data_full `--layers 12`, aarch64 (qemu, hw_sim) | 316 PASS | 15696 / 12960 / 6132 | 285 | 8.6 s (에뮬레이션) | 29.9 MB |
+
+layer 당 명령 / BB / CDMA = 1308 / 1080 / 511 (layer 0 과 같음), 12 layer = 정확히 ×12. embed / LN1 / head 는 PS 만 써서 명령이 없다.
+PC 모델 시간 (data_full, 12 layer): layer 본체 41 ms, LN1 3.4 ms, 파일 읽기 8 ms, 검사 1.1 ms / layer, embed 52 ms, 마지막 LN + head 0.4 ms.
+
+**고장 주입** (data_full, 12 layer)
+
+| 고장 | 검출 | 결과 |
+|---|---|---|
+| layer 5 R2 1 bit (`--inject r2:5`, 가장 큰 \|R2\| 부호) | layer 5 R2 FAIL → layer 6–11 마다 입력 h / LN1 x / R / X2 / R2 FAIL | `BOARD_RESULT=FAIL`, 불일치 256 (FAIL 줄 43). logits 는 같음 (아래) |
+| layer 11 FC2 partial 1줄 (`HWSIM_FAULT_LEN=15458` : (n 0, k 0) STORE 512 → 511 줄) | P 1 줄 FAIL → Y2 16 · R2 16 FAIL | `BOARD_RESULT=FAIL`. logits 는 같음 |
+| head W 1 bit (`--inject headw`, golden top-1 행의 가장 큰 \|W\| 부호) | logits 1 개 FAIL | `BOARD_RESULT=FAIL`, top-1 은 285 유지 (logit 11.09 → 10.94) |
+
+- 앞 두 고장은 CLS 가 아닌 토큰에 걸려서 logits 에는 나타나지 않는다. BB 가 Golden 을 내보내므로 attention 이 토큰을 섞지 않아 오류가 그 토큰에만 남기 때문 —
+  **최종 logits 비교만으로는 이런 고장을 놓친다. layer 마다의 검사가 필요하다** (vit_full 은 모두 검사함).
 
 ## Phase 1 결과 (생성기 `golden/vit_golden_gen.py --full`)
 

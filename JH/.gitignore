@@ -16,3 +16,6 @@ vit_l0_mx*/
 venv*/
 pylib/
 __pycache__/
+vit_full
+vit_full_sim
+test_full_ps
