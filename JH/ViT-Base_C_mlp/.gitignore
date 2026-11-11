@@ -1,0 +1,13 @@
+# build outputs (MLP_TASK.md 1절 5번)
+*.o
+*.exe
+vit_main
+vit_dbg
+vit_main_sim
+vit_dbg_sim
+test_mlp_ps
+# data
+*.bin
+data/
+vit_l0_mx*/
+__pycache__/

@@ -1,0 +1,18 @@
+# JH/ 공통: 빌드 산출물, 데이터, Python 환경, 로그는 올리지 않는다
+*.o
+*.exe
+vit_main
+vit_dbg
+vit_main_sim
+vit_dbg_sim
+test_mlp_ps
+test_mlp_ps_fma
+*.bin
+*.zip
+*.log
+data/
+data_l0*/
+vit_l0_mx*/
+venv*/
+pylib/
+__pycache__/
